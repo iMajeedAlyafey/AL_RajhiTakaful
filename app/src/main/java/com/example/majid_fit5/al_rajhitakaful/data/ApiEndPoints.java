@@ -2,11 +2,10 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 
 
-import java.util.List;
+import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Url;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
@@ -21,5 +20,7 @@ public interface ApiEndPoints {
     //Using Retrofit to get Blog Details
     @GET
     Call<Blog> getBlogDetails(@Url String url);*/
+   @GET ("api/alrajhi_takaful/user/")
+   Call<CurrentUser> getCurrentUser();
 
 }

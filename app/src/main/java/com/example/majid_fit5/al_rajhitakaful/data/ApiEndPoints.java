@@ -2,6 +2,8 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 
 
+import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,5 +22,10 @@ public interface ApiEndPoints {
     Call<AlRajhiTakafulResponse> otp(@Path("phone_number") String phone_number);
 
 
+    /*Using Retrofit to get Blog Details
+    @GET
+    Call<Blog> getBlogDetails(@Url String url);*/
+   @GET ("api/alrajhi_takaful/user/")
+   Call<CurrentUser> getCurrentUser();
 
 }

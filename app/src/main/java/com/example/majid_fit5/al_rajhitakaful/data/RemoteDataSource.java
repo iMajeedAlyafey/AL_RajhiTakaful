@@ -1,6 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 
+import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -50,5 +55,21 @@ public class RemoteDataSource implements DataSource {
         });
     }*/
 
+    @Override
+    public void getCurrentUser(final GetCurrentUserCallCack callBack) {
+        Call<CurrentUser> call = mEndpoints.getCurrentUser();
+        call.enqueue(new Callback<CurrentUser>() {
+            @Override
+            public void onResponse(Call<CurrentUser> call, Response<CurrentUser> response) {
+                if (response.isSuccessful()){
+                    callBack.onGetCurrentUser(response.body());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<CurrentUser> call, Throwable t) {
+
+            }
+        });
+    }
 }

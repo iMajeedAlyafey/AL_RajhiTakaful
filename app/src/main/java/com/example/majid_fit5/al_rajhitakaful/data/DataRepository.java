@@ -23,6 +23,7 @@ public class DataRepository implements DataSource {// Singleton class
             INSTANCE= new DataRepository(remoteDataSource);
         return INSTANCE;
     }
+
     public DataRepository(@NonNull DataSource mRemoteDataSource){
         this.mRemoteDataSource=mRemoteDataSource;
     }
@@ -56,7 +57,10 @@ public class DataRepository implements DataSource {// Singleton class
         mRemoteDataSource.getCurrentUser(callCack);
     }
 
-
+    @Override
+    public void cancelOrderC(String orderID, CancelOrderCallBack callBack) {
+        mRemoteDataSource.cancelOrderC(orderID,callBack);
+    }
 
 
 }

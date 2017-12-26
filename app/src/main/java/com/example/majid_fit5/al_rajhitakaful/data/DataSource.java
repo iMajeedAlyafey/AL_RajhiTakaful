@@ -4,6 +4,7 @@ package com.example.majid_fit5.al_rajhitakaful.data;
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
  */
 
+
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.CurrentOrder;
@@ -13,6 +14,12 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 public interface DataSource {
+    interface BaseCallBack {
+                void onFailure(AlRajhiTakafulError error);
+            }
+//---------------------------------------------------------------------------------------
+    // any call which implements this interface, will call retrofit.
+    interface GetCurrentUserCallBack extends BaseCallBack  {
 
     interface BaseCallBack { // this will be extendable by other interfaces.
         void onFailure(AlRajhiTakafulError error);
@@ -48,5 +55,17 @@ public interface DataSource {
     interface GetCurrentUserCallback extends BaseCallBack  {
         void onGetCurrentUser(CurrentUser currentUser);
     }
+    //Real implement for this method will found in RemoteDataSource Class, because all blog data located in the server
+    void getCurrentUser(GetCurrentUserCallBack callCack);
+    //-------------------------------------------------------------------------------------
+    interface CancelOrderCallBack extends BaseCallBack{
+        void onOrderCanceled();
+    }
+    void cancelOrderC(String id, CancelOrderCallBack callBack);
+    //--------------------------------------------------------------------------------------
+    interface GetOrderCallBack extends BaseCallBack{
+        void onGetOrder();
+    }
+    void getOrder(String orderID, GetOrderCallBack callBack);
     void getCurrentUser(GetCurrentUserCallback callCack);
 }

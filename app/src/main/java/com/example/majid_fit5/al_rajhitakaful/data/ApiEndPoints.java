@@ -39,9 +39,15 @@ public interface ApiEndPoints {
 
 
 
+    // Get current user
    @GET ("api/alrajhi_takaful/user/")
    Call<CurrentUser> getCurrentUser();
-// delete Gist
+
+   // Cancel Order
     @DELETE("api/alrajhi_takaful/saaed_orders/{id}")
-    Call<ResponseBody> CancelOrder(@Path("id") String id);
+    Call<ResponseBody> CancelOrder(@Path("id") String orderID);
+
+    // Show Order
+    @GET("api/alrajhi_takaful/saaed_orders/{id}")
+    Call<CurrentOrder> getOrder(@Path("id") String orderID);
 }

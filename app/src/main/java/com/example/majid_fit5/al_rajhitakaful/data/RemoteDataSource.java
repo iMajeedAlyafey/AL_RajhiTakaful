@@ -1,7 +1,9 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 
+import android.app.Application;
 import android.content.res.Resources;
+
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse.AlRajhiTakafulResponse;
@@ -9,7 +11,10 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.order.CurrentOrder;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.order.CurrentOrder;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,6 +130,7 @@ public class RemoteDataSource implements DataSource {
 
     //-------------------------------- getCuttentUser Method--------------------------------
     @Override
+    public void getCurrentUser( final GetCurrentUserCallBack callBack) {
     public void getCurrentUser( final GetCurrentUserCallback callBack) {
         Call<CurrentUser> call = mEndpoints.getCurrentUser();
         call.enqueue(new Callback<CurrentUser>() {
@@ -144,6 +150,50 @@ public class RemoteDataSource implements DataSource {
             }
         });
     }
+
+    @Override
+    public void cancelOrderC(String orderID, final CancelOrderCallBack callBack) {
+        Call<ResponseBody> call = mEndpoints.CancelOrder(orderID);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    callBack.onOrderCanceled();
+                }
+                else {
+                    callBack.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBack.onFailure(getError(10));
+            }
+        });
+    }
+//---------------------------------------------------------------------------------------------
+    @Override
+    public void getOrder(String orderID, final GetOrderCallBack callBack) {
+        Call<CurrentOrder> call = mEndpoints.getOrder(orderID);
+        call.enqueue(new Callback<CurrentOrder>() {
+            @Override
+            public void onResponse(Call<CurrentOrder> call, Response<CurrentOrder> response) {
+                if (response.isSuccessful()){
+                    callBack.onGetOrder();
+                }
+                else {
+                    callBack.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentOrder> call, Throwable t) {
+                callBack.onFailure(getError(10));
+            }
+        });
+    }
+
+
     //-----------handling error----------------------------------------------------------------------
     private AlRajhiTakafulError getError(int errCode) {
         switch (errCode) {

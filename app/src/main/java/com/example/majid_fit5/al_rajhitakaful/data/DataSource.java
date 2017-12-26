@@ -17,14 +17,6 @@ public interface DataSource {
     interface BaseCallBack {
                 void onFailure(AlRajhiTakafulError error);
             }
-//---------------------------------------------------------------------------------------
-    // any call which implements this interface, will call retrofit.
-    interface GetCurrentUserCallBack extends BaseCallBack  {
-
-    interface BaseCallBack { // this will be extendable by other interfaces.
-        void onFailure(AlRajhiTakafulError error);
-    }
-
     //------------------------------------------------------
     interface OTPCallback extends BaseCallBack{
         void onOTPResponse(AlRajhiTakafulResponse response);
@@ -52,7 +44,7 @@ public interface DataSource {
 
 
     //------------------------------------------------------
-    interface GetCurrentUserCallback extends BaseCallBack  {
+    interface GetCurrentUserCallBack extends BaseCallBack  {
         void onGetCurrentUser(CurrentUser currentUser);
     }
     //Real implement for this method will found in RemoteDataSource Class, because all blog data located in the server
@@ -64,8 +56,8 @@ public interface DataSource {
     void cancelOrderC(String id, CancelOrderCallBack callBack);
     //--------------------------------------------------------------------------------------
     interface GetOrderCallBack extends BaseCallBack{
-        void onGetOrder();
+        void onGetOrder(CurrentOrder currentOrder);
     }
     void getOrder(String orderID, GetOrderCallBack callBack);
-    void getCurrentUser(GetCurrentUserCallback callCack);
+
 }

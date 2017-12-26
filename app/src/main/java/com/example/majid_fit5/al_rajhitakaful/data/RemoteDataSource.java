@@ -131,7 +131,6 @@ public class RemoteDataSource implements DataSource {
     //-------------------------------- getCuttentUser Method--------------------------------
     @Override
     public void getCurrentUser( final GetCurrentUserCallBack callBack) {
-    public void getCurrentUser( final GetCurrentUserCallback callBack) {
         Call<CurrentUser> call = mEndpoints.getCurrentUser();
         call.enqueue(new Callback<CurrentUser>() {
             @Override
@@ -179,7 +178,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onResponse(Call<CurrentOrder> call, Response<CurrentOrder> response) {
                 if (response.isSuccessful()){
-                    callBack.onGetOrder();
+                    callBack.onGetOrder(response.body());
                 }
                 else {
                     callBack.onFailure(getError(response.code()));

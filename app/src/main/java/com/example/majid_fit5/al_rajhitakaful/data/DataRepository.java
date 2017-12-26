@@ -53,13 +53,18 @@ public class DataRepository implements DataSource {// Singleton class
 
 
     @Override
-    public void getCurrentUser(GetCurrentUserCallback callCack) {
+    public void getCurrentUser(GetCurrentUserCallBack callCack) {
         mRemoteDataSource.getCurrentUser(callCack);
     }
 
     @Override
     public void cancelOrderC(String orderID, CancelOrderCallBack callBack) {
         mRemoteDataSource.cancelOrderC(orderID,callBack);
+    }
+
+    @Override
+    public void getOrder(String orderID, GetOrderCallBack callBack) {
+        mRemoteDataSource.getOrder(orderID,callBack);
     }
 
 

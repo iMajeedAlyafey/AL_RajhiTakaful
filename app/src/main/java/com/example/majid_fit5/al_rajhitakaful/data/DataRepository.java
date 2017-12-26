@@ -23,4 +23,8 @@ public class DataRepository implements DataSource {// Singleton class
         this.mRemoteDataSource=mRemoteDataSource;
     }
 
+    @Override
+    public void getCurrentUser(GetCurrentUserCallCack callCack) {
+        mRemoteDataSource.getCurrentUser(callCack);
+    }
 }

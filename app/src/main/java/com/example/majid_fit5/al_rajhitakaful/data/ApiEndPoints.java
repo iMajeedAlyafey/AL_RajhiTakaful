@@ -4,8 +4,10 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -27,5 +29,7 @@ public interface ApiEndPoints {
     Call<Blog> getBlogDetails(@Url String url);*/
    @GET ("api/alrajhi_takaful/user/")
    Call<CurrentUser> getCurrentUser();
-
+// delete Gist
+    @DELETE("api/alrajhi_takaful/saaed_orders/{id}")
+    Call<ResponseBody> CancelOrder(@Path("id") String id);
 }

@@ -1,6 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 
+import android.app.Application;
+import android.content.res.Resources;
+
+import com.example.majid_fit5.al_rajhitakaful.R;
+import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 import retrofit2.Call;
@@ -34,27 +39,8 @@ public class RemoteDataSource implements DataSource {
                 .build();
         mEndpoints = retrofit.create(ApiEndPoints.class);
     }
-/*
-    // My Part
-    @Override
-    public void getBlogs(String url, final GetBlogsCallBack callBack) {
-        Call<List<Blog>> call= mEndpoints.getBlogs(url);
-        call.enqueue(new Callback<List<Blog>>() {
-            @Override
-            public void onResponse(Call<List<Blog>> call, Response<List<Blog>> response) {
-                if(response.isSuccessful()){
-                    callBack.onGetBlogs(response.body());
-                }else{
-                    callBack.onFailure(getError(response.code()));
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Blog>> call, Throwable t) {
-                callBack.onFailure(getError(4077));
-            }
-        });
-    }*/
 
+//-------------------------------- getCuttentUser Method--------------------------------
     @Override
     public void getCurrentUser(final GetCurrentUserCallCack callBack) {
         Call<CurrentUser> call = mEndpoints.getCurrentUser();
@@ -64,12 +50,26 @@ public class RemoteDataSource implements DataSource {
                 if (response.isSuccessful()){
                     callBack.onGetCurrentUser(response.body());
                 }
+                else{
+                    callBack.onFailure(getError(response.code()));
+                }
             }
 
             @Override
             public void onFailure(Call<CurrentUser> call, Throwable t) {
-
+                callBack.onFailure(getError(10));
             }
         });
+    }
+    //-----------handling error----------------------------------------------------------------------
+    private AlRajhiTakafulError getError(int errCode) {
+        switch (errCode) {
+            case 401:
+                return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.error_401));
+            case 404:
+                return new AlRajhiTakafulError(errCode,Resources.getSystem().getString(R.string.error_404));
+        }
+        return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
+
     }
 }

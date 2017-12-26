@@ -5,13 +5,14 @@ package com.example.majid_fit5.al_rajhitakaful.data;
  */
 
 
+import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 public interface DataSource {
-    /*
+
             interface BaseCallBack {
-                void onFailure(TakafulError error);
-            }
+                void onFailure(AlRajhiTakafulError error);
+            }/*
 
                     // any call which implements this interface, will call retrofit.
                     interface GetBlogsCallBack extends BaseCallBack{
@@ -23,7 +24,7 @@ public interface DataSource {
                   */
     //---------------------------------------------------------------------------------------------------------------------
     // any call which implements this interface, will call retrofit.
-    interface GetCurrentUserCallCack  {
+    interface GetCurrentUserCallCack extends BaseCallBack  {
         void onGetCurrentUser(CurrentUser currentUser);
     }
     //Real implement for this method will found in RemoteDataSource Class, because all blog data located in the server

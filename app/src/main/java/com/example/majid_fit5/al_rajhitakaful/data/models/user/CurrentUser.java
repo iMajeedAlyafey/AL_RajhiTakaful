@@ -12,6 +12,8 @@ public class CurrentUser implements Parcelable
     @SerializedName("user")
     @Expose
     private User user;
+
+
     @SerializedName("current_order")
     @Expose
     private CurrentOrder currentOrder;

@@ -42,7 +42,7 @@ public class RemoteDataSource implements DataSource {
 
 //-------------------------------- getCuttentUser Method--------------------------------
     @Override
-    public void getCurrentUser(final GetCurrentUserCallCack callBack) {
+    public void getCurrentUser( final GetCurrentUserCallCack callBack) {
         Call<CurrentUser> call = mEndpoints.getCurrentUser();
         call.enqueue(new Callback<CurrentUser>() {
             @Override
@@ -70,6 +70,5 @@ public class RemoteDataSource implements DataSource {
                 return new AlRajhiTakafulError(errCode,Resources.getSystem().getString(R.string.error_404));
         }
         return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
-//---
     }
 }

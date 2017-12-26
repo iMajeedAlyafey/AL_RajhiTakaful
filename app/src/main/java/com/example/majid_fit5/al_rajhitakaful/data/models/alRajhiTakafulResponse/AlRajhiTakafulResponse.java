@@ -1,11 +1,15 @@
 package com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
 
-public class AlRajhiTakafulResponse {
+public class AlRajhiTakafulResponse implements Parcelable {
 
     @SerializedName("code")
     @Expose
@@ -13,10 +17,8 @@ public class AlRajhiTakafulResponse {
 
     @SerializedName("status")
     @Expose
-    private String message;
+    private String status;
 
-    public AlRajhiTakafulResponse() {
-    }
 
     public AlRajhiTakafulResponse(int code) {
         this.code = code;
@@ -31,10 +33,37 @@ public class AlRajhiTakafulResponse {
     }
 
     public String getMessage() {
-        return message;
+        return status;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.status = message;
     }
+
+    public int describeContents() {return 0;}
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.code);
+        dest.writeString(this.status);
+    }
+    public AlRajhiTakafulResponse(){
+    }
+
+    public AlRajhiTakafulResponse (Parcel in){
+        this.code=in.readInt();
+        this.status=in.readString();
+    }
+    public static final Parcelable.Creator<AlRajhiTakafulResponse> CREATOR = new Creator<AlRajhiTakafulResponse>() {
+
+        @Override
+        public AlRajhiTakafulResponse createFromParcel(Parcel source) {
+            return new AlRajhiTakafulResponse(source);
+        }
+
+        @Override
+        public AlRajhiTakafulResponse[] newArray(int size) {
+            return new AlRajhiTakafulResponse[size];
+        }
+    };
 }

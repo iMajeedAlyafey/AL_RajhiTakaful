@@ -2,6 +2,8 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 
 
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.*;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 import okhttp3.ResponseBody;
@@ -9,10 +11,10 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse.AlRajhiTakafulResponse;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
@@ -20,13 +22,20 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 
 public interface ApiEndPoints {
 
+
+    // Majeed
     @GET("api/alrajhi_takaful/auth/new?phone_number={phone_number}")
     Call<AlRajhiTakafulResponse> otp(@Path("phone_number") String phone_number);
 
+    @POST("api/alrajhi_takaful/auth/")
+    Call<CurrentUser> login(@Body LoginRequest loginRequest);
 
-    /*Using Retrofit to get Blog Details
-    @GET
-    Call<Blog> getBlogDetails(@Url String url);*/
+    @DELETE("api/alrajhi_takaful/auth/")
+    Call<AlRajhiTakafulResponse> logout();
+
+    @POST("api/alrajhi_takaful/saaed_orders/")
+    Call<CurrentUser> createOrder(@Body OrderRequest orderRequest);
+
    @GET ("api/alrajhi_takaful/user/")
    Call<CurrentUser> getCurrentUser();
 // delete Gist

@@ -1,6 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 import android.support.annotation.NonNull;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+
+import retrofit2.Call;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
@@ -18,13 +23,40 @@ public class DataRepository implements DataSource {// Singleton class
             INSTANCE= new DataRepository(remoteDataSource);
         return INSTANCE;
     }
-
     public DataRepository(@NonNull DataSource mRemoteDataSource){
         this.mRemoteDataSource=mRemoteDataSource;
     }
 
     @Override
-    public void getCurrentUser(GetCurrentUserCallCack callCack) {
+    public void OtpCall(OTPRequest request, OTPCallback callback) {
+        mRemoteDataSource.OtpCall(request,callback);
+    }
+
+    @Override
+    public void login(LoginRequest loginRequest, LoginCallback callback) {
+        mRemoteDataSource.login(loginRequest,callback);
+
+    }
+
+    @Override
+    public void logout(LogoutCallback logoutCallback) {
+        mRemoteDataSource.logout(logoutCallback);
+
+    }
+
+    @Override
+    public void createOrder(OrderRequest request, CreateOrderCallback callback) {
+        mRemoteDataSource.createOrder(request,callback);
+    }
+
+
+
+    @Override
+    public void getCurrentUser(GetCurrentUserCallback callCack) {
         mRemoteDataSource.getCurrentUser(callCack);
     }
+
+
+
+
 }

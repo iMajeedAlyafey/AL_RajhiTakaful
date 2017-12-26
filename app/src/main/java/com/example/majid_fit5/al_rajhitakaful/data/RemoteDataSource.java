@@ -1,13 +1,15 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 
-import android.app.Application;
 import android.content.res.Resources;
-
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse.AlRajhiTakafulResponse;
+import com.example.majid_fit5.al_rajhitakaful.data.models.order.CurrentOrder;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,9 +42,90 @@ public class RemoteDataSource implements DataSource {
         mEndpoints = retrofit.create(ApiEndPoints.class);
     }
 
-//-------------------------------- getCuttentUser Method--------------------------------
+
     @Override
-    public void getCurrentUser( final GetCurrentUserCallCack callBack) {
+    public void OtpCall(OTPRequest request, final OTPCallback callback) {
+        Call<AlRajhiTakafulResponse> call = mEndpoints.otp(request);
+        call.enqueue(new Callback<AlRajhiTakafulResponse>() {
+            @Override
+            public void onResponse(Call<AlRajhiTakafulResponse> call, Response<AlRajhiTakafulResponse> response) {
+                if(response.isSuccessful()){
+                    callback.onOTPResponse(response.body());
+                } else{ // if there is a response, but response error code.
+                    callback.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AlRajhiTakafulResponse> call, Throwable t) {
+                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+            }
+        });
+    }
+
+    @Override
+    public void login(LoginRequest loginRequest, final LoginCallback callback) {
+        Call<CurrentUser> call = mEndpoints.login(loginRequest);
+        call.enqueue(new Callback<CurrentUser>() {
+            @Override
+            public void onResponse(Call<CurrentUser> call, Response<CurrentUser> response) {
+                if(response.isSuccessful()){
+                   callback.onLoginResponse(response.body());
+                } else{ // if there is a response, but response error code.
+                    callback.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentUser> call, Throwable t) {
+                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+            }
+        });
+    }
+
+    @Override
+    public void logout(final LogoutCallback callback) {
+        Call<AlRajhiTakafulResponse> call = mEndpoints.logout();
+        call.enqueue(new Callback<AlRajhiTakafulResponse>() {
+            @Override
+            public void onResponse(Call<AlRajhiTakafulResponse> call, Response<AlRajhiTakafulResponse> response) {
+                if(response.isSuccessful()){
+                    callback.onLogoutResponse(response.body());
+                } else{ // if there is a response, but response error code.
+                    callback.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AlRajhiTakafulResponse> call, Throwable t) {
+                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+            }
+        });
+    }
+
+    @Override
+    public void createOrder(final OrderRequest request, final CreateOrderCallback callback) {
+        Call<CurrentOrder> call = mEndpoints.createOrder(request);
+        call.enqueue(new Callback<CurrentOrder>() {
+            @Override
+            public void onResponse(Call<CurrentOrder> call, Response<CurrentOrder> response) {
+                if(response.isSuccessful()){
+                    callback.onCreateOrderResponse(response.body());
+                } else{ // if there is a response, but response error code.
+                    callback.onFailure(getError(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentOrder> call, Throwable t) {
+                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+            }
+        });
+    }
+
+    //-------------------------------- getCuttentUser Method--------------------------------
+    @Override
+    public void getCurrentUser( final GetCurrentUserCallback callBack) {
         Call<CurrentUser> call = mEndpoints.getCurrentUser();
         call.enqueue(new Callback<CurrentUser>() {
             @Override

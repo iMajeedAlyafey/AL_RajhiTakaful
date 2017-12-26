@@ -29,5 +29,5 @@ public interface DataSource {
     }
     //Real implement for this method will found in RemoteDataSource Class, because all blog data located in the server
     void getCurrentUser(GetCurrentUserCallCack callCack);
-    //--------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------
 }

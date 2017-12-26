@@ -70,6 +70,6 @@ public class RemoteDataSource implements DataSource {
                 return new AlRajhiTakafulError(errCode,Resources.getSystem().getString(R.string.error_404));
         }
         return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
-
+//---
     }
 }

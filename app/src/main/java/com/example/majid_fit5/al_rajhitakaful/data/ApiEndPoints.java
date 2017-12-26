@@ -2,11 +2,13 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 
 
-import java.util.List;
-
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Url;
+import retrofit2.http.Path;
+
+import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulResponse.AlRajhiTakafulResponse;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
@@ -14,12 +16,9 @@ import retrofit2.http.Url;
 
 public interface ApiEndPoints {
 
-   /* //Retrofit call to get list of blogs.
-    @GET
-    Call<List<Blog>> getBlogs(@Url String url);
+    @GET("api/alrajhi_takaful/auth/new?phone_number={phone_number}")
+    Call<AlRajhiTakafulResponse> otp(@Path("phone_number") String phone_number);
 
-    //Using Retrofit to get Blog Details
-    @GET
-    Call<Blog> getBlogDetails(@Url String url);*/
+
 
 }

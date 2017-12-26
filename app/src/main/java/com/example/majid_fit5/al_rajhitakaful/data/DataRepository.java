@@ -23,9 +23,4 @@ public class DataRepository implements DataSource {// Singleton class
         this.mRemoteDataSource=mRemoteDataSource;
     }
 
-   /* @Override
-    public void getBlogs(String url, GetBlogsCallBack callBack) {
-        mRemoteDataSource.getBlogs(url,callBack);
-    }
-    */
 }

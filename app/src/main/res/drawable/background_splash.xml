@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="overbit.user.MainActivity"
-    android:background="@drawable/logo_takaful">  >
+    android:background="@drawable/log_takaful">  >
 
 
 </layer-list>

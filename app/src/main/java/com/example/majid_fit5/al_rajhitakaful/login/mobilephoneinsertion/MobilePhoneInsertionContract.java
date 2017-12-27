@@ -2,6 +2,7 @@ package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
 
 import com.example.majid_fit5.al_rajhitakaful.base.BasePresenter;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseView;
+import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.

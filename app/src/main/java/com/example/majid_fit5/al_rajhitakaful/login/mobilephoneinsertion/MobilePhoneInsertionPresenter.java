@@ -3,6 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
 import android.support.annotation.NonNull;
 
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
+import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 
 import java.lang.ref.WeakReference;
 

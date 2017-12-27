@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
+import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.

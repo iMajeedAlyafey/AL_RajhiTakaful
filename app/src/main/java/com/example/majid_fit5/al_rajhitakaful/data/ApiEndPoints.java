@@ -45,7 +45,7 @@ public interface ApiEndPoints {
 
    // Cancel Order
     @DELETE("api/alrajhi_takaful/saaed_orders/{id}")
-    Call<ResponseBody> CancelOrder(@Path("id") String orderID);
+    Call<Void> CancelOrder(@Path("id") String orderID);
 
     // Show Order
     @GET("api/alrajhi_takaful/saaed_orders/{id}")

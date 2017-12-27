@@ -152,10 +152,10 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void cancelOrderC(String orderID, final CancelOrderCallBack callBack) {
-        Call<ResponseBody> call = mEndpoints.CancelOrder(orderID);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Void> call = mEndpoints.CancelOrder(orderID);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
                     callBack.onOrderCanceled();
                 }
@@ -165,12 +165,13 @@ public class RemoteDataSource implements DataSource {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 callBack.onFailure(getError(10));
             }
         });
     }
-//---------------------------------------------------------------------------------------------
+
+    //---------------------------------------------------------------------------------------------
     @Override
     public void getOrder(String orderID, final GetOrderCallBack callBack) {
         Call<CurrentOrder> call = mEndpoints.getOrder(orderID);
@@ -191,7 +192,6 @@ public class RemoteDataSource implements DataSource {
             }
         });
     }
-
 
     //-----------handling error----------------------------------------------------------------------
     private AlRajhiTakafulError getError(int errCode) {

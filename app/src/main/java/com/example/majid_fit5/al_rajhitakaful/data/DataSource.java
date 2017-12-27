@@ -53,7 +53,7 @@ public interface DataSource {
     interface CancelOrderCallBack extends BaseCallBack{
         void onOrderCanceled();
     }
-    void cancelOrderC(String id, CancelOrderCallBack callBack);
+    void cancelOrderC(String orderID, CancelOrderCallBack callBack);
     //--------------------------------------------------------------------------------------
     interface GetOrderCallBack extends BaseCallBack{
         void onGetOrder(CurrentOrder currentOrder);

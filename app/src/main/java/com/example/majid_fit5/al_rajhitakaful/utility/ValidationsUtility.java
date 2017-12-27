@@ -13,4 +13,7 @@ public class ValidationsUtility {
     }
 
 
+    public static boolean isEmpty(Object in) {
+        return in == null || in.toString().trim().matches("");
+    }
 }

@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/AppBgGray">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test Fragment Button"
-        android:layout_gravity="center"/>
+        android:text="@string/txt_enter_phone"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/dim_24_dp"
+        android:textSize="@dimen/dim_15_dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dim_10_dp"
+        android:text="@string/txt_need_login" />
+
+        <EditText
+            android:id="@+id/edt_mobile_input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_40_dp"
+            android:ems="10"
+            android:maxLength="10"
+            android:inputType="number"
+            android:background="@drawable/bg_white"
+            android:layout_margin="@dimen/dim_10_dp" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_14_dp"
+            android:layout_marginStart="@dimen/dim_24_dp"
+            android:layout_marginEnd="@dimen/dim_24_dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/txt_login"
+            android:textColor="@color/White" />
+
 
 </LinearLayout>

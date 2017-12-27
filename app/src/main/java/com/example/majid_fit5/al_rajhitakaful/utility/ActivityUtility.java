@@ -13,6 +13,7 @@ public class ActivityUtility  {
 
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull MobilePhoneInsertionFragment mFragment, int frameId) {
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, mFragment).commit(); // need commit
     }

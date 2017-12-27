@@ -3,4 +3,9 @@
     <string name="get_currentuser_error">No Info Available</string>
     <string name="error_401">Unauthorized</string>
     <string name="error_404">Not found</string>
+    <string name="txt_enter_phone">Enter your phone number</string>
+    <string name="txt_need_login">You need to login to Morni in order to use services</string>
+    <string name="txt_login">Login</string>
+    <string name="title_sign">Sign in</string>
+    <string name="msg_phone_required">Please Enter Your Phone Number</string>
 </resources>

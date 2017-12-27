@@ -2,7 +2,8 @@ package com.example.majid_fit5.al_rajhitakaful.data.models.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.example.majid_fit5.al_rajhitakaful.data.models.order.CurrentOrder;
+
+import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +17,7 @@ public class CurrentUser implements Parcelable
 
     @SerializedName("current_order")
     @Expose
-    private CurrentOrder currentOrder;
+    private Order currentOrder;
     public final static Parcelable.Creator<CurrentUser> CREATOR = new Creator<CurrentUser>() {
 
         @SuppressWarnings({
@@ -35,7 +36,7 @@ public class CurrentUser implements Parcelable
 
     protected CurrentUser(Parcel in) {
         this.user = ((User) in.readValue((User.class.getClassLoader())));
-        this.currentOrder = ((CurrentOrder) in.readValue((CurrentOrder.class.getClassLoader())));
+        this.currentOrder = ((Order) in.readValue((Order.class.getClassLoader())));
     }
 
     public CurrentUser() {
@@ -49,11 +50,11 @@ public class CurrentUser implements Parcelable
         this.user = user;
     }
 
-    public CurrentOrder getCurrentOrder() {
+    public Order getCurrentOrder() {
         return currentOrder;
     }
 
-    public void setCurrentOrder(CurrentOrder currentOrder) {
+    public void setCurrentOrder(Order currentOrder) {
         this.currentOrder = currentOrder;
     }
 

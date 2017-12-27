@@ -4,7 +4,7 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 import android.content.res.Resources;
 
 import com.example.majid_fit5.al_rajhitakaful.R;
-import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
@@ -12,6 +12,12 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +41,23 @@ public class RemoteDataSource implements DataSource {
         return INSTANCE;
     }
 
+
     private RemoteDataSource() {
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("Content-Type","application/json")
+                        .addHeader("Authorization","willChanged")
+                        .addHeader("Accept","application/json")
+                        .addHeader("Accept-Language","en")
+                        .addHeader("App-Type","AlrajhiTakaful")
+                        .addHeader("Platform","android")
+                        .addHeader("App-Version","1.0.0").build();
+                return null;
+            }
+        });
         // Retrofit instantiation
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -43,6 +65,7 @@ public class RemoteDataSource implements DataSource {
                 .build();
         mEndpoints = retrofit.create(ApiEndPoints.class);
     }
+
 
 
     @Override

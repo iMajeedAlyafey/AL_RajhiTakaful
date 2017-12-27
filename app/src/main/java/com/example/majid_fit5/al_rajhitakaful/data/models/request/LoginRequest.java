@@ -3,7 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.data.models.request;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.majid_fit5.al_rajhitakaful.data.models.alRajhiTakafulError.AlRajhiTakafulError;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

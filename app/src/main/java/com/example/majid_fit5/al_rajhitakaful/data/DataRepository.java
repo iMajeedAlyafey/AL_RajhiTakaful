@@ -1,6 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 import android.support.annotation.NonNull;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+
+import retrofit2.Call;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
@@ -23,9 +28,44 @@ public class DataRepository implements DataSource {// Singleton class
         this.mRemoteDataSource=mRemoteDataSource;
     }
 
-   /* @Override
-    public void getBlogs(String url, GetBlogsCallBack callBack) {
-        mRemoteDataSource.getBlogs(url,callBack);
+    @Override
+    public void OtpCall(OTPRequest request, OTPCallback callback) {
+        mRemoteDataSource.OtpCall(request,callback);
     }
-    */
+
+    @Override
+    public void login(LoginRequest loginRequest, LoginCallback callback) {
+        mRemoteDataSource.login(loginRequest,callback);
+
+    }
+
+    @Override
+    public void logout(LogoutCallback logoutCallback) {
+        mRemoteDataSource.logout(logoutCallback);
+
+    }
+
+    @Override
+    public void createOrder(OrderRequest request, CreateOrderCallback callback) {
+        mRemoteDataSource.createOrder(request,callback);
+    }
+
+
+
+    @Override
+    public void getCurrentUser(GetCurrentUserCallBack callCack) {
+        mRemoteDataSource.getCurrentUser(callCack);
+    }
+
+    @Override
+    public void cancelOrderC(String orderID, CancelOrderCallBack callBack) {
+        mRemoteDataSource.cancelOrderC(orderID,callBack);
+    }
+
+    @Override
+    public void getOrder(String orderID, GetOrderCallBack callBack) {
+        mRemoteDataSource.getOrder(orderID,callBack);
+    }
+
+
 }

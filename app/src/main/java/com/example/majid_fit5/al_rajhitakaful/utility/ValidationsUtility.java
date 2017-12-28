@@ -16,4 +16,10 @@ public class ValidationsUtility {
     public static boolean isEmpty(Object in) {
         return in == null || in.toString().trim().matches("");
     }
+
+    public static boolean isValidPhoneNumberLength(String phoneNumber) {
+        if(phoneNumber.length()< 9 ) return false;
+        return phoneNumber.length() >= 9; // 9 or 10 is ok
+
+    }
 }

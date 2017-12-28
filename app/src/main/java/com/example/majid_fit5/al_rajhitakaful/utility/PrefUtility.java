@@ -5,9 +5,11 @@ package com.example.majid_fit5.al_rajhitakaful.utility;
  */
 
 public class PrefUtility {
-    public static String getToken(){
 
+
+
+    public static String getToken(){
         //get token
-        return "token";
+        return "";
     }
 }

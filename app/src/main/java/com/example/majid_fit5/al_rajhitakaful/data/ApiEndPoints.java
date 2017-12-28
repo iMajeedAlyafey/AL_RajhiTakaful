@@ -13,6 +13,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 
@@ -24,29 +25,29 @@ public interface ApiEndPoints {
 
 
     // Majeed
-    @GET("api/alrajhi_takaful/auth/new?phone_number={phone_number}")
-    Call<AlRajhiTakafulResponse> otp(@Path("phone_number") OTPRequest phone_number); // here might happen an error..// check the Following GET api
+    @GET("auth/new")
+    Call<AlRajhiTakafulResponse> otp(@Query("phone_number") String phone_number); // here might happen an error..// check the Following GET api
 
-    @POST("api/alrajhi_takaful/auth/")
+    @POST("auth/")
     Call<CurrentUserResponse> login(@Body LoginRequest loginRequest);
 
-    @DELETE("api/alrajhi_takaful/auth/")
+    @DELETE("auth/")
     Call<AlRajhiTakafulResponse> logout();
 
-    @POST("api/alrajhi_takaful/saaed_orders/")
+    @POST("saaed_orders/")
     Call<Order> createOrder(@Body OrderRequest orderRequest);
 
 
 
     // Get current user
-   @GET ("api/alrajhi_takaful/user/")
+   @GET ("user/")
    Call<CurrentUserResponse> getCurrentUser();
 
    // Cancel Order
-    @DELETE("api/alrajhi_takaful/saaed_orders/{id}")
+    @DELETE("saaed_orders/{id}")
     Call<Void> CancelOrder(@Path("id") String orderID);
 
     // Show Order
-    @GET("api/alrajhi_takaful/saaed_orders/{id}")
+    @GET("saaed_orders/{id}")
     Call<Order> getOrder(@Path("id") String orderID);
 }

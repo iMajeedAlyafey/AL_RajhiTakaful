@@ -7,5 +7,8 @@
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
     <string name="title_sign">Sign in</string>
-    <string name="msg_phone_required">Please Enter Your Phone Number</string>
+    <string name="msg_phone_number_required">Please Enter Your Phone Number</string>
+    <string name="msg_phone_number_invalid">Please enter valid phone number</string>
+    <string name="txt_example_phone_number">Ex: 05XXXXXXXX</string>
+    <string name="title_verify_account">Verify Account</string>
 </resources>

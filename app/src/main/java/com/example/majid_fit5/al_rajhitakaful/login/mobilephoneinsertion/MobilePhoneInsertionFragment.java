@@ -1,6 +1,8 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
 
-import android.os.Build;
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,10 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationActivity;
+import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
@@ -24,7 +29,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     MobilePhoneInsertionContract.Presenter mPresenter;
     private EditText mEdtPhoneNumber;
     private Button mBtnLogin;
-
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +56,13 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void showLoading() {
-
+        if(mProgressDialog==null){
+            mProgressDialog=ProgressDialog.show(getActivity(),"","",false,false);
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mProgressDialog.setContentView(R.layout.progress_dialog);
+        }else{
+            mProgressDialog.show();
+        }
     }
 
     @Override
@@ -61,21 +72,30 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void onValidPhoneNumber(String phoneNumber) {
-        Toast.makeText(rootView.getContext(),"Phone number is OK and ready to send otp",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(rootView.getContext(),"Phone number "+phoneNumber+" is OK and ready to send otp",Toast.LENGTH_LONG).show();
+        mPresenter.submitAndGetOTP(phoneNumber);
     }
 
     @Override
     public void onInvalidPhoneNumber(String errorMessage) {
-        Toast.makeText(rootView.getContext(),errorMessage,Toast.LENGTH_SHORT).show();
+        Toast.makeText(rootView.getContext(),errorMessage,Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onSubmitError(AlRajhiTakafulError error) {
-
+    public void onSubmitAndGetOTPError(AlRajhiTakafulError error) {
+        //Toast.makeText(rootView.getContext(),"Error msg: "+error.getMessage()+"||| Error code: "+error.getCode() ,Toast.LENGTH_LONG).show();
+        Toast.makeText(rootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onSubmitAndGetOTPSuccess() {
+    public void onSubmitAndGetOTPSuccess(String phoneNumber) {
+        Bundle bundle =new Bundle();
+        bundle.putString("phoneNumber",phoneNumber);
+
+       // ActivityUtility.addFragmentToActivity( getFragmentManager(),new Mobile,R.id.content_frame);
+
+        ActivityUtility.goToActivity(this.getActivity(),MobileVerificationActivity.class,bundle);
+        getActivity().finish();
 
     }
 
@@ -88,5 +108,11 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
                 mPresenter.validatePhoneNumber(mEdtPhoneNumber.getText().toString());
                 break;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.onDestroy(); // to destroy this view.
     }
 }

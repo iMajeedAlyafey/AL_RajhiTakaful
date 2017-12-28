@@ -21,7 +21,7 @@ public interface DataSource {
     interface OTPCallback extends BaseCallBack{
         void onOTPResponse(AlRajhiTakafulResponse response);
     }
-    void OtpCall(OTPRequest request,OTPCallback callback);
+    void OtpCall(String phoneNumber,OTPCallback callback);
     //------------------------------------------------------
 
     interface LoginCallback extends BaseCallBack{

@@ -3,6 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 import android.content.res.Resources;
 
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
@@ -32,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // Singleton class that responsible on firing retrofit calls.
 
 public class RemoteDataSource implements DataSource {
-    private static String BASE_URL = "https://sandbox.morniksa.com/api/v2/";//"https://www.morniksa.com/api/"
+    private static String BASE_URL = "https://sandbox.morniksa.com/api/alrajhi_takaful/";//"https://www.morniksa.com/api/"
     private ApiEndPoints mEndpoints;
     private static RemoteDataSource INSTANCE = null;
 
@@ -72,8 +73,10 @@ public class RemoteDataSource implements DataSource {
 
 
     @Override
-    public void OtpCall(OTPRequest request, final OTPCallback callback) {
-        Call<AlRajhiTakafulResponse> call = mEndpoints.otp(request);
+    public void OtpCall(String phoneNumber, final OTPCallback callback) {
+
+        Call<AlRajhiTakafulResponse> call = mEndpoints.otp(phoneNumber);
+
         call.enqueue(new Callback<AlRajhiTakafulResponse>() {
             @Override
             public void onResponse(Call<AlRajhiTakafulResponse> call, Response<AlRajhiTakafulResponse> response) {
@@ -222,7 +225,7 @@ public class RemoteDataSource implements DataSource {
             case 401:
                 return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.error_401));
             case 404:
-                return new AlRajhiTakafulError(errCode,Resources.getSystem().getString(R.string.error_404));
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
         }
         return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
     }

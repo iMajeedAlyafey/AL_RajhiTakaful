@@ -29,8 +29,8 @@ public class DataRepository implements DataSource {// Singleton class
     }
 
     @Override
-    public void OtpCall(OTPRequest request, OTPCallback callback) {
-        mRemoteDataSource.OtpCall(request,callback);
+    public void OtpCall(String phoneNumber, OTPCallback callback) {
+        mRemoteDataSource.OtpCall(phoneNumber,callback);
     }
 
     @Override

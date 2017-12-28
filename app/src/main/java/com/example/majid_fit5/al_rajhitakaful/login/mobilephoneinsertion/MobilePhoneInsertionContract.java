@@ -15,8 +15,8 @@ public class MobilePhoneInsertionContract {
     interface View extends BaseView{
         void onValidPhoneNumber(String phoneNumber);
         void onInvalidPhoneNumber(String errorMessage);
-        void onSubmitError(AlRajhiTakafulError error);
-        void onSubmitAndGetOTPSuccess();
+        void onSubmitAndGetOTPError(AlRajhiTakafulError error);
+        void onSubmitAndGetOTPSuccess(String phoneNumber );
     }
 
     interface Presenter extends BasePresenter<View>{

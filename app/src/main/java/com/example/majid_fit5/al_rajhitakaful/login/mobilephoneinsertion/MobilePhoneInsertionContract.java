@@ -8,7 +8,7 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
  */
 
-public class MobilePhoneInsertionContract {
+public interface MobilePhoneInsertionContract {
 
 
     // every action in presenter have 2 corresponding action in view.. OnSuccess + onFailure

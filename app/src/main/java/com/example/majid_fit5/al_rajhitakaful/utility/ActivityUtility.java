@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Fragment;
+
 import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobilePhoneInsertionFragment;
 
 /**
@@ -21,7 +23,7 @@ public class ActivityUtility  {
      * @param frameId
      */
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                             @NonNull MobilePhoneInsertionFragment mFragment, int frameId) {
+                                             @NonNull Fragment mFragment, int frameId) {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, mFragment).commit(); // need commit

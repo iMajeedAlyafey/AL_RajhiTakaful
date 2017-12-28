@@ -18,6 +18,7 @@ import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationActivity;
+import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationFragment;
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 
 /**
@@ -25,7 +26,7 @@ import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
  */
 
 public class MobilePhoneInsertionFragment extends BaseFragment implements MobilePhoneInsertionContract.View, View.OnClickListener {
-    private View rootView;
+    private View mRootView;
     MobilePhoneInsertionContract.Presenter mPresenter;
     private EditText mEdtPhoneNumber;
     private Button mBtnLogin;
@@ -41,16 +42,16 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        rootView= inflater.inflate(R.layout.fragment_login_insertion,container,false);
+        mRootView = inflater.inflate(R.layout.fragment_login_insertion,container,false);
         init();
 
-        return rootView;
+        return mRootView;
     }
 
     private void init() {
         // checkPermissions() again
-        mEdtPhoneNumber= rootView.findViewById(R.id.edt_mobile_input);
-        mBtnLogin= rootView.findViewById(R.id.btn_login);
+        mEdtPhoneNumber= mRootView.findViewById(R.id.edt_mobile_input);
+        mBtnLogin= mRootView.findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
     }
 
@@ -67,44 +68,36 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void hideLoading() {
-
+        mProgressDialog.cancel();
     }
 
     @Override
     public void onValidPhoneNumber(String phoneNumber) {
-        //Toast.makeText(rootView.getContext(),"Phone number "+phoneNumber+" is OK and ready to send otp",Toast.LENGTH_LONG).show();
         mPresenter.submitAndGetOTP(phoneNumber);
     }
 
     @Override
     public void onInvalidPhoneNumber(String errorMessage) {
-        Toast.makeText(rootView.getContext(),errorMessage,Toast.LENGTH_LONG).show();
+        Toast.makeText(mRootView.getContext(),errorMessage,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onSubmitAndGetOTPError(AlRajhiTakafulError error) {
-        //Toast.makeText(rootView.getContext(),"Error msg: "+error.getMessage()+"||| Error code: "+error.getCode() ,Toast.LENGTH_LONG).show();
-        Toast.makeText(rootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
+        Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onSubmitAndGetOTPSuccess(String phoneNumber) {
         Bundle bundle =new Bundle();
         bundle.putString("phoneNumber",phoneNumber);
-
-       // ActivityUtility.addFragmentToActivity( getFragmentManager(),new Mobile,R.id.content_frame);
-
-        ActivityUtility.goToActivity(this.getActivity(),MobileVerificationActivity.class,bundle);
-        getActivity().finish();
-
+        hideLoading();
+        ActivityUtility.addFragmentToActivity(getFragmentManager(),new MobileVerificationFragment(),R.id.content_frame);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:
-               // Snackbar.make(rootView, "BIG ERROR", Snackbar.LENGTH_INDEFINITE).show();
-               // Toast.makeText(rootView.getContext(),"Evaluate Phone Number",Toast.LENGTH_SHORT).show();
                 mPresenter.validatePhoneNumber(mEdtPhoneNumber.getText().toString());
                 break;
         }

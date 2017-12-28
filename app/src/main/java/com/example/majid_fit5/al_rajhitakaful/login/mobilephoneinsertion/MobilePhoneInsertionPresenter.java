@@ -1,5 +1,8 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
 import android.support.annotation.NonNull;
+
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
+import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
@@ -35,8 +38,8 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
     public void validatePhoneNumber(String phoneNumber) {
         if(mView.get()!=null){
             if(ValidationsUtility.isEmpty(phoneNumber)){
-                mView.get().onInvalidPhoneNumber("Please Enter Your Phone Number"); // Resources.getSystem().getString(R.string.msg_phone_required
-            } //else if --- need to check for phone number length + checking phone start with 0
+                mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_required)); // Resources.getSystem().getString(R.string.msg_phone_required
+            } //else if (ValidationsUtility.isValidPhoneNumberLength(phoneNumber));
             else{
                 //if + checking phone start with 0
 

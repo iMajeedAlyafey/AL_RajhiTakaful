@@ -11,6 +11,7 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 public class MobilePhoneInsertionContract {
 
 
+    // every action in presenter have 2 corresponding action in view.. OnSuccess + onFailure
     interface View extends BaseView{
         void onValidPhoneNumber(String phoneNumber);
         void onInvalidPhoneNumber(String errorMessage);

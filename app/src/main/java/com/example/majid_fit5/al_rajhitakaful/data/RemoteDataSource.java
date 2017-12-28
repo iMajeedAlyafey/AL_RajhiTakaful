@@ -11,6 +11,7 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
+import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 
 import java.io.IOException;
 
@@ -49,19 +50,21 @@ public class RemoteDataSource implements DataSource {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","application/json")
-                        .addHeader("Authorization","willChanged")
+                        .addHeader("Authorization", PrefUtility.getToken())
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
                         .addHeader("Platform","android")
                         .addHeader("App-Version","1.0.0").build();
-                return null;
+                return chain.proceed(request);
             }
         });
+        OkHttpClient client = clientBuilder.build();
         // Retrofit instantiation
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
         mEndpoints = retrofit.create(ApiEndPoints.class);
     }

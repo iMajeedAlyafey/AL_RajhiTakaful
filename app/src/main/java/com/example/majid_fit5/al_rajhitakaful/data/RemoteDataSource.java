@@ -3,6 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.data;
 
 import android.content.res.Resources;
 
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
@@ -222,7 +223,7 @@ public class RemoteDataSource implements DataSource {
             case 401:
                 return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.error_401));
             case 404:
-                return new AlRajhiTakafulError(errCode,Resources.getSystem().getString(R.string.error_404));
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
         }
         return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
     }

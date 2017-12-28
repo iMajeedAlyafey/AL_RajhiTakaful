@@ -5,4 +5,7 @@ package com.example.majid_fit5.al_rajhitakaful.utility;
  */
 
 public class Constants {
+
+    public static String USER_PREFERENCE = "USER_PREFERENCE";
+    public static String TOKEN = "TOKEN";
 }

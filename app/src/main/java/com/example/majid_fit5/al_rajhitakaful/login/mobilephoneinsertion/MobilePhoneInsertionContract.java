@@ -16,7 +16,7 @@ public interface MobilePhoneInsertionContract {
         void onValidPhoneNumber(String phoneNumber);
         void onInvalidPhoneNumber(String errorMessage);
         void onSubmitAndGetOTPError(AlRajhiTakafulError error);
-        void onSubmitAndGetOTPSuccess(String phoneNumber );
+        void onSubmitAndGetOTPSuccess(String phoneNumber); // the phoneNumber is used in other fragment.
     }
 
     interface Presenter extends BasePresenter<View>{

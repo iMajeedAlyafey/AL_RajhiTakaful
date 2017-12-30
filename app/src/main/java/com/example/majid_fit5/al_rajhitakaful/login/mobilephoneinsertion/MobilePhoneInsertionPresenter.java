@@ -58,7 +58,6 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         if(mView.get()!=null){
             mView.get().showLoading();
 
-
             mView.get().onSubmitAndGetOTPSuccess(phoneNumber);
 
 
@@ -83,9 +82,4 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         }
     }
 
-    public AlRajhiTakafulError getError(String msg){
-        AlRajhiTakafulError error = new AlRajhiTakafulError();
-        error.setMessage(msg);
-        return error;
-    }
 }

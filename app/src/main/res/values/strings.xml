@@ -14,4 +14,6 @@
     <string name="txt_verification_code">Enter Verification Code</string>
     <string name="txt_enter_verification_code">Please enter your verification code</string>
     <string name="txt_send">Send</string>
+    <string name="txt_did_not_receive">Did not receive code?</string>
+    <string name="txt_resend">Resend</string>
 </resources>

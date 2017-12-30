@@ -68,4 +68,7 @@ public class DataRepository implements DataSource {// Singleton class
     }
 
 
+    public static void destroyInstance() {
+            INSTANCE=null;
+    }
 }

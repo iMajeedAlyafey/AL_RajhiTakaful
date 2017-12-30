@@ -17,7 +17,6 @@ import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
-import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationActivity;
 import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationFragment;
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 
@@ -31,6 +30,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     private EditText mEdtPhoneNumber;
     private Button mBtnLogin;
     private ProgressDialog mProgressDialog;
+    private MobileVerificationFragment mMobileVerificationFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,10 +88,13 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void onSubmitAndGetOTPSuccess(String phoneNumber) {
+        Injection.deleteProvidedDataRepository(); // to destroy all previous memory links
         Bundle bundle =new Bundle();
         bundle.putString("phoneNumber",phoneNumber);
+        mMobileVerificationFragment= new MobileVerificationFragment();
+        mMobileVerificationFragment.setArguments(bundle);
         hideLoading();
-        ActivityUtility.addFragmentToActivity(getFragmentManager(),new MobileVerificationFragment(),R.id.content_frame);
+        ActivityUtility.addFragmentToActivity(getFragmentManager(),mMobileVerificationFragment,R.id.content_frame);
     }
 
     @Override

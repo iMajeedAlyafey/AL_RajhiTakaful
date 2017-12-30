@@ -229,4 +229,8 @@ public class RemoteDataSource implements DataSource {
         }
         return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
     }
+
+    public static void destroyInstance() {
+        INSTANCE=null;
+    }
 }

@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim_40_dp"
             android:ems="10"
+            android:textAlignment="center"
             android:inputType="number"
             android:background="@drawable/bg_white"
             android:layout_marginStart="@dimen/dim_10_dp"

@@ -2,12 +2,15 @@ package com.example.majid_fit5.al_rajhitakaful.login.mobileverification;
 
 import android.support.annotation.NonNull;
 
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
-import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
+import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
+import com.google.gson.Gson;
 
 import java.lang.ref.WeakReference;
 
@@ -18,7 +21,6 @@ import java.lang.ref.WeakReference;
 public class MobileVerificationPresenter implements MobileVerificationContract.Presenter {
     private DataRepository mDataRepository;
     private WeakReference<MobileVerificationContract.View> mView;
-
 
     public MobileVerificationPresenter(DataRepository mDataRepository){
         this.mDataRepository=mDataRepository;
@@ -38,6 +40,21 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
     @Override
     public void sendVerificationCode(String code, String phoneNumber) {
 
+        if(mView.get()!=null){
+            LoginRequest loginRequest= new LoginRequest(phoneNumber,code);
+            mDataRepository.login(loginRequest, new DataSource.LoginCallback() {
+                @Override
+                public void onLoginResponse(CurrentUserResponse currentUser) {
+                    if(mView.get()!=null)
+                    mView.get().onCodeVerificationSuccess(currentUser); // 100% this will be executed if there is 201 response.
+                }
+                @Override
+                public void onFailure(AlRajhiTakafulError error) {
+                    if(mView.get()!=null)
+                    mView.get().onCodeVerificationFailure(error);
+                }
+            });
+        }
     }
 
     @Override
@@ -46,13 +63,12 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
             mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
                 public void onOTPResponse(AlRajhiTakafulResponse response) {
-                   // if(response.getCode()==201)  // OK
+                   if(mView.get()!=null)
                        mView.get().onGetOTPSuccsess(phoneNumber);
-                    /*else
-                        mView.get().onGetOTPFailure(getError());*/
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
+                    if(mView.get()!=null)
                     mView.get().onGetOTPFailure(error);
                 }
             });
@@ -61,8 +77,10 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
 
     @Override
     public void saveUserInPreference(CurrentUserResponse userResponse) {
-        // save to pref
+        PrefUtility.saveUserAuthToken(AlRajhiTakafulApplication.getInstance(),userResponse.getUser().getAuthToken());
     }
+
+
 
     public AlRajhiTakafulError getError(String msg,String errorCode){
         AlRajhiTakafulError error = new AlRajhiTakafulError();

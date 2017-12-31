@@ -10,7 +10,9 @@ import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobileP
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_CODE=111;
@@ -18,14 +20,24 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ((TextView) findViewById(R.id.toolbar_title)).setText(R.string.title_sign);
         ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame);
         //checkPermissions();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed(); // For dealing with the back arrow.
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
@@ -34,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{
-                    android.Manifest.permission.CALL_PHONE,
                     android.Manifest.permission.RECEIVE_SMS,
                     android.Manifest.permission.READ_SMS,
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -51,11 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (grantResults.length < 0)
                     for (int i = 0; i < permissions.length; i++) {
                         switch (permissions[i]) {
-                            case android.Manifest.permission.CALL_PHONE:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "CALL_PHONE is  granted");
-                                }
-                                break;
                             case android.Manifest.permission.RECEIVE_SMS:
                                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                                     Log.e("msg", "RECEIVE_SMS is granted");

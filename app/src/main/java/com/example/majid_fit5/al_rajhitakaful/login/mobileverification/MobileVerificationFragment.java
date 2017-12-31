@@ -1,8 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobileverification;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +14,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
+import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
+import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
+
 import java.text.SimpleDateFormat;
 
 /**
@@ -33,6 +41,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     private String mPhoneNumber;
     private CountDownTimer mTimer;
     private MobileVerificationContract.Presenter mPresenter;
+    private String mVerificationCode;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +56,15 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
         init();
         return mRootView;
     }
+
+
+    // to access action bar of the activity.
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
     private void init() {
         mTxtPhoneNumber= mRootView.findViewById(R.id.txt_phone_number);
         mEdtVerificationCode= mRootView.findViewById(R.id.edt_verification_code);
@@ -77,6 +95,18 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
                break;
 
             case R.id.btn_send_code:
+                // test
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(intent);
+                getActivity().finish();
+
+              /*  mVerificationCode=mEdtVerificationCode.getText().toString();
+                if(!ValidationsUtility.isEmpty(mVerificationCode) && mVerificationCode.length() == 4)
+                    mPresenter.sendVerificationCode(mVerificationCode,mPhoneNumber);
+                    //Toast.makeText(mRootView.getContext(),"OK",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();*/
                 break;
         }
     }
@@ -95,24 +125,30 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
         };
     }
     @Override
-    public void onVerificationCodeSuccess(CurrentUserResponse userResponse) {
+    public void onCodeVerificationSuccess(CurrentUserResponse userResponse) {
+        Toast.makeText(mRootView.getContext(),"User Token is "+userResponse.getUser().getAuthToken() ,Toast.LENGTH_LONG).show();
+        mPresenter.saveUserInPreference(userResponse);
+        Injection.deleteProvidedDataRepository();
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        getActivity().startActivity(intent);
+        getActivity().finish();
 
     }
 
     @Override
-    public void onVerificationCodeFailure(AlRajhiTakafulError error) {
-
+    public void onCodeVerificationFailure(AlRajhiTakafulError error) {
+        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onGetOTPSuccsess(String phoneNumber) {
-        mTimer.start();
-        Toast.makeText(mRootView.getContext(),"We have sent again to " + phoneNumber,Toast.LENGTH_LONG).show();
+       // Toast.makeText(mRootView.getContext(),"We have sent again to " + phoneNumber,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onGetOTPFailure(AlRajhiTakafulError error) {
-
+      //  Toast.makeText(mRootView.getContext(),"Erro " + this.mPhoneNumber,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -123,5 +159,11 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     @Override
     public void hideLoading() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
     }
 }

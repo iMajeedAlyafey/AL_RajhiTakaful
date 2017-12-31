@@ -59,7 +59,7 @@
         android:textColor="@color/White"
         />
 
-    <TextView
+        <TextView
         android:id="@+id/txt_count_down_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

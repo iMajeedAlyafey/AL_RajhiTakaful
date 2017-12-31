@@ -44,7 +44,6 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_login_insertion,container,false);
         init();
-
         return mRootView;
     }
 
@@ -83,7 +82,8 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void onSubmitAndGetOTPError(AlRajhiTakafulError error) {
-        Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
+        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
+        hideLoading();
     }
 
     @Override

@@ -39,7 +39,6 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
     public void validatePhoneNumber(String phoneNumber) {
         if(mView.get()!=null){
             if(ValidationsUtility.isEmpty(phoneNumber)){mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_required));
-
             } else if (!ValidationsUtility.isValidPhoneNumberLength(phoneNumber)){
                 mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));
             }
@@ -47,7 +46,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
                 if(phoneNumber.startsWith("0"))
                     phoneNumber= phoneNumber.substring(1,phoneNumber.length());  // the beginning index, inclusive. ||  the ending index, exclusive.
 
-                mView.get().onValidPhoneNumber("966"+phoneNumber);
+                mView.get().onValidPhoneNumber("966"+phoneNumber); // here inside we call presenter.
             }
 
         }
@@ -58,23 +57,23 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         if(mView.get()!=null){
             mView.get().showLoading();
 
-            mView.get().onSubmitAndGetOTPSuccess(phoneNumber);
+           mView.get().onSubmitAndGetOTPSuccess(phoneNumber);  //for test
 
 
             // Bellow is OK
            // calling the repository
-          /*  mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
+          /* mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
                 public void onOTPResponse(AlRajhiTakafulResponse response) {
-                    if(mViewObject!=null){ // there is a response;
-                        mViewObject.hideLoading();
-                        mViewObject.onSubmitAndGetOTPSuccess(phoneNumber);
+                    if(mView.get()!=null){ // there is a response;
+                        mView.get().hideLoading();
+                        mView.get().onSubmitAndGetOTPSuccess(phoneNumber);
                     }
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                    if(mViewObject!=null){
-                        mViewObject.onSubmitAndGetOTPError(error);
+                    if(mView.get()!=null){
+                        mView.get().onSubmitAndGetOTPError(error);
                     }
 
                 }

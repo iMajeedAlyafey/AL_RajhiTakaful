@@ -51,7 +51,7 @@ public class RemoteDataSource implements DataSource {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","application/json")
-                        .addHeader("Authorization", PrefUtility.getToken())
+                        .addHeader("Authorization", PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
@@ -101,7 +101,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onResponse(Call<CurrentUserResponse> call, Response<CurrentUserResponse> response) {
                 if(response.isSuccessful()){
-                   callback.onLoginResponse(response.body());
+                   callback.onLoginResponse(response.body()); // response.body() from type CurrentUserResponse
                 } else{ // if there is a response, but response error code.
                     callback.onFailure(getError(response.code()));
                 }
@@ -223,11 +223,13 @@ public class RemoteDataSource implements DataSource {
     private AlRajhiTakafulError getError(int errCode) {
         switch (errCode) {
             case 401:
-                return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.error_401));
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
+            case 400:
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_400));
         }
-        return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
+        return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
     }
 
     public static void destroyInstance() {

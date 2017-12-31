@@ -32,6 +32,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".createorder.HomeActivity" />
+
+        <!-- Map Android Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBA0SuPoDayIUGsYG5mB5i9F6DzKz_osaA" />
+        <!-- Map -->
+
+        <activity
+            android:name=".createorder.CreateOrderMapFragment"
+            android:label="@string/title_activity_create_order_map_fragment" />
     </application>
 
 </manifest>

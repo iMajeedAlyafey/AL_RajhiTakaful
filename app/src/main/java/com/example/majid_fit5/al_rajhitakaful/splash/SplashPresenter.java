@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
-import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 
 import java.lang.ref.WeakReference;
@@ -18,8 +18,7 @@ import java.lang.ref.WeakReference;
 public class SplashPresenter implements SplashContract.Presenter {
     private WeakReference<SplashContract.View> mSplashView;
     private DataRepository mRepository;
-    private SplashContract.View mSplashViewObj;
-    private int orderID;
+    private String orderID;
 
     public SplashPresenter(@NonNull DataRepository mRepository) {
         this.mRepository = mRepository;
@@ -30,7 +29,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     public void onBind(@NonNull SplashContract.View view) {
         if (view != null)// check if i write it in right way
             mSplashView = new WeakReference<SplashContract.View>(view);
-        mSplashViewObj = mSplashView.get();
+
     }
 
     //------------------------------------------------------------------
@@ -43,33 +42,39 @@ public class SplashPresenter implements SplashContract.Presenter {
     //------------------------------------------------------------------
     @Override
     public void checkUserLoginStatues() {
-        if (mSplashViewObj != null) {
-            if (!PrefUtility.isLogedIn()) {
-                mSplashViewObj.strartLogin();
-            } else if (checkOrderStatues() != 0) {
-                mSplashViewObj.startShowOrder(orderID);
-            } else mSplashViewObj.strartCreateOrder();
+        if (mSplashView.get() != null) {
+            if (PrefUtility.isLogedIn()) {
+                mSplashView.get().startLogin();
+            }
+            else {
+                getCurrentUser();
+            }
         }
     }
-
+    //------------------------------------------------------------------
     @Override
-    public int checkOrderStatues() {
-        if (mSplashViewObj != null) {
+    public void getCurrentUser() {
+        if (mSplashView.get() != null) {
             mRepository.getCurrentUser(new DataSource.GetCurrentUserCallBack() {
                 @Override
                 public void onGetCurrentUser(CurrentUserResponse currentUser) {
-                    orderID = Integer.parseInt(currentUser.getOrder().getId());
+                    if (mSplashView.get() != null) {
+                        if (currentUser.getOrder() == null) {
+                            mSplashView.get().startCreateOrder();
+                        } else {
+                            mSplashView.get().startShowOrder(currentUser.getOrder());
+                        }
+                    }
                 }
 
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                    mSplashViewObj.showErrorMessage(error);
+                    if (mSplashView.get() != null) {
+                        mSplashView.get().showErrorMessage(error);
+                    }
+
                 }
             });
-
         }
-        return ++orderID;
     }
-
-
 }

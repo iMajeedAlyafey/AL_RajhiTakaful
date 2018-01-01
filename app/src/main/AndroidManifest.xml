@@ -25,16 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+        </activity>
+        <activity android:name=".waiting.WaitingProviderActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".requestdetails.RequestDetailsActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -18,11 +18,13 @@ public class PrefUtility {
         return "token";
     }
     public static boolean isLogedIn(){
+        //review shared preference
         SharedPreferences pref = AlRajhiTakafulApplication.getInstance().getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
-        if (pref.getString(Constants.TOKEN,"").equals("") || pref.getString(Constants.TOKEN,null).equals(null)){
-            return false;
+        String tokenToCheck = pref.getString(Constants.TOKEN,null);
+        if (tokenToCheck != null && !tokenToCheck.trim().isEmpty()){
+            return true;
         }
-        return true;
+        return false;
 
     }
 }

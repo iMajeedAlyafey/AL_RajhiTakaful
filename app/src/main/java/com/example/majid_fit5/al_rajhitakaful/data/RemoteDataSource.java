@@ -33,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // Singleton class that responsible on firing retrofit calls.
 
 public class RemoteDataSource implements DataSource {
-    private static String BASE_URL = "https://sandbox.morniksa.com/api/v2/";//"https://www.morniksa.com/api/"
+    private static String BASE_URL = "https://sandbox.morniksa.com/api/alrajhi_takaful/";
     private ApiEndPoints mEndpoints;
     private static RemoteDataSource INSTANCE = null;
 
@@ -51,7 +51,7 @@ public class RemoteDataSource implements DataSource {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","application/json")
-                        .addHeader("Authorization", PrefUtility.getToken())
+                        .addHeader("Authorization", "Token N6jiohwNmneubuZfmzH2")
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
@@ -74,7 +74,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void OtpCall(OTPRequest request, final OTPCallback callback) {
-        Call<AlRajhiTakafulResponse> call = mEndpoints.otp(request);
+        Call<AlRajhiTakafulResponse> call = mEndpoints.otp("");
         call.enqueue(new Callback<AlRajhiTakafulResponse>() {
             @Override
             public void onResponse(Call<AlRajhiTakafulResponse> call, Response<AlRajhiTakafulResponse> response) {

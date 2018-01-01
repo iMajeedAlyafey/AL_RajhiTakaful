@@ -3,6 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.splash;
 import com.example.majid_fit5.al_rajhitakaful.base.BasePresenter;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseView;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 /**
@@ -11,15 +12,15 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.user.CurrentUser;
 
 public interface SplashContract {
     interface View extends BaseView{
-        void strartLogin();
-        void strartCreateOrder();
-        void startShowOrder(int orderID);
+        void startLogin();
+        void startCreateOrder();
+        void startShowOrder(Order currentOrder);
         void showErrorMessage(AlRajhiTakafulError alRajhiTakafulError);
 
     }
     interface Presenter extends BasePresenter<SplashContract.View>{
         void checkUserLoginStatues();
-        int checkOrderStatues();
+        void getCurrentUser();
 
     }
 }

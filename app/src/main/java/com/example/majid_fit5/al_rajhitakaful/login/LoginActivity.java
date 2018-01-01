@@ -1,10 +1,14 @@
 package com.example.majid_fit5.al_rajhitakaful.login;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobilePhoneInsertionFragment;
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
@@ -13,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_CODE=111;
@@ -24,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ((TextView) findViewById(R.id.toolbar_title)).setText(R.string.title_sign);
         ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame);
-        //checkPermissions();
+        checkPermissions();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -37,22 +42,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ||
+        if ( Build.VERSION.SDK_INT >= 23){
+
+
+        if (
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+           //     ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+            //    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+            //    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                    {
 
             ActivityCompat.requestPermissions(this, new String[]{
-                    android.Manifest.permission.RECEIVE_SMS,
-                    android.Manifest.permission.READ_SMS,
+                    /*Manifest.permission.CALL_PHONE,
+                    android.Manifest.permission.RECEIVE_SMS,*/
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    android.Manifest.permission.CAMERA,
+                  /*  android.Manifest.permission.CAMERA,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE*/
+
+            }, REQUEST_CODE);
+        }
         }
     }
 
@@ -62,15 +73,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (grantResults.length < 0)
                     for (int i = 0; i < permissions.length; i++) {
                         switch (permissions[i]) {
-                            case android.Manifest.permission.RECEIVE_SMS:
+
+                            case Manifest.permission.CALL_PHONE:
                                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "RECEIVE_SMS is granted");
+                                    Log.e("msg", "Call phone per granted");
                                 }
                                 break;
-                            case android.Manifest.permission.READ_SMS:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "READ_SMS is granted");
-
+                            case android.Manifest.permission.RECEIVE_SMS:
+                                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                                    Log.e("msg", "RECEIVE_SMS is granted");
                                 }
                                 break;
                             case android.Manifest.permission.ACCESS_FINE_LOCATION:
@@ -103,9 +114,15 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
                                 break;
+                            default:
+                                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                         }
                     }
             }
+        }
+        private void showPermissionErrorMessage(){
+            Toast.makeText( this, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_permission_denied), Toast.LENGTH_SHORT)
+                    .show();
         }
 }
 

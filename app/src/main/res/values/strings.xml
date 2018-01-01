@@ -20,4 +20,7 @@
     <string name="msg_code_invalid">Verification code is invalid</string>
     <string name="title_activity_create_order_map_fragment">Map</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_home">Home</string>
+    <string name="msg_permission_denied">Permission is denied. You need accept it to get your location.</string>
+    <string name="msg_current_location">Current Location</string>
 </resources>

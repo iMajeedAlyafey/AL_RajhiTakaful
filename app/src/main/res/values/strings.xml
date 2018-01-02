@@ -16,4 +16,6 @@
     <string name="txt_send">Send</string>
     <string name="txt_did_not_receive">Did not receive code?</string>
     <string name="txt_resend">Resend</string>
+    <string name="waiting_message">We Are Now Searching For An Available Provider</string>
+    <string name="confirm_Mesaage">Your Order will be canceled, Are you sure?</string>
 </resources>

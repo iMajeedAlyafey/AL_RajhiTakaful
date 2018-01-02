@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#12604D</color>
-    <color name="colorPrimaryDark">#0F3B32</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="Red">#f4001c</color>
     <color name="Gray">#8e8f90</color>
@@ -21,4 +21,5 @@
     <color name="TransparentWhite">#98ffffff</color>
     <color name="BgMaster">#3771a0</color>
     <color name="BgVisa">#262d7a</color>
+    <color name="splash_background">#070c40</color>
 </resources>

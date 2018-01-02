@@ -1,0 +1,114 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/White" />
+    </android.support.v7.widget.Toolbar>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+
+        >
+
+        <TextView
+            android:id="@+id/txv_provider_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:background="#ccddff"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="@dimen/dim_14_dp"
+            android:text="Hi there!"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dim_20_dp" />
+
+        <TextView
+            android:id="@+id/txv_car_type"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:background="#ccddff"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="@dimen/dim_14_dp"
+            android:text="Hi there!"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dim_20_dp" />
+
+        <TextView
+            android:id="@+id/txv_eta"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:background="#ccddff"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="@dimen/dim_14_dp"
+            android:text="Hi there!"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dim_20_dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btn_call_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/buttonshape"
+                android:shadowColor="#A8A8A8"
+                android:text="Call Provider"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_contact_us"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/buttonshape"
+                android:shadowColor="#A8A8A8"
+                android:text="Contact US"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:backgroundTint="@color/Red"
+            android:text="Cancel"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+    </LinearLayout>
+</LinearLayout>
+
+</LinearLayout>

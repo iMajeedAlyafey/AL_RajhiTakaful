@@ -1,7 +1,9 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.net.Uri;
 
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
@@ -14,11 +16,15 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,7 +56,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
-                        .addHeader("Content-Type","application/json")
+                        .addHeader("Content-Type","multipart/form-data")
                         .addHeader("Authorization", PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
@@ -69,9 +75,6 @@ public class RemoteDataSource implements DataSource {
                 .build();
         mEndpoints = retrofit.create(ApiEndPoints.class);
     }
-
-
-
     @Override
     public void OtpCall(String phoneNumber, final OTPCallback callback) {
 
@@ -126,7 +129,6 @@ public class RemoteDataSource implements DataSource {
                     callback.onFailure(getError(response.code()));
                 }
             }
-
             @Override
             public void onFailure(Call<AlRajhiTakafulResponse> call, Throwable t) {
                 callback.onFailure(getError(10)); // err code 10 for Unknown errors.
@@ -146,7 +148,6 @@ public class RemoteDataSource implements DataSource {
                     callback.onFailure(getError(response.code()));
                 }
             }
-
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
                 callback.onFailure(getError(10)); // err code 10 for Unknown errors.
@@ -168,7 +169,6 @@ public class RemoteDataSource implements DataSource {
                     callBack.onFailure(getError(response.code()));
                 }
             }
-
             @Override
             public void onFailure(Call<CurrentUserResponse> call, Throwable t) {
                 callBack.onFailure(getError(10));
@@ -189,7 +189,6 @@ public class RemoteDataSource implements DataSource {
                     callBack.onFailure(getError(response.code()));
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 callBack.onFailure(getError(10));
@@ -214,9 +213,39 @@ public class RemoteDataSource implements DataSource {
 
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
+                t.printStackTrace();
                 callBack.onFailure(getError(10));
             }
         });
+    }
+
+    @Override
+    public void uploadPhoto(String orderID, Uri filePath, final UploadPhoto callback) {
+        File file = new File(filePath.getPath());
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+// MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part multiPartBody =
+                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<Order> call = mEndpoints.uploadPhoto(orderID,multiPartBody);
+        call.enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Call<Order> call, Response<Order> response) {
+                if(response.isSuccessful()){
+                    callback.onUploadPhoto(response.body());
+                }else{
+                    callback.onFailure(getError(response.code()));
+                }
+            }
+            @Override
+            public void onFailure(Call<Order> call, Throwable t) {
+                callback.onFailure(getError(10));
+            }
+        });
+
+
     }
 
     //-----------handling error----------------------------------------------------------------------
@@ -231,6 +260,7 @@ public class RemoteDataSource implements DataSource {
         }
         return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
     }
+
 
     public static void destroyInstance() {
         INSTANCE=null;

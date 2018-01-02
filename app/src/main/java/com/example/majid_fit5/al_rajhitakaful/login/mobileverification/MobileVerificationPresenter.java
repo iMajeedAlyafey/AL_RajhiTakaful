@@ -10,8 +10,6 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
-import com.google.gson.Gson;
-
 import java.lang.ref.WeakReference;
 
 /**

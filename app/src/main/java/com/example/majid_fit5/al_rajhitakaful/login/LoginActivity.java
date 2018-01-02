@@ -1,23 +1,16 @@
 package com.example.majid_fit5.al_rajhitakaful.login;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobilePhoneInsertionFragment;
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
-
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_CODE=111;

@@ -1,14 +1,12 @@
 package com.example.majid_fit5.al_rajhitakaful.createorder;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
-
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
-import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobilePhoneInsertionContract;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -49,4 +47,22 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
             });
         }
     }
+
+    @Override
+    public void uploadPhoto(String orderID, Uri filePath) {
+        if(mView.get()!=null){
+            mDataRepository.uploadPhoto(orderID, filePath, new DataSource.UploadPhoto() {
+                @Override
+                public void onUploadPhoto(Order currentOrder) {
+                    mView.get().onUploadPhotoSuccess(currentOrder);
+                }
+                @Override
+                public void onFailure(AlRajhiTakafulError error) {
+                    mView.get().onUploadPhotoFailure(error);
+                }
+            });
+        }
+    }
+
+
 }

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,7 +167,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
             case R.id.btn_hide: // of bottom sheet
                 mBottomSheetDialog.cancel();
-            if(mImgUri!=null)
                 break;
             case R.id.btn_request2: // of bottom sheet
                 mBottomSheetDialog.cancel();
@@ -217,9 +217,17 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     }
 
+    /**
+     * Here after getting new order, we will redirect user to waiting activity, but we will check for photo if the URI is null, it means the user did not take photo, else make call to upload the photo.
+     * @param order
+     */
     @Override
     public void onCreateOrderSuccess(Order order) {
-        Snackbar.make(mFragmentRootView, "Order id is:"+ order.getId(), Snackbar.LENGTH_LONG).show();
+       // Mohammed code.. to go waiting activity.
+
+        if(mImgUri!=null){
+            mPresenter.uploadPhoto(order.getId(),mImgUri);
+        }
 
         // clear the injection before going to next activity.
     }
@@ -228,6 +236,18 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onCreateOrderFailure(AlRajhiTakafulError error) {
         Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_again)+". Error code"+error.getCode(), Snackbar.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onUploadPhotoSuccess(Order order) {
+        Snackbar.make(mFragmentRootView, "Photo is uploaded successfully and order id again is :" + order.getId(), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onUploadPhotoFailure(AlRajhiTakafulError error) {
+        Snackbar.make(mFragmentRootView, "Error is "+error.getMessage()+" and number is :"+ error.getCode(), Snackbar.LENGTH_LONG).show();
+        Log.e("onUploadPhotoFailure","Error is "+error.getMessage()+" and number is :"+ error.getCode() );
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -1,5 +1,6 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
@@ -63,6 +64,11 @@ public class DataRepository implements DataSource {// Singleton class
     @Override
     public void getOrder(String orderID, GetOrderCallBack callBack) {
         mRemoteDataSource.getOrder(orderID,callBack);
+    }
+
+    @Override
+    public void uploadPhoto(String orderID, Uri filePath, UploadPhoto callback) {
+        mRemoteDataSource.uploadPhoto(orderID,filePath,callback);
     }
 
 

@@ -8,7 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Fragment;
 
-import com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion.MobilePhoneInsertionFragment;
+
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.

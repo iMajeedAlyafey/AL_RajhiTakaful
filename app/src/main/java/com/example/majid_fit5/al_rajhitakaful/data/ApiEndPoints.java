@@ -37,8 +37,6 @@ public interface ApiEndPoints {
     @POST("saaed_orders/")
     Call<Order> createOrder(@Body OrderRequest orderRequest);
 
-
-
     // Get current user
    @GET ("user/")
    Call<CurrentUserResponse> getCurrentUser();

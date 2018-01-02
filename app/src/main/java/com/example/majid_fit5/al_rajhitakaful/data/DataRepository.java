@@ -50,8 +50,6 @@ public class DataRepository implements DataSource {// Singleton class
         mRemoteDataSource.createOrder(request,callback);
     }
 
-
-
     @Override
     public void getCurrentUser(GetCurrentUserCallBack callCack) {
         mRemoteDataSource.getCurrentUser(callCack);

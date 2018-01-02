@@ -11,8 +11,6 @@ public class Injection {
     public static DataRepository provideDataRepository() {
         return DataRepository.getInstance(RemoteDataSource.getInstance());
     }
-
-
     public static void deleteProvidedDataRepository() {
         DataRepository.destroyInstance();
         RemoteDataSource.destroyInstance();

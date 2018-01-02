@@ -57,12 +57,10 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         if(mView.get()!=null){
             mView.get().showLoading();
 
-           mView.get().onSubmitAndGetOTPSuccess(phoneNumber);  //for test
-
-
+           //mView.get().onSubmitAndGetOTPSuccess(phoneNumber);  //for test
             // Bellow is OK
            // calling the repository
-          /* mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
+          mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
                 public void onOTPResponse(AlRajhiTakafulResponse response) {
                     if(mView.get()!=null){ // there is a response;
@@ -77,7 +75,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
                     }
 
                 }
-            });*/
+            });
         }
     }
 

@@ -17,7 +17,7 @@ public class PrefUtility {
     public static String getToken(Context context){
         preferences= context.getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
         Log.e(Constants.TOKEN,"authToken "+preferences.getString(Constants.TOKEN,""));
-        return preferences.getString(Constants.TOKEN,"");
+        return "Token "+preferences.getString(Constants.TOKEN,"");
     }
 
 

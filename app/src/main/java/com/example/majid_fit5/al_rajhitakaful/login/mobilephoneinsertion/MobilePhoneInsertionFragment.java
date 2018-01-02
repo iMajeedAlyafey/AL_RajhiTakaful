@@ -94,7 +94,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
         mMobileVerificationFragment= new MobileVerificationFragment();
         mMobileVerificationFragment.setArguments(bundle);
         hideLoading();
-        ActivityUtility.addFragmentToActivity(getFragmentManager(),mMobileVerificationFragment,R.id.content_frame);
+        ActivityUtility.addFragmentToActivity(getFragmentManager(),mMobileVerificationFragment,R.id.content_frame,"MobileVerificationFragment");
     }
 
     @Override

@@ -39,7 +39,6 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
 
     @Override
     public void sendVerificationCode(String code, String phoneNumber) {
-
         if(mView.get()!=null){
             LoginRequest loginRequest= new LoginRequest(phoneNumber,code);
             mDataRepository.login(loginRequest, new DataSource.LoginCallback() {

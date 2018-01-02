@@ -21,6 +21,11 @@
     <string name="title_activity_create_order_map_fragment">Map</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_home">Home</string>
-    <string name="msg_permission_denied">Permission is denied. You need accept it to get your location.</string>
+    <string name="msg_location_permission_denied">Permission is denied. You need accept it to get your location.</string>
+    <string name="msg_camera_permission_denied">Permission is denied. You need accept it to use camera.</string>
     <string name="msg_current_location">Current Location</string>
+    <string name="title_activity_maps_activitytestttttt">Map</string>
+    <string name="btn_txt_request">Request</string>
+    <string name="btn_txt_hide">Hide</string>
+    <string name="msg_try_again">Try again please.</string>
 </resources>

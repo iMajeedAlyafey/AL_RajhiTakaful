@@ -23,10 +23,10 @@ public class ActivityUtility  {
      * @param frameId
      */
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                             @NonNull Fragment mFragment, int frameId) {
+                                             @NonNull Fragment mFragment, int frameId,String tag) {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(frameId, mFragment).commit(); // need commit
+        transaction.replace(frameId, mFragment,tag).commit(); // need commit
     }
 
     /**

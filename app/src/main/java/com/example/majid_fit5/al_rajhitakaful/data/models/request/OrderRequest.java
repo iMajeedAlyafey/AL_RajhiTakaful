@@ -36,8 +36,9 @@ public class OrderRequest implements Parcelable {
         this.lng = lng;
     }
 
-    public OrderRequest(){
-
+    public OrderRequest(float lat, float lng){
+        this.lat=lat;
+        this.lng=lng;
     }
 
     @Override

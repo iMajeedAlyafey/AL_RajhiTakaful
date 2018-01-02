@@ -15,6 +15,6 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ((TextView) findViewById(R.id.toolbar_title)).setText(R.string.title_home);
-        ActivityUtility.addFragmentToActivity( getFragmentManager(),new CreateOrderMapFragment(),R.id.content_frame); // fragmentTestFrame in the HomeActivity layout
+        ActivityUtility.addFragmentToActivity( getFragmentManager(),new CreateOrderMapFragment(),R.id.content_frame,"CreateOrderMapFragment"); // fragmentTestFrame in the HomeActivity layout
     }
 }

@@ -57,7 +57,6 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
         return mRootView;
     }
 
-
     // to access action bar of the activity.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -93,20 +92,12 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
                mTimer.start();
                mPresenter.resendAndGetOTP(mPhoneNumber);
                break;
-
             case R.id.btn_send_code:
-                // test
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
-                getActivity().finish();
-
-              /*  mVerificationCode=mEdtVerificationCode.getText().toString();
+               mVerificationCode=mEdtVerificationCode.getText().toString();
                 if(!ValidationsUtility.isEmpty(mVerificationCode) && mVerificationCode.length() == 4)
                     mPresenter.sendVerificationCode(mVerificationCode,mPhoneNumber);
-                    //Toast.makeText(mRootView.getContext(),"OK",Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();*/
+                    Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -126,14 +117,12 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     }
     @Override
     public void onCodeVerificationSuccess(CurrentUserResponse userResponse) {
-        Toast.makeText(mRootView.getContext(),"User Token is "+userResponse.getUser().getAuthToken() ,Toast.LENGTH_LONG).show();
         mPresenter.saveUserInPreference(userResponse);
         Injection.deleteProvidedDataRepository();
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);
         getActivity().finish();
-
     }
 
     @Override

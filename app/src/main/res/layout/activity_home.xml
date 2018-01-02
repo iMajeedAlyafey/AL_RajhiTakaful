@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context="com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity">
 
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary">
         <TextView
             android:id="@+id/toolbar_title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -25,50 +21,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/White" />
-        </android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
 
-        <!-- Relative layout MUST have FrameLayout for map in case you want img to appear-->
+    <FrameLayout
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
-        </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="110dp"
-                android:layout_centerInParent="true">
-
-                <ImageView
-                    android:id="@+id/img_marker"
-                    android:layout_width="45dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/marker" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
 
 
 
 
-
-
-
-
-
-
-
-
-
-</android.widget.RelativeLayout>
+</android.widget.LinearLayout>

@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ((TextView) findViewById(R.id.toolbar_title)).setText(R.string.title_sign);
-        ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame);
+        ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobilePhoneInsertionFragment");
         checkPermissions();
     }
     @Override
@@ -43,87 +43,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkPermissions() {
         if ( Build.VERSION.SDK_INT >= 23){
-
-
-        if (
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
-           //     ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-            //    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            //    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this, new String[]{
-                    /*Manifest.permission.CALL_PHONE,
-                    android.Manifest.permission.RECEIVE_SMS,*/
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                  /*  android.Manifest.permission.CAMERA,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE*/
-
-            }, REQUEST_CODE);
-        }
+            }, REQUEST_CODE);}
         }
     }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            if (requestCode == REQUEST_CODE) {
-                if (grantResults.length < 0)
-                    for (int i = 0; i < permissions.length; i++) {
-                        switch (permissions[i]) {
-
-                            case Manifest.permission.CALL_PHONE:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "Call phone per granted");
-                                }
-                                break;
-                            case android.Manifest.permission.RECEIVE_SMS:
-                                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "RECEIVE_SMS is granted");
-                                }
-                                break;
-                            case android.Manifest.permission.ACCESS_FINE_LOCATION:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "sms granted");
-
-                                }
-                                break;
-                            case android.Manifest.permission.ACCESS_COARSE_LOCATION:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "location granted");
-
-                                }
-                                break;
-                            case android.Manifest.permission.CAMERA:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "CAMERA granted");
-
-                                }
-                                break;
-                            case android.Manifest.permission.WRITE_EXTERNAL_STORAGE:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "WRITE_EXTERNAL_STORAGE");
-
-                                }
-                                break;
-                            case android.Manifest.permission.READ_EXTERNAL_STORAGE:
-                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("msg", "READ_EXTERNAL_STORAGE");
-
-                                }
-                                break;
-                            default:
-                                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                        }
-                    }
-            }
-        }
-        private void showPermissionErrorMessage(){
-            Toast.makeText( this, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_permission_denied), Toast.LENGTH_SHORT)
-                    .show();
-        }
 }
 
 

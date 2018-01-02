@@ -1,16 +1,41 @@
 <!-- This is consider as fragment -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- This is consider as fragment -->
+<!-- This is consider as fragment -->
+<!-- This is consider as fragment -->
+
+
+<!-- Relative layout MUST have FrameLayout for map in case you want img to appear-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentTestFrame"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity">
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/but_request">
+    </com.google.android.gms.maps.MapView>
 
-</com.google.android.gms.maps.MapView>
+    <ImageView
+        android:id="@+id/img_marker"
+        android:layout_width="35dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/but_request"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="226dp"
+        android:src="@drawable/marker" />
 
-</LinearLayout>
+    <Button
+        android:textColor="@color/White"
+        android:layout_margin="0dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/but_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/btn_txt_request" />
+</RelativeLayout>

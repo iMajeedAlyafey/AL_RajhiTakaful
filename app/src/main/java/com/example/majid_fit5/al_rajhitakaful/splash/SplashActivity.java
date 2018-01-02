@@ -8,8 +8,10 @@ import android.widget.Toast;
 
 import com.example.majid_fit5.al_rajhitakaful.MainActivity;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
+import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
+import com.example.majid_fit5.al_rajhitakaful.login.LoginActivity;
 import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
@@ -41,16 +43,15 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     @Override
     public void startLogin() {
-        Intent intent = new Intent(this, MainActivity.class);
-
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     public void startCreateOrder() {
-        Intent intent = new Intent(this, MainActivity.class);
 
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

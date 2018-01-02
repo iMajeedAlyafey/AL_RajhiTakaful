@@ -43,7 +43,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     @Override
     public void checkUserLoginStatues() {
         if (mSplashView.get() != null) {
-            if (PrefUtility.isLogedIn()) {
+            if (!PrefUtility.isLogedIn()) {
                 mSplashView.get().startLogin();
             }
             else {

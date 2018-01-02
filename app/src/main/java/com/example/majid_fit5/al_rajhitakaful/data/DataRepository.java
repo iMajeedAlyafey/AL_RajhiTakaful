@@ -67,7 +67,7 @@ public class DataRepository implements DataSource {// Singleton class
     }
 
     @Override
-    public void uploadPhoto(String orderID, Uri filePath, UploadPhoto callback) {
+    public void uploadPhoto(String orderID, String filePath, UploadPhoto callback) {
         mRemoteDataSource.uploadPhoto(orderID,filePath,callback);
     }
 

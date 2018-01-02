@@ -16,6 +16,7 @@ import android.util.Log;
 public class PrefUtility {
 
     private static SharedPreferences preferences;
+
     public static boolean isLogedIn() {
         //review shared preference
         SharedPreferences pref = AlRajhiTakafulApplication.getInstance().getSharedPreferences(Constants.USER_PREFERENCE, Context.MODE_PRIVATE);

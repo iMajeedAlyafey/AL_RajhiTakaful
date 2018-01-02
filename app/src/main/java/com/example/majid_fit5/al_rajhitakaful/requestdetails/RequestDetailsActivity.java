@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +22,10 @@ import android.widget.Toast;
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
+import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
+import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
 
 /**
  * Created by BASH on 12/31/2017.
@@ -122,12 +125,14 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     @Override
     public void onCancelOrder() {
         //should go to Home Activity
-        displayErrorMeassage("order Canceled");
-    }
+        Snackbar.make(findViewById(R.id.lay_waiting_provider),"order number " + mCurrentOrder.getId(),Snackbar.LENGTH_LONG).show();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();    }
 
     @Override
     public void displayErrorMeassage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.lay_waiting_provider),message,Snackbar.LENGTH_LONG).show();
     }
 
     @Override

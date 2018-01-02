@@ -49,7 +49,7 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
     }
 
     @Override
-    public void uploadPhoto(String orderID, Uri filePath) {
+    public void uploadPhoto(String orderID, String filePath) {
         if(mView.get()!=null){
             mDataRepository.uploadPhoto(orderID, filePath, new DataSource.UploadPhoto() {
                 @Override

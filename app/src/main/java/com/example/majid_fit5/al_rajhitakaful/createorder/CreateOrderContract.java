@@ -22,6 +22,6 @@ public interface CreateOrderContract {
 
     interface Presenter extends BasePresenter<CreateOrderContract.View>{
         void createOrder(OrderRequest orderRequest);
-        void uploadPhoto(String orderID, Uri filePath);
+        void uploadPhoto(String orderID, String filePath);
     }
 }

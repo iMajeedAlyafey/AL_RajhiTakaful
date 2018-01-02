@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
@@ -54,7 +55,6 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
         counter = 0;
         mWaitingPresenter = new WaitingProviderPresenter(Injection.provideDataRepository());
         mWaitingPresenter.onBind(WaitingProviderActivity.this);
-        Toast.makeText(this, "order number " + mCurrentOrder.getId(), Toast.LENGTH_LONG).show();
         mCountDownTimer = new CountDownTimer(15000, 1000) {
             @Override
             public void onTick(long l) {
@@ -90,27 +90,13 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
 
     @Override
     public void startCountDownCounter() {
-
-        Toast.makeText(this, "round number " + counter, Toast.LENGTH_LONG).show();
-
-        if (counter >0){
-            //----------Remoooooooooooove test data
-            Provider provider = new Provider();
-            provider.setName("Abdulmajeed Ahmed");
-            provider.setVehicle("Hyunday");
-            provider.setEta(17);
-            provider.setPhoneNumber("0541909490");
-            mCurrentOrder.setProvider(provider);
-            onProviderAccept(mCurrentOrder);
-        }else {
-            counter++;
-            mCountDownTimer.start();
-        }
+        mCountDownTimer.start();
     }
 
     @Override
     public void showWaitingError(AlRajhiTakafulError error) {
-        Toast.makeText(this, error.getMessage() + " : " + error.getCode(), Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.lay_waiting_provider),error.getMessage() + " : " + error.getCode(),Snackbar.LENGTH_LONG).show();
+
 
     }
 

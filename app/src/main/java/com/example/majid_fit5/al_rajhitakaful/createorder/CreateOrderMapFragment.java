@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -31,6 +33,8 @@ import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
+import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -55,7 +59,9 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private BottomSheetBehavior mBottomSheetBehavior;
     private Button mBtnRequestHome, mBtnHideBottomSheet,mBtnRequestBottomSheet;
     private ImageView mImgView;
-    private Uri mImgUri;
+    private String mImgUri;
+    private Criteria criteria;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,12 +132,26 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         }getCurrentLocationCoordinates();
     }
     private void getCurrentLocationCoordinates() {
+
         LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        mCoordinates[0]= mLocation.getLatitude();
-        mCoordinates[1]= mLocation.getLongitude();
-        mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]);
-        mMapView.getMapAsync(this);
+        if (mLocation != null){
+            mCoordinates[0]= mLocation.getLatitude();
+            mCoordinates[1]= mLocation.getLongitude();
+            mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]);
+            mMapView.getMapAsync(this);
+        }
+        else {
+//            criteria = new Criteria();
+//            String bestProvider = String.valueOf(mLocationManager.getBestProvider(criteria, true)).toString();
+//            mLocationManager.requestLocationUpdates(bestProvider, 1000, 0,);
+            mCoordinates[0]= 24.713552;
+            mCoordinates[1]= 46.675296;
+            mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]);
+            mMapView.getMapAsync(this);
+
+        }
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -197,9 +217,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==13333 &&data != null) {
             if(resultCode== Activity.RESULT_OK ) {
-            Bitmap bitmap=(Bitmap)data.getExtras().get("data"); // key "data" is for photo..
-            mImgView.setImageBitmap(bitmap); // show the photo.
-            mImgUri=getImageUri(getActivity(),bitmap);// to get URI of photo, first compressIt , save it and get the path..
+//            Bitmap bitmap=(Bitmap)data.getExtras().get("data"); // key "data" is for photo..
+//            mImgView.setImageBitmap(bitmap); // show the photo.
+//            mImgUri=getImageUri(getActivity(),bitmap);// to get URI of photo, first compressIt , save it and get the path..
+                String[] projection = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getActivity().managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+                int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToLast();
+                mImgUri =  cursor.getString(column_index_data);
             }
         }
     }
@@ -223,11 +248,15 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
      */
     @Override
     public void onCreateOrderSuccess(Order order) {
-       // Mohammed code.. to go waiting activity.
-
         if(mImgUri!=null){
             mPresenter.uploadPhoto(order.getId(),mImgUri);
         }
+        Intent intent = new Intent(getActivity(), WaitingProviderActivity.class);
+        intent.putExtra(Constants.CURRENT_ORDER,order);
+        startActivity(intent);
+        getActivity().finish();
+
+
 
         // clear the injection before going to next activity.
     }
@@ -244,7 +273,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onUploadPhotoFailure(AlRajhiTakafulError error) {
-        Snackbar.make(mFragmentRootView, "Error is "+error.getMessage()+" and number is :"+ error.getCode(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(R.id.lay_home_activity), "Error is "+error.getMessage()+" and number is :"+ error.getCode(), Snackbar.LENGTH_LONG).show();
         Log.e("onUploadPhotoFailure","Error is "+error.getMessage()+" and number is :"+ error.getCode() );
     }
 

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
-    tools:context="com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity">
+    tools:context="com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity"
+    android:id="@+id/lay_home_activity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

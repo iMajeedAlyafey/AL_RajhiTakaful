@@ -58,7 +58,7 @@ public class RemoteDataSource implements DataSource {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","multipart/form-data")
                         .addHeader("Authorization", PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
-                        .addHeader("Accept","application/json")
+                        .addHeader("Accept","multipart/form-data")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
                         .addHeader("Platform","android")
@@ -220,14 +220,14 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void uploadPhoto(String orderID, Uri filePath, final UploadPhoto callback) {
-        File file = new File(filePath.getPath());
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+    public void uploadPhoto(String orderID, String filePath, final UploadPhoto callback) {
+
+        File file = new File(filePath);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
 // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part multiPartBody =
-                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+                MultipartBody.Part.createFormData("Image", file.getName(), requestFile);
 
         Call<Order> call = mEndpoints.uploadPhoto(orderID,multiPartBody);
         call.enqueue(new Callback<Order>() {

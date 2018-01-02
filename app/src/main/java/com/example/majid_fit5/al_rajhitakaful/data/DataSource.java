@@ -65,7 +65,7 @@ public interface DataSource {
     interface UploadPhoto extends BaseCallBack{
         void onUploadPhoto(Order currentOrder);
     }
-    void uploadPhoto(String orderID, Uri filePath, UploadPhoto callback);
+    void uploadPhoto(String orderID, String filePath, UploadPhoto callback);
     //-------------------------------------------------------------------------------------------
 
 }

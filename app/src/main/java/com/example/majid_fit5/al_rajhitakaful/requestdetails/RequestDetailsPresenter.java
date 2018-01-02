@@ -46,7 +46,7 @@ public class RequestDetailsPresenter implements RequestDetailsContract.Presenter
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                         if (mRequestView.get() != null){
-                            mRequestView.get().displayErrorMeassage("order Can not be canceled");
+                            mRequestView.get().displayErrorMeassage(error);
                         }
                 }
             });

@@ -14,7 +14,7 @@ public class PrefUtility {
     public static String getToken(){
 
         //get token
-        return "";
+        return "Token "+"N6jiohwNmneubuZfmzH2";
     }
     public static boolean isLogedIn(){
         //review shared preference

@@ -223,11 +223,13 @@ public class RemoteDataSource implements DataSource {
     private AlRajhiTakafulError getError(int errCode) {
         switch (errCode) {
             case 401:
-                return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.error_401));
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
+            case 400:
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_400));
         }
-        return new AlRajhiTakafulError(errCode, Resources.getSystem().getString(R.string.get_currentuser_error));
+        return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
     }
 
     public static void destroyInstance() {

@@ -3,6 +3,7 @@
     <string name="get_currentuser_error">No Info Available</string>
     <string name="error_401">Unauthorized</string>
     <string name="error_404">Not found</string>
+    <string name="error_400">Invalid Verification Code</string>
     <string name="txt_enter_phone">Enter your phone number</string>
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
@@ -18,4 +19,10 @@
     <string name="txt_resend">Resend</string>
     <string name="waiting_message">We Are Now Searching For An Available Provider</string>
     <string name="confirm_Mesaage">Your Order will be canceled, Are you sure?</string>
+    <string name="msg_code_invalid">Verification code is invalid</string>
+    <string name="title_activity_create_order_map_fragment">Map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_home">Home</string>
+    <string name="msg_permission_denied">Permission is denied. You need accept it to get your location.</string>
+    <string name="msg_current_location">Current Location</string>
 </resources>

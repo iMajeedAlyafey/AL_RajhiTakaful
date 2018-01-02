@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
+import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 
@@ -33,7 +35,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     private Toolbar mToolBar;
     private TextView mToolbarTitle;
     private TextView mTxvProviderName, mTxvCarType, mTxvEta;
-    private Button mBtnCallProvider, mBtnContactUs, mBtnCancel;
     private Order mCurrentOrder;
     private String phoneNumber;
 
@@ -61,12 +62,9 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         mTxvProviderName.setText(mCurrentOrder.getProvider().getName());
         mTxvCarType.setText(mCurrentOrder.getProvider().getVehicle());
         mTxvEta.setText(mCurrentOrder.getProvider().getEta().toString());
-        mBtnCallProvider = findViewById(R.id.btn_call_provider);
-        mBtnContactUs = findViewById(R.id.btn_contact_us);
-        mBtnCancel = findViewById(R.id.btn_cancel);
-        mBtnCallProvider.setOnClickListener(this);
-        mBtnContactUs.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
+        findViewById(R.id.btn_call_provider).setOnClickListener(this);
+        findViewById(R.id.btn_contact_us).setOnClickListener(this);
+        findViewById(R.id.btn_cancel).setOnClickListener(this);
     }
 
     @Override
@@ -122,12 +120,15 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     @Override
     public void onCancelOrder() {
         //should go to Home Activity
-        displayErrorMeassage("order Canceled");
+        Snackbar.make(findViewById(R.id.layout_request_details), "Order Canceled :)", Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override
-    public void displayErrorMeassage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void displayErrorMeassage(AlRajhiTakafulError error) {
+
+        Snackbar.make(findViewById(R.id.layout_request_details), error.getMessage() + " : " + error.getCode(), Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -139,8 +140,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
                     callPhone(phoneNumber);
 
                 } else {
-                    displayErrorMeassage("please give call permission");
-
+                    Snackbar.make(findViewById(R.id.layout_request_details), "please give call permission", Snackbar.LENGTH_LONG).show();
                 }
         }
 
@@ -153,6 +153,13 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
 
     @Override
     public void hideLoading() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
 
     }
 }

@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/layout_wait_provider">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -35,12 +36,13 @@
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="172dp"
-        android:indeterminateTint="@color/colorPrimary"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/circular_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +50,7 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txv_waiting_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

@@ -3,11 +3,11 @@ package com.example.majid_fit5.al_rajhitakaful.waiting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +35,7 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_provider);
-        mToolbar =  findViewById(R.id.my_toolbar);
+        mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
         mToolbarTitle = findViewById(R.id.toolbar_title);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -54,7 +54,6 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
         counter = 0;
         mWaitingPresenter = new WaitingProviderPresenter(Injection.provideDataRepository());
         mWaitingPresenter.onBind(WaitingProviderActivity.this);
-        Toast.makeText(this, "order number " + mCurrentOrder.getId(), Toast.LENGTH_LONG).show();
         mCountDownTimer = new CountDownTimer(15000, 1000) {
             @Override
             public void onTick(long l) {
@@ -63,7 +62,6 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
             @Override
             public void onFinish() {
                 mWaitingPresenter.getProvider("D7FE45");
-
             }
         };
         startCountDownCounter();
@@ -83,7 +81,7 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
     @Override
     public void onProviderAccept(Order currentOrder) {
         Intent intent = new Intent(this, RequestDetailsActivity.class);
-        intent.putExtra(Constants.CURRENT_ORDER,currentOrder);
+        intent.putExtra(Constants.CURRENT_ORDER, currentOrder);
         startActivity(intent);
         finish();
     }
@@ -91,9 +89,7 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
     @Override
     public void startCountDownCounter() {
 
-        Toast.makeText(this, "round number " + counter, Toast.LENGTH_LONG).show();
-
-        if (counter >0){
+        if (counter > 0) {
             //----------Remoooooooooooove test data
             Provider provider = new Provider();
             provider.setName("Abdulmajeed Ahmed");
@@ -102,21 +98,22 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
             provider.setPhoneNumber("0541909490");
             mCurrentOrder.setProvider(provider);
             onProviderAccept(mCurrentOrder);
-        }else {
+        } else {
             counter++;
+            Snackbar.make(findViewById(R.id.layout_wait_provider), "order number " + mCurrentOrder.getId(), Snackbar.LENGTH_LONG).show();
             mCountDownTimer.start();
         }
     }
 
     @Override
     public void showWaitingError(AlRajhiTakafulError error) {
-        Toast.makeText(this, error.getMessage() + " : " + error.getCode(), Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.layout_wait_provider), error.getMessage() + " : " + error.getCode(), Toast.LENGTH_LONG).show();
 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        mWaitingPresenter.onDestroy();
     }
-
 }

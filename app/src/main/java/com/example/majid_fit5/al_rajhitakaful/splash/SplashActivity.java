@@ -77,6 +77,10 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         startActivity(intent);
         Toast.makeText(this,alRajhiTakafulError.getMessage()+" : "+alRajhiTakafulError.getCode(),Toast.LENGTH_LONG).show();
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSlashPresenter.onDestroy();
+    }
 
 }

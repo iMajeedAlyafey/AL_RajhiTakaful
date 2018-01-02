@@ -97,7 +97,7 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
             //----------Remoooooooooooove test data
             Provider provider = new Provider();
             provider.setName("Abdulmajeed Ahmed");
-            provider.setVehicle("NISSAN");
+            provider.setVehicle("Hyunday");
             provider.setEta(17);
             provider.setPhoneNumber("0541909490");
             mCurrentOrder.setProvider(provider);

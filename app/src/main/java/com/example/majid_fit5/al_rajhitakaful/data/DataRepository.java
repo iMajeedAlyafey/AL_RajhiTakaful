@@ -1,5 +1,6 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
@@ -29,8 +30,8 @@ public class DataRepository implements DataSource {// Singleton class
     }
 
     @Override
-    public void OtpCall(OTPRequest request, OTPCallback callback) {
-        mRemoteDataSource.OtpCall(request,callback);
+    public void OtpCall(String phoneNumber, OTPCallback callback) {
+        mRemoteDataSource.OtpCall(phoneNumber,callback);
     }
 
     @Override
@@ -50,8 +51,6 @@ public class DataRepository implements DataSource {// Singleton class
         mRemoteDataSource.createOrder(request,callback);
     }
 
-
-
     @Override
     public void getCurrentUser(GetCurrentUserCallBack callCack) {
         mRemoteDataSource.getCurrentUser(callCack);
@@ -67,5 +66,13 @@ public class DataRepository implements DataSource {// Singleton class
         mRemoteDataSource.getOrder(orderID,callBack);
     }
 
+    @Override
+    public void uploadPhoto(String orderID, Uri filePath, UploadPhoto callback) {
+        mRemoteDataSource.uploadPhoto(orderID,filePath,callback);
+    }
 
+
+    public static void destroyInstance() {
+            INSTANCE=null;
+    }
 }

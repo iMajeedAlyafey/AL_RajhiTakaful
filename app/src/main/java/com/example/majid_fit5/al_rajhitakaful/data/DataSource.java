@@ -5,6 +5,8 @@ package com.example.majid_fit5.al_rajhitakaful.data;
  */
 
 
+import android.net.Uri;
+
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
@@ -21,7 +23,7 @@ public interface DataSource {
     interface OTPCallback extends BaseCallBack{
         void onOTPResponse(AlRajhiTakafulResponse response);
     }
-    void OtpCall(OTPRequest request,OTPCallback callback);
+    void OtpCall(String phoneNumber,OTPCallback callback);
     //------------------------------------------------------
 
     interface LoginCallback extends BaseCallBack{
@@ -59,5 +61,11 @@ public interface DataSource {
         void onGetOrder(Order currentOrder);
     }
     void getOrder(String orderID, GetOrderCallBack callBack);
+    //------------------------------------------------------------------------------------------
+    interface UploadPhoto extends BaseCallBack{
+        void onUploadPhoto(Order currentOrder);
+    }
+    void uploadPhoto(String orderID, Uri filePath, UploadPhoto callback);
+    //-------------------------------------------------------------------------------------------
 
 }

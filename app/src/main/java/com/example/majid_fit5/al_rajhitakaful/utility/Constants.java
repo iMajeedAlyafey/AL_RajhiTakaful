@@ -12,5 +12,4 @@ public class Constants {
     public static String CURRENT_ORDER = "CURRENT_ORDER";
     public static String PROVIDER = "PROVIDER";
     public static String CONTACTUS = "CONTACTUS";
-
 }

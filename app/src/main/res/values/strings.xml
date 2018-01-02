@@ -3,6 +3,7 @@
     <string name="get_currentuser_error">No Info Available</string>
     <string name="error_401">Unauthorized</string>
     <string name="error_404">Not found</string>
+    <string name="error_400">Invalid Verification Code</string>
     <string name="txt_enter_phone">Enter your phone number</string>
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
@@ -11,6 +12,22 @@
     <string name="msg_phone_number_invalid">Please enter valid phone number</string>
     <string name="txt_example_phone_number">Ex: 05XXXXXXXX</string>
     <string name="title_verify_account">Verify Account</string>
+    <string name="txt_verification_code">Enter Verification Code</string>
+    <string name="txt_enter_verification_code">Please enter your verification code</string>
+    <string name="txt_send">Send</string>
+    <string name="txt_did_not_receive">Did not receive code?</string>
+    <string name="txt_resend">Resend</string>
+    <string name="msg_code_invalid">Verification code is invalid</string>
+    <string name="title_activity_create_order_map_fragment">Map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_home">Home</string>
+    <string name="msg_location_permission_denied">Permission is denied. You need accept it to get your location.</string>
+    <string name="msg_camera_permission_denied">Permission is denied. You need accept it to use camera.</string>
+    <string name="msg_current_location">Current Location</string>
+    <string name="title_activity_maps_activitytestttttt">Map</string>
+    <string name="btn_txt_request">Request</string>
+    <string name="btn_txt_hide">Hide</string>
+    <string name="msg_try_again">Try again please.</string>
     <string name="waiting_message">We Are Now Searching For An Available Provider</string>
     <string name="confirm_Mesaage">Your Order will be canceled, Are you sure?</string>
 </resources>

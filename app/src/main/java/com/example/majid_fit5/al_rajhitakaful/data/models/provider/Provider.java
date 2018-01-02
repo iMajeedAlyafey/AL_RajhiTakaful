@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Provider implements Parcelable
 {
-
     @SerializedName("name")
     @Expose
     private String name;

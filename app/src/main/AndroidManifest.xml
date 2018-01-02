@@ -34,11 +34,21 @@
         <activity
             android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
+
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".createorder.HomeActivity" />
+
+        <!-- Map Android Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBA0SuPoDayIUGsYG5mB5i9F6DzKz_osaA" />
+        <!-- Map -->
+
 
     </application>
 

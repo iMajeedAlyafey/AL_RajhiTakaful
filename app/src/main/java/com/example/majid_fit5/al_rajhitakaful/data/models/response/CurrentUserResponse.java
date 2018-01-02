@@ -20,9 +20,6 @@ public class CurrentUserResponse implements Parcelable
     private Order order;
     public final static Parcelable.Creator<CurrentUserResponse> CREATOR = new Creator<CurrentUserResponse>() {
 
-        @SuppressWarnings({
-                "unchecked"
-        })
         public CurrentUserResponse createFromParcel(Parcel in) {
             return new CurrentUserResponse(in);
         }
@@ -31,8 +28,7 @@ public class CurrentUserResponse implements Parcelable
             return (new CurrentUserResponse[size]);
         }
 
-    }
-            ;
+    };
 
     protected CurrentUserResponse(Parcel in) {
         this.user = ((User) in.readValue((User.class.getClassLoader())));

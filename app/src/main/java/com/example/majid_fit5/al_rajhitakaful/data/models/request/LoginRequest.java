@@ -19,7 +19,7 @@ public class LoginRequest implements Parcelable {
 
     @SerializedName("pin")
     @Expose
-    String pin;
+    String code;
 
 
     public String getPhone_number() {
@@ -30,29 +30,32 @@ public class LoginRequest implements Parcelable {
         this.phone_number = phone_number;
     }
 
-    public String getPin() {
-        return pin;
+    public String getCode() {
+        return code;
     }
 
-    public void setPin(String pin) {
-        this.pin = pin;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public LoginRequest(){
     }
-
+    public LoginRequest(String phone_number,String code){
+        this.phone_number=phone_number;
+        this.code =code;
+    }
     @Override
     public int describeContents() {return 0;}
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.phone_number);
-        dest.writeString(this.pin);
+        dest.writeString(this.code);
     }
 
     public LoginRequest(Parcel in){
         this.phone_number=in.readString();
-        this.pin=in.readString();
+        this.code =in.readString();
     }
     public static final Parcelable.Creator<LoginRequest> CREATOR = new Creator<LoginRequest>() {
 

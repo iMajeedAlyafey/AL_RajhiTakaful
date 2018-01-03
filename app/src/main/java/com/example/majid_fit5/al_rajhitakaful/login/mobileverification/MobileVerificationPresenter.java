@@ -1,8 +1,8 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobileverification;
 
 import android.support.annotation.NonNull;
-
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
+import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
@@ -33,6 +33,7 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
     public void onDestroy() {
         if(mView.get()!=null)
         mView.clear();
+        Injection.deleteProvidedDataRepository();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
                 @Override
                 public void onOTPResponse(AlRajhiTakafulResponse response) {
                    if(mView.get()!=null)
-                       mView.get().onGetOTPSuccsess(phoneNumber);
+                       mView.get().onGetOTPSuccess(phoneNumber);
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {

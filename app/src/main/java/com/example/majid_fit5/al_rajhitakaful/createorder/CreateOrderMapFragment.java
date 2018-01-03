@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -49,7 +47,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private View mFragmentRootView, mBottomSheetView;
     private MapView mMapView;
     private GoogleMap mGoogleMap;
-    private Double [] mCoordinates =new Double[]{0.0d,0.0d}; //default
+    private Double [] mCoordinates =new Double[]{ -32.15079953,-134.296875}; //default
     private LatLng mCurrentLatLng ;
     private Marker mMarker;
     private MarkerOptions mMarkerOptions;
@@ -60,8 +58,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private Button mBtnRequestHome, mBtnHideBottomSheet,mBtnRequestBottomSheet;
     private ImageView mImgView;
     private String mImgUri;
-    private Criteria criteria;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,26 +128,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         }getCurrentLocationCoordinates();
     }
     private void getCurrentLocationCoordinates() {
-
         LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (mLocation != null){
+        if(mLocation!=null){
             mCoordinates[0]= mLocation.getLatitude();
             mCoordinates[1]= mLocation.getLongitude();
-            mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]);
-            mMapView.getMapAsync(this);
         }
-        else {
-//            criteria = new Criteria();
-//            String bestProvider = String.valueOf(mLocationManager.getBestProvider(criteria, true)).toString();
-//            mLocationManager.requestLocationUpdates(bestProvider, 1000, 0,);
-            mCoordinates[0]= 24.713552;
-            mCoordinates[1]= 46.675296;
-            mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]);
-            mMapView.getMapAsync(this);
-
-        }
-
+        mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]); // use the default.
+        mMapView.getMapAsync(this);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -188,10 +172,9 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
             case R.id.btn_hide: // of bottom sheet
                 mBottomSheetDialog.cancel();
                 break;
-            case R.id.btn_request2: // of bottom sheet
+            case R.id.btn_request2: // of bottom sheet and responsible on creating new request.
                 mBottomSheetDialog.cancel();
                 mPresenter.createOrder(new OrderRequest((float)mCurrentLatLng.latitude,(float)mCurrentLatLng.longitude));
-                Snackbar.make(mFragmentRootView, "Request is sent successfully", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.img: // of bottom sheet
               checkPhotoPermission();
@@ -217,19 +200,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==13333 &&data != null) {
             if(resultCode== Activity.RESULT_OK ) {
-//            Bitmap bitmap=(Bitmap)data.getExtras().get("data"); // key "data" is for photo..
-//            mImgView.setImageBitmap(bitmap); // show the photo.
-//            mImgUri=getImageUri(getActivity(),bitmap);// to get URI of photo, first compressIt , save it and get the path..
-                String[] projection = { MediaStore.Images.Media.DATA };
-                Cursor cursor = getActivity().managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
-                int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToLast();
-                mImgUri =  cursor.getString(column_index_data);
+            Bitmap bitmap=(Bitmap)data.getExtras().get("data"); // key "data" is for photo..
+            mImgView.setImageBitmap(bitmap); // show the photo.
+            mImgUri=String.valueOf(getImageUri(getActivity(),bitmap));// to get URI of photo, first compressIt , save it and get the path..
             }
         }
     }
     private Uri getImageUri(Context inContext, Bitmap inImage) {//This takes context and bitmap, save the photo and return its Uri to get it later in any time.
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "img", null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Image", null);
         return Uri.parse(path);
     }
 
@@ -248,38 +226,34 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
      */
     @Override
     public void onCreateOrderSuccess(Order order) {
-        if(mImgUri!=null){
-            mPresenter.uploadPhoto(order.getId(),mImgUri);
-        }
+        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_sent_successfully), Snackbar.LENGTH_LONG).show();
+        if(mImgUri!=null)
+        mPresenter.uploadPhoto(order.getId(),mImgUri);
         Intent intent = new Intent(getActivity(), WaitingProviderActivity.class);
         intent.putExtra(Constants.CURRENT_ORDER,order);
         startActivity(intent);
         getActivity().finish();
-
-
-
         // clear the injection before going to next activity.
     }
 
     @Override
     public void onCreateOrderFailure(AlRajhiTakafulError error) {
-        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_again)+". Error code"+error.getCode(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_again), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onUploadPhotoSuccess(Order order) {
-        Snackbar.make(mFragmentRootView, "Photo is uploaded successfully and order id again is :" + order.getId(), Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override
     public void onUploadPhotoFailure(AlRajhiTakafulError error) {
-        Snackbar.make(getActivity().findViewById(R.id.lay_home_activity), "Error is "+error.getMessage()+" and number is :"+ error.getCode(), Snackbar.LENGTH_LONG).show();
         Log.e("onUploadPhotoFailure","Error is "+error.getMessage()+" and number is :"+ error.getCode() );
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         mPresenter.onDestroy();
     }
 }

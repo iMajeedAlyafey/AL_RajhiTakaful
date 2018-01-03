@@ -1,14 +1,11 @@
 package com.example.majid_fit5.al_rajhitakaful.splash;
 
 import android.support.annotation.NonNull;
-
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
-import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
-
 import java.lang.ref.WeakReference;
 
 /**

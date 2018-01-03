@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/dim_10_dp"
         android:text="@string/txt_need_login" />
 
-    <TextView
+ <!--   <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,13 +32,15 @@
         android:layout_marginTop="@dimen/dim_10_dp"
         android:layout_marginStart="@dimen/dim_10_dp"
         android:layout_marginBottom="@dimen/dim_4_dp"
-        android:text="@string/txt_example_phone_number"/>
+        android:text="@string/txt_example_phone_number"/>-->
 
         <EditText
             android:id="@+id/edt_mobile_input"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim_40_dp"
             android:ems="10"
+            android:hint="@string/title_edt_hint"
+            android:layout_marginTop="@dimen/dim_30_dp"
             android:textAlignment="center"
             android:inputType="number"
             android:background="@drawable/bg_white"
@@ -51,10 +53,10 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_14_dp"
+            android:layout_marginTop="@dimen/dim_20_dp"
             android:layout_marginStart="@dimen/dim_24_dp"
             android:layout_marginEnd="@dimen/dim_24_dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/background_green"
             android:text="@string/txt_login"
             android:textColor="@color/White" />
 

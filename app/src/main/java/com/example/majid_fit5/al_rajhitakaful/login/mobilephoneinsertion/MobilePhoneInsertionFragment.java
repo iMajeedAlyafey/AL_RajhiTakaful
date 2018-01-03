@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
@@ -45,9 +44,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
         init();
         return mRootView;
     }
-
     private void init() {
-        // checkPermissions() again
         mEdtPhoneNumber= mRootView.findViewById(R.id.edt_mobile_input);
         mBtnLogin= mRootView.findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
@@ -71,6 +68,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void onValidPhoneNumber(String phoneNumber) {
+        showLoading();
         mPresenter.submitAndGetOTP(phoneNumber);
     }
 
@@ -81,18 +79,17 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
 
     @Override
     public void onSubmitAndGetOTPError(AlRajhiTakafulError error) {
-        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
         hideLoading();
+        Toast.makeText(mRootView.getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onSubmitAndGetOTPSuccess(String phoneNumber) {
-        Injection.deleteProvidedDataRepository(); // to destroy all previous memory links
+        hideLoading();
         Bundle bundle =new Bundle();
         bundle.putString("phoneNumber",phoneNumber);
         mMobileVerificationFragment= new MobileVerificationFragment();
         mMobileVerificationFragment.setArguments(bundle);
-        hideLoading();
         ActivityUtility.addFragmentToActivity(getFragmentManager(),mMobileVerificationFragment,R.id.content_frame,"MobileVerificationFragment");
     }
 
@@ -106,8 +103,8 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mPresenter.onDestroy(); // to destroy this view.
+    public void onDetach() {
+        super.onDetach();
+        mPresenter.onDestroy();
     }
 }

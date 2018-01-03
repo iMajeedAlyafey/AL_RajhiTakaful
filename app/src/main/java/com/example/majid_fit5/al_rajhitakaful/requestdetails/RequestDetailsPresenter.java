@@ -1,12 +1,10 @@
 package com.example.majid_fit5.al_rajhitakaful.requestdetails;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
-
+import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -30,6 +28,7 @@ public class RequestDetailsPresenter implements RequestDetailsContract.Presenter
     public void onDestroy() {
         if (mRequestView.get() != null){
             mRequestView.clear();
+            Injection.deleteProvidedDataRepository();
         }
     }
     @Override

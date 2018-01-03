@@ -1,7 +1,5 @@
 package com.example.majid_fit5.al_rajhitakaful.createorder;
 
-import android.net.Uri;
-
 import com.example.majid_fit5.al_rajhitakaful.base.BasePresenter;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseView;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;

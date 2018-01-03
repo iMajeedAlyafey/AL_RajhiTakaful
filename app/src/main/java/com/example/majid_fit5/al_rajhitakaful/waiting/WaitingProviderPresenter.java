@@ -1,20 +1,12 @@
 package com.example.majid_fit5.al_rajhitakaful.waiting;
 
-import android.content.Context;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
-
-import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
+import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
-import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
-
 import java.lang.ref.WeakReference;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by BASH on 12/30/2017.
@@ -31,7 +23,6 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
 
     @Override
     public void onBind(@NonNull WaitingProvidorContract.View view) {
-        if (view != null)
             mWaitingView = new WeakReference<WaitingProvidorContract.View>(view);
     }
 
@@ -39,6 +30,8 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
     public void onDestroy() {
         if (mWaitingView.get() != null)
             mWaitingView.clear();
+        Injection.deleteProvidedDataRepository();
+
     }
 
     @Override

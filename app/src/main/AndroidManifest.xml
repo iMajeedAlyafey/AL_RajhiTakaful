@@ -40,7 +40,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".createorder.HomeActivity" />
+        <activity android:name=".createorder.HomeActivity" >
+        </activity>
+
         <!-- Map Android Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"

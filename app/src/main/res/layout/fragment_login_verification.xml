@@ -54,7 +54,7 @@
         android:layout_marginTop="@dimen/dim_14_dp"
         android:layout_marginStart="@dimen/dim_24_dp"
         android:layout_marginEnd="@dimen/dim_24_dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/background_green"
         android:text="@string/txt_send"
         android:textColor="@color/White"
         />

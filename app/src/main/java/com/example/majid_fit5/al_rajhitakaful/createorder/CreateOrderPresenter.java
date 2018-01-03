@@ -1,7 +1,7 @@
 package com.example.majid_fit5.al_rajhitakaful.createorder;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
+import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
@@ -30,6 +30,7 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
     public void onDestroy() {
         if(mView.get()!=null)
             mView.clear();
+        Injection.deleteProvidedDataRepository();
     }
 
     @Override

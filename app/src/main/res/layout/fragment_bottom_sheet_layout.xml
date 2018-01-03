@@ -19,13 +19,13 @@
             android:text="@string/btn_txt_hide"
             android:layout_marginTop="@dimen/dim_10_dp"
             android:layout_marginRight="@dimen/dim_10_dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/background_green"
             android:textColor="@color/White"
             android:layout_marginLeft="@dimen/dim_10_dp"
             />
 
         <ImageView
-            android:src="@drawable/marker"
+            android:src="@drawable/ic_image_black_24dp"
             android:id="@+id/img"
             android:layout_width="364dp"
             android:layout_height="300dp"
@@ -40,7 +40,7 @@
             android:layout_marginRight="@dimen/dim_10_dp"
             android:layout_marginBottom="@dimen/dim_10_dp"
             android:layout_marginLeft="@dimen/dim_10_dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/background_green"
             android:textColor="@color/White"
             />
     </LinearLayout>

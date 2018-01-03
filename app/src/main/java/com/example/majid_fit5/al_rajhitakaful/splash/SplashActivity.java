@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.MainActivity;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
@@ -28,7 +26,6 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         mSlashPresenter =new SplashPresenter(Injection.provideDataRepository());
         mSlashPresenter.onBind(SplashActivity.this);
         mSlashPresenter.checkUserLoginStatues();
-
     }
 
     @Override
@@ -76,8 +73,12 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
     public void showErrorMessage(AlRajhiTakafulError alRajhiTakafulError) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        Toast.makeText(this,alRajhiTakafulError.getMessage()+" : "+alRajhiTakafulError.getCode(),Toast.LENGTH_LONG).show();
+        finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSlashPresenter.onDestroy();
+    }
 }

@@ -15,18 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
-import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
-
 /**
  * Created by BASH on 12/31/2017.
  */
@@ -105,21 +100,20 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     }
 
     public void cancelOrder(final String orderID) {
-        new AlertDialog.Builder(this).setTitle("Cancel Order")
-                .setMessage(getResources().getString(R.string.confirm_Mesaage))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel_Order))
+                .setMessage(getResources().getString(R.string.order_confirm_msg))
+                .setPositiveButton(AlRajhiTakafulApplication.getInstance().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mPresenter.canelOrder(orderID);
                         //user select ok and the system should cancel the order
                     }
                 })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
 
                     }
                 }).create().show();
-        ;
     }
 
     @Override

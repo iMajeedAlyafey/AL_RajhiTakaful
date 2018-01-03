@@ -1,8 +1,9 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
-import android.support.annotation.NonNull;
 
+import android.support.annotation.NonNull;
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
+import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
@@ -31,7 +32,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
     public void onDestroy() {
         if(mView.get()!=null)
         mView.clear();
-
+        Injection.deleteProvidedDataRepository();
     }
 
     @Override
@@ -54,16 +55,10 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
     @Override
     public void submitAndGetOTP(final String phoneNumber) {
         if(mView.get()!=null){
-            mView.get().showLoading();
-
-           //mView.get().onSubmitAndGetOTPSuccess(phoneNumber);  //for test
-            // Bellow is OK
-           // calling the repository
           mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
                 public void onOTPResponse(AlRajhiTakafulResponse response) {
                     if(mView.get()!=null){ // there is a response;
-                        mView.get().hideLoading();
                         mView.get().onSubmitAndGetOTPSuccess(phoneNumber);
                     }
                 }

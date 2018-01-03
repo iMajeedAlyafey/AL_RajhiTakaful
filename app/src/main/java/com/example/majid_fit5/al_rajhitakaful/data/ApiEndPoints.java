@@ -1,12 +1,9 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
-
-
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.*;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +15,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 
 /**
@@ -55,6 +51,6 @@ public interface ApiEndPoints {
 
     @Multipart
     @PUT("saaed_orders/{id}")
-    Call<Order> uploadPhoto(@Path("id") String orderID, @Part MultipartBody.Part image);
+    Call<Order> uploadPhoto(@Path("id") String orderID,  @Part MultipartBody.Part image);
 
 }

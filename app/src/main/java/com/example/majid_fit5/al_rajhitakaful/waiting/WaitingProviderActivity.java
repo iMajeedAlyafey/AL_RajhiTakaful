@@ -3,20 +3,15 @@ package com.example.majid_fit5.al_rajhitakaful.waiting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
-import com.example.majid_fit5.al_rajhitakaful.data.models.provider.Provider;
 import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 
@@ -105,4 +100,9 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWaitingPresenter.onDestroy();
+    }
 }

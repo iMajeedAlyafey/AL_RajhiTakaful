@@ -1,13 +1,8 @@
 package com.example.majid_fit5.al_rajhitakaful.utility;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 /**
  * Created by BASH on 12/27/2017.
@@ -28,7 +23,6 @@ public class PrefUtility {
     }
     public static String getToken(Context context){
         preferences= context.getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
-        Log.e(Constants.TOKEN,"authToken "+preferences.getString(Constants.TOKEN,""));
         return "Token "+preferences.getString(Constants.TOKEN,"");
     }
 
@@ -45,6 +39,6 @@ public class PrefUtility {
     public static void saveUserAuthToken(Context context, String authToken) {
         preferences= context.getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
         preferences.edit().putString(Constants.TOKEN,authToken).apply();
-        Log.d(Constants.TOKEN,authToken+" is SAVED successfully");
+        Log.e(Constants.TOKEN,authToken+" is SAVED successfully");
     }
 }

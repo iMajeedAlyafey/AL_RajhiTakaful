@@ -5,13 +5,10 @@ package com.example.majid_fit5.al_rajhitakaful.data;
  */
 
 
-import android.net.Uri;
-
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 

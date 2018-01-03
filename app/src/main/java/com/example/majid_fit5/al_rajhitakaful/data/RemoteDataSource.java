@@ -1,31 +1,24 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
-
+import android.content.Intent;
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.OTPRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
+import com.example.majid_fit5.al_rajhitakaful.login.LoginActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
-
 import java.io.File;
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +51,7 @@ public class RemoteDataSource implements DataSource {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","multipart/form-data")
                         .addHeader("Authorization", PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
-                        .addHeader("Accept","multipart/form-data")
+                        .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
                         .addHeader("Platform","android")
@@ -227,7 +220,7 @@ public class RemoteDataSource implements DataSource {
 
 // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part multiPartBody =
-                MultipartBody.Part.createFormData("Image", file.getName(), requestFile);
+                MultipartBody.Part.createFormData("image", "image", requestFile);
 
         Call<Order> call = mEndpoints.uploadPhoto(orderID,multiPartBody);
         call.enqueue(new Callback<Order>() {
@@ -248,15 +241,23 @@ public class RemoteDataSource implements DataSource {
 
     }
 
-    //-----------handling error----------------------------------------------------------------------
+    //-----------handling error 2----------------------------------------------------------------------
     private AlRajhiTakafulError getError(int errCode) {
         switch (errCode) {
             case 401:
+                Intent intent = new Intent(AlRajhiTakafulApplication.getInstance(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                AlRajhiTakafulApplication.getInstance().startActivity(intent);
+                PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
+
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
+
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
             case 400:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_400));
+            case 503:
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_503));
         }
         return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
     }

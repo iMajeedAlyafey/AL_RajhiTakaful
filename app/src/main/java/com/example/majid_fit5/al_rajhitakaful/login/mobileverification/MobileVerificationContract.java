@@ -14,7 +14,7 @@ public interface MobileVerificationContract {
     interface View extends BaseView { // no need for extending BaseView since i don not need its functions ( show and hide loading).
         void onCodeVerificationSuccess(CurrentUserResponse userResponse);
         void onCodeVerificationFailure(AlRajhiTakafulError error);
-        void onGetOTPSuccsess(String phoneNumber); // if response.code == 201 -- > OK else 404
+        void onGetOTPSuccess(String phoneNumber); // if response.code == 201 -- > OK else 404
         void onGetOTPFailure(AlRajhiTakafulError error);
 
     }

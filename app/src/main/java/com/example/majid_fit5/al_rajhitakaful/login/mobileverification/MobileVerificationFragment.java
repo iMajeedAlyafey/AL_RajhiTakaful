@@ -1,10 +1,14 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobileverification;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +25,6 @@ import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
-
 import java.text.SimpleDateFormat;
 
 /**
@@ -39,6 +42,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     private String mPhoneNumber;
     private CountDownTimer mTimer;
     private MobileVerificationContract.Presenter mPresenter;
+    private ProgressDialog mProgressDialog;
     private String mVerificationCode;
 
     @Override
@@ -71,7 +75,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
         mLayoutResendMessage=mRootView.findViewById(R.id.layout_resend_msg);
         mTxtResned=mRootView.findViewById(R.id.txt_resend);
         mTxtResned.setOnClickListener(this); // setting listener
-        createStartCountDownTimer();
+        createStartCountDownTimer(); // counter for showing period of waiting.
     }
     @Override
     public void onResume() {
@@ -88,18 +92,18 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
                mLayoutResendMessage.setVisibility(View.INVISIBLE);
                mTxtCountDownTimer.setVisibility(View.VISIBLE);
                mTimer.start();
-               mPresenter.resendAndGetOTP(mPhoneNumber);
+               mPresenter.resendAndGetOTP(mPhoneNumber); // no need for dialog bo since there is timer.
                break;
             case R.id.btn_send_code:
                mVerificationCode=mEdtVerificationCode.getText().toString();
-                if(!ValidationsUtility.isEmpty(mVerificationCode) && mVerificationCode.length() == 4)
-                    mPresenter.sendVerificationCode(mVerificationCode,mPhoneNumber);
-                else
-                    Toast.makeText(mRootView.getContext(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
+                if(!ValidationsUtility.isEmpty(mVerificationCode) && mVerificationCode.length() == 4) {
+                    showLoading();
+                    mPresenter.sendVerificationCode(mVerificationCode, mPhoneNumber);
+                }else
+                Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
                 break;
         }
     }
-
     private void createStartCountDownTimer() {
         mTimer=new CountDownTimer(45000,1000){
             @Override
@@ -115,21 +119,22 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     }
     @Override
     public void onCodeVerificationSuccess(CurrentUserResponse userResponse) {
+        hideLoading();
         mPresenter.saveUserInPreference(userResponse);
-        Injection.deleteProvidedDataRepository();
         Intent intent = new Intent(getActivity(), HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);
         getActivity().finish();
     }
 
     @Override
     public void onCodeVerificationFailure(AlRajhiTakafulError error) {
+        hideLoading();
         Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
+        Log.e("VerificationFailure", error.getMessage()+"::Code::"+error.getCode());
     }
 
     @Override
-    public void onGetOTPSuccsess(String phoneNumber) {
+    public void onGetOTPSuccess(String phoneNumber) {
        // Toast.makeText(mRootView.getContext(),"We have sent again to " + phoneNumber,Toast.LENGTH_LONG).show();
     }
 
@@ -140,17 +145,23 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
 
     @Override
     public void showLoading() {
-
+        if(mProgressDialog==null){
+            mProgressDialog=ProgressDialog.show(getActivity(),"","",false,false);
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mProgressDialog.setContentView(R.layout.progress_dialog);
+        }else{
+            mProgressDialog.show();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        mProgressDialog.cancel();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         mPresenter.onDestroy();
     }
 }

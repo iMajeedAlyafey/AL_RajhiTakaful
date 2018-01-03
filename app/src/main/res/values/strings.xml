@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">AL_RajhiTakaful</string>
-    <string name="get_currentuser_error">No Info Available</string>
+    <string name="get_currentuser_error">Please check your internet connection and try again.</string>
     <string name="error_401">Unauthorized</string>
     <string name="error_404">Not found</string>
-    <string name="error_400">Invalid Verification Code</string>
+    <string name="error_400">Server Error</string>
     <string name="txt_enter_phone">Enter your phone number</string>
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
@@ -27,7 +27,17 @@
     <string name="title_activity_maps_activitytestttttt">Map</string>
     <string name="btn_txt_request">Request</string>
     <string name="btn_txt_hide">Hide</string>
-    <string name="msg_try_again">Try again please.</string>
+    <string name="msg_try_again">Please try again later.</string>
     <string name="waiting_message">We Are Now Searching For An Available Provider</string>
-    <string name="confirm_Mesaage">Your Order will be canceled, Are you sure?</string>
+    <string name="order_confirm_msg">Your Order will be canceled, Are you sure?</string>
+    <string name="msg_sent_successfully">Request is sent successfully</string>
+    <string name="cancel_Order">Cancel Order</string>
+    <string name="cancel">CANCEL</string>
+    <string name="ok">Yes</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="confirmation_msg">Confirmation Message</string>
+    <string name="log_out_confirm_msg">Are you sure you want to log out?</string>
+    <string name="title_edt_hint">05XXXXXXXX</string>
+    <string name="error_503">No Internet connection. Check you connection.</string>
+    <string name="msg_unknown_error">Please check your internet connection and try again.</string>
 </resources>

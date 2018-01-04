@@ -103,8 +103,8 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         mPresenter.onDestroy();
     }
 }

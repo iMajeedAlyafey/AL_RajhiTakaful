@@ -160,8 +160,8 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         mPresenter.onDestroy();
     }
 }

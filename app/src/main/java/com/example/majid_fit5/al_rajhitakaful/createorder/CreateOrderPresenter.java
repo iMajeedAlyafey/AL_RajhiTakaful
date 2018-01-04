@@ -7,6 +7,8 @@ import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -39,10 +41,12 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
             mDataRepository.createOrder(orderRequest, new DataSource.CreateOrderCallback() {
                 @Override
                 public void onCreateOrderResponse(Order currentOrder) {
+                    if(mView.get()!=null)
                     mView.get().onCreateOrderSuccess(currentOrder);
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
+                    if(mView.get()!=null)
                     mView.get().onCreateOrderFailure(error);
                 }
             });
@@ -55,12 +59,35 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
             mDataRepository.uploadPhoto(orderID, filePath, new DataSource.UploadPhoto() {
                 @Override
                 public void onUploadPhoto(Order currentOrder) {
+                    if(mView.get()!=null)
                     mView.get().onUploadPhotoSuccess(currentOrder);
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                    mView.get().onUploadPhotoFailure(error);
+                    if(mView.get()!=null)
+                        mView.get().onUploadPhotoFailure(error);
                 }
+            });
+        }
+
+
+    }
+
+    @Override
+    public void logOut() {
+        if(mView.get()!=null){
+            mDataRepository.logout(new DataSource.LogoutCallback() {
+                @Override
+                public void onLogoutResponse(AlRajhiTakafulResponse response) {
+                    if(mView.get()!=null)
+                        mView.get().OnLogOutSuccess(response);
+
+                }
+
+                @Override
+                public void onFailure(AlRajhiTakafulError error) {
+                    if(mView.get()!=null)
+                        mView.get().OnLogOutFailure(error);                }
             });
         }
     }

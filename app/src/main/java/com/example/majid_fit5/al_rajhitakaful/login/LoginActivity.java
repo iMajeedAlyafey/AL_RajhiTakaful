@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobilePhoneInsertionFragment");
         checkPermissions();
     }
+     // I used the toolbar in this activity since there is no action bar button required to use presenter or api service. Ex: no log out button used to exist and clear the preference and call api service.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

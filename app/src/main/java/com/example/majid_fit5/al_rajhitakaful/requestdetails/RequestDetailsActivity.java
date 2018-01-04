@@ -154,4 +154,10 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     public void hideLoading() {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
 }

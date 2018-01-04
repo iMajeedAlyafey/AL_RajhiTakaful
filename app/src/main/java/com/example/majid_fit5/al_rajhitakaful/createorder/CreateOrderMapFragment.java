@@ -2,7 +2,9 @@ package com.example.majid_fit5.al_rajhitakaful.createorder;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -31,7 +33,9 @@ import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
+import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,7 +60,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private BottomSheetDialog mBottomSheetDialog;
     private BottomSheetBehavior mBottomSheetBehavior;
     private Button mBtnRequestHome, mBtnHideBottomSheet,mBtnRequestBottomSheet;
-    private ImageView mImgView;
+    private ImageView mImgView,ImgViewLogOut;
     private String mImgUri;
 
     @Override
@@ -75,6 +79,8 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
     private void init() {
         mMapView = mFragmentRootView.findViewById(R.id.map);
+        ImgViewLogOut=mFragmentRootView.findViewById(R.id.map_frag_logout);
+        ImgViewLogOut.setOnClickListener(this);
         mBtnRequestHome = mFragmentRootView.findViewById(R.id.but_request); // mBtnRequestHome
         mBtnRequestHome.setOnClickListener(this);
         initiateBottomSheet();
@@ -179,8 +185,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
             case R.id.img: // of bottom sheet
               checkPhotoPermission();
                 break;
+            case R.id.map_frag_logout: // of bottom sheet
+                confirmLogoutDialog();
+                break;
         }
     }
+
     private void checkPhotoPermission() {
         if ( Build.VERSION.SDK_INT >= 23){
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -196,6 +206,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         this.startActivityForResult(intent,13333);// If  request code >= 0, this code will be returned in requestCode in onActivityResult() when the activity exits.
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==13333 &&data != null) {
@@ -210,7 +221,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Image", null);
         return Uri.parse(path);
     }
-
     @Override
     public void showLoading() {
 
@@ -219,7 +229,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void hideLoading() {
 
     }
-
     /**
      * Here after getting new order, we will redirect user to waiting activity, but we will check for photo if the URI is null, it means the user did not take photo, else make call to upload the photo.
      * @param order
@@ -252,8 +261,38 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void OnLogOutSuccess(AlRajhiTakafulResponse response) {
+        PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
+        onDestroy();
+        getActivity().finish();
+        //call presenter for logout
+    }
+
+    @Override
+    public void OnLogOutFailure(AlRajhiTakafulError error) {
+        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_log_out_again), Snackbar.LENGTH_LONG).show();
+        Log.e("",error.getMessage()+"--"+error.getCode());
+    }
+
+    private void confirmLogoutDialog() {
+      new AlertDialog.Builder(getActivity())
+        .setTitle(AlRajhiTakafulApplication.getInstance().getString(R.string.confirmation_msg))
+              .setMessage(AlRajhiTakafulApplication.getInstance().getResources().getString(R.string.log_out_confirm_msg))
+                .setPositiveButton(AlRajhiTakafulApplication.getInstance().getString(R.string.log_out), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mPresenter.logOut();
+                    }
+                })
+                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                }).create().show();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         mPresenter.onDestroy();
     }
 }
+

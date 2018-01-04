@@ -9,36 +9,11 @@
     tools:context="com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity"
     android:id="@+id/lay_home_activity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/White" />
-
-        <ImageView
-            android:id="@+id/home_logout"
-            android:layout_width="@dimen/dim_30_dp"
-            android:layout_height="@dimen/dim_30_dp"
-            android:src="@drawable/logout_icon"
-            android:layout_gravity="start"/>
-
-    </android.support.v7.widget.Toolbar>
-
     <FrameLayout
-
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
     </FrameLayout>
-
-
 
 
 </android.widget.LinearLayout>

@@ -31,9 +31,10 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
 
     @Override
     public void onDestroy() {
-        if(mView.get()!=null)
-        mView.clear();
-        Injection.deleteProvidedDataRepository();
+        if(mView.get()!=null){
+            mView.clear();
+            Injection.deleteProvidedDataRepository();
+        }
     }
 
     @Override

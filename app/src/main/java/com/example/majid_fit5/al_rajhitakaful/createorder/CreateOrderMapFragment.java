@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -42,18 +43,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
 
-public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener{
+public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener{
     private CreateOrderContract.Presenter mPresenter;
     private View mFragmentRootView, mBottomSheetView;
     private MapView mMapView;
     private GoogleMap mGoogleMap;
-    private Double [] mCoordinates =new Double[]{ -32.15079953,-134.296875}; //default
-    private LatLng mCurrentLatLng ;
-    private Marker mMarker;
+    private LatLng mCurrentLatLng,mCurrentMarkerPosition; // I have 2 LatLng, one for current position and the other for the marker.
     private MarkerOptions mMarkerOptions;
     private final int LOCATION_REQUEST_CODE =1111;
     private final int CAMERA_REQUEST_CODE =2222;
@@ -62,6 +60,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private Button mBtnRequestHome, mBtnHideBottomSheet,mBtnRequestBottomSheet;
     private ImageView mImgView,ImgViewLogOut;
     private String mImgUri;
+    LocationManager mLocationManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,35 +84,13 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mBtnRequestHome.setOnClickListener(this);
         initiateBottomSheet();
     }
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) { // called after onCreateView
-        super.onViewCreated(view, savedInstanceState);
-        if(mMapView!=null){
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            checkLocationPermission(); // for getting the current location.
-        }
-    }
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-        mGoogleMap.setOnCameraIdleListener(this);
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMarkerOptions = new MarkerOptions()
-                .position(mCurrentLatLng)
-                .visible(false)
-                .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
-        mMarker=mGoogleMap.addMarker(mMarkerOptions);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng,16f)); // for zooming.
-        mGoogleMap.setMyLocationEnabled(true); // icon of current location.
-    }
     /**
      * This is responsible on creating bottom sheet in home screen.
      * The mBottomSheetDialog needs ACTIVITY to be created, not fragment.
      */
     private void initiateBottomSheet() {
         mBottomSheetView = getActivity().getLayoutInflater().inflate(R.layout.fragment_bottom_sheet_layout,null);
-        mBottomSheetDialog = new BottomSheetDialog(getActivity());
+        mBottomSheetDialog=new BottomSheetDialog(getActivity());
         mBottomSheetDialog.setContentView(mBottomSheetView);
         mBottomSheetBehavior = BottomSheetBehavior.from((View) mBottomSheetView.getParent());
         mBottomSheetBehavior.setPeekHeight(
@@ -125,6 +102,20 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mBtnHideBottomSheet = mBottomSheetView.findViewById(R.id.btn_hide); // buttons inside bottom sheet
         mBtnHideBottomSheet.setOnClickListener(this);
     }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) { // called after onCreateView
+        super.onViewCreated(view, savedInstanceState);
+        mMapView.onCreate(null);
+        mMapView.onResume();
+        checkLocationPermission();
+    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        mGoogleMap.setOnCameraIdleListener(this);
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mGoogleMap.setMyLocationEnabled(true); // icon of current location.
+    }
     private void checkLocationPermission() {
         if ( Build.VERSION.SDK_INT >= 23){
             if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED  ){
@@ -133,15 +124,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
             }
         }getCurrentLocationCoordinates();
     }
+
     private void getCurrentLocationCoordinates() {
-        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(mLocation!=null){
-            mCoordinates[0]= mLocation.getLatitude();
-            mCoordinates[1]= mLocation.getLongitude();
-        }
-        mCurrentLatLng = new LatLng(mCoordinates[0],mCoordinates[1]); // use the default.
-        mMapView.getMapAsync(this);
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
+        mMapView.getMapAsync(this); // needs to be here after getting permissions.
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -149,8 +137,11 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
             case LOCATION_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     getCurrentLocationCoordinates(); //gps call
-                 else
+                 else{
                     Toast.makeText( getActivity(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_location_permission_denied), Toast.LENGTH_LONG).show();
+                    mBtnRequestHome.setEnabled(false);
+                    mBtnRequestHome.setBackgroundColor(AlRajhiTakafulApplication.getInstance().getResources().getColor(R.color.Gray));
+                }
                 break;
             case CAMERA_REQUEST_CODE:
                 boolean ok=true;
@@ -163,11 +154,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
         }
     }
+
+    /**
+     * This is responsible on the marker on the screen. This may be changed by user.
+     */
     @Override
     public void onCameraIdle() {
-        mGoogleMap.clear();
-        mCurrentLatLng=mGoogleMap.getCameraPosition().target;
-        mGoogleMap.addMarker(mMarkerOptions.position(mCurrentLatLng));
+        mCurrentMarkerPosition=mGoogleMap.getCameraPosition().target;
+        //Toast.makeText( getActivity(),"mCurrentMarkerPosition/////"+mCurrentMarkerPosition, Toast.LENGTH_LONG).show();
     }
     @Override
     public void onClick(View v) {
@@ -180,7 +174,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
             case R.id.btn_request2: // of bottom sheet and responsible on creating new request.
                 mBottomSheetDialog.cancel();
-                mPresenter.createOrder(new OrderRequest((float)mCurrentLatLng.latitude,(float)mCurrentLatLng.longitude));
+                mPresenter.createOrder(new OrderRequest((float)mCurrentMarkerPosition.latitude,(float)mCurrentMarkerPosition.longitude));
                 break;
             case R.id.img: // of bottom sheet
               checkPhotoPermission();
@@ -265,7 +259,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
         onDestroy();
         getActivity().finish();
-        //call presenter for logout
     }
 
     @Override
@@ -282,10 +275,8 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                     public void onClick(DialogInterface dialog, int id) {
                         mPresenter.logOut();
                     }
-                })
-                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                }).setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
                 }).create().show();
     }
@@ -293,6 +284,33 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+        mMarkerOptions = new MarkerOptions()
+                .position(mCurrentLatLng)
+                .visible(false)
+                .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
+        mGoogleMap.addMarker(mMarkerOptions);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng, 15.0f));
+        mLocationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
 

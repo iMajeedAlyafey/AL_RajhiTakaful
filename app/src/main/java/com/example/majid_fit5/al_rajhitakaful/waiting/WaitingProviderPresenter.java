@@ -28,10 +28,10 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
 
     @Override
     public void onDestroy() {
-        if (mWaitingView.get() != null)
+        if (mWaitingView.get() != null){
             mWaitingView.clear();
-        Injection.deleteProvidedDataRepository();
-
+            Injection.deleteProvidedDataRepository();
+        }
     }
 
     @Override
@@ -40,17 +40,23 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
             mRepository.getOrder(orderID, new DataSource.GetOrderCallBack() {
                 @Override
                 public void onGetOrder(Order currentOrder) {
-                    if (currentOrder.getProvider() != null) {
-                        mWaitingView.get().onProviderAccept(currentOrder);
-                    } else {
-                        mWaitingView.get().startCountDownCounter();
+                    if(mWaitingView.get()!=null){
+                        if ( currentOrder.getProvider() != null) {
+                            mWaitingView.get().onProviderAccept(currentOrder);
+                        } else {
+                            mWaitingView.get().startCountDownCounter();
+                        }
                     }
+
                 }
 
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                    mWaitingView.get().showWaitingError(error);
-                    mWaitingView.get().startCountDownCounter();
+                    if(mWaitingView.get()!=null){
+                        mWaitingView.get().showWaitingError(error);
+                        mWaitingView.get().startCountDownCounter();
+                    }
+
                 }
             });
         }

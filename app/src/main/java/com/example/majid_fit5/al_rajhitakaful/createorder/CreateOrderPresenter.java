@@ -8,7 +8,6 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -30,9 +29,10 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
 
     @Override
     public void onDestroy() {
-        if(mView.get()!=null)
+        if(mView.get()!=null){
             mView.clear();
-        Injection.deleteProvidedDataRepository();
+            Injection.deleteProvidedDataRepository();
+        }
     }
 
     @Override
@@ -69,8 +69,6 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
                 }
             });
         }
-
-
     }
 
     @Override
@@ -83,7 +81,6 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
                         mView.get().OnLogOutSuccess(response);
 
                 }
-
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if(mView.get()!=null)

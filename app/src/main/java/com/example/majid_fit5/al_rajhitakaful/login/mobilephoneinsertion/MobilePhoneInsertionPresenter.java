@@ -30,9 +30,10 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
 
     @Override
     public void onDestroy() {
-        if(mView.get()!=null)
-        mView.clear();
-        Injection.deleteProvidedDataRepository();
+        if(mView.get()!=null){
+            mView.clear();
+            Injection.deleteProvidedDataRepository();
+        }
     }
 
     @Override

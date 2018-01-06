@@ -165,6 +165,8 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
         if(mProgressDialog==null){
             mProgressDialog=ProgressDialog.show(getActivity(),"","",false,false);
             mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mProgressDialog.setProgressDrawable(AlRajhiTakafulApplication.getInstance().getDrawable(R.drawable.custom_progressbar));
+
             mProgressDialog.setContentView(R.layout.progress_dialog);
         }else{
             mProgressDialog.show();

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
@@ -30,6 +32,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     private Button mBtnLogin;
     private ProgressDialog mProgressDialog;
     private MobileVerificationFragment mMobileVerificationFragment;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void showLoading() {
         if(mProgressDialog==null){
             mProgressDialog=ProgressDialog.show(getActivity(),"","",false,false);
+            mProgressDialog.setProgressDrawable(AlRajhiTakafulApplication.getInstance().getDrawable(R.drawable.custom_progressbar));
             mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             mProgressDialog.setContentView(R.layout.progress_dialog);
         }else{

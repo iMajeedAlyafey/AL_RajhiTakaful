@@ -44,10 +44,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
-
 import java.io.ByteArrayOutputStream;
 
 public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener{
@@ -57,16 +55,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private GoogleMap mGoogleMap;
     private LatLng mCurrentLatLng,mCurrentMarkerPosition; // I have 2 LatLng, one for current position and the other for the marker.
     private MarkerOptions mMarkerOptions;
-    private final int LOCATION_REQUEST_CODE =1111;
-    private final int CAMERA_REQUEST_CODE =2222;
+    private final int LOCATION_REQUEST_CODE =1111,CAMERA_REQUEST_CODE =2222;
     private BottomSheetDialog mBottomSheetDialog;
     private BottomSheetBehavior mBottomSheetBehavior;
-    private String mImgUri;
     private LocationManager mLocationManager;
     private Button mBtnRequestHome, mBtnHideBottomSheet, mBtnRequestBottomSheet;
     private ImageView mImgView, ImgViewLogOut;
-    private String imagePath;
-    private Cursor cursor;
+    private String mImagePath;
+    private Cursor mCursor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -211,11 +207,11 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 13333 && data != null) {
             if (resultCode == Activity.RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data"); // key "data" is for photo..
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 mImgView.setImageBitmap(bitmap); // show the photo.
                 Uri tempUri = getImageUri(getActivity(), bitmap);
-                imagePath = getRealPathFromURI(tempUri);
-                cursor.close();
+                mImagePath = getRealPathFromURI(tempUri);
+                mCursor.close();
             }
         }
     }
@@ -228,9 +224,9 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     public String getRealPathFromURI(Uri uri) {
-        cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+        mCursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        mCursor.moveToFirst();
+        return mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
     }
 
     @Override
@@ -248,16 +244,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     @Override
     public void onCreateOrderSuccess(Order order) {
         Log.e("order", " and number is order :" + order.getId());
-        if (imagePath != null && !imagePath.trim().isEmpty()) {
-            Log.e("PATH", imagePath);
-
-            mPresenter.uploadPhoto(order.getId(), imagePath);
+        if (mImagePath != null && !mImagePath.trim().isEmpty()) { // upload the photo while we redirect user to waiting activity.
+            Log.e("PATH", mImagePath);
+            mPresenter.uploadPhoto(order.getId(), mImagePath);
         }
         Intent intent = new Intent(getActivity(), WaitingProviderActivity.class);
         intent.putExtra(Constants.CURRENT_ORDER,order);
         startActivity(intent);
         getActivity().finish();
-        // clear the injection before going to next activity.
     }
 
     @Override

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_waiting_provider"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/lay_waiting_provider">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -14,7 +13,6 @@
         android:layout_marginBottom="8dp"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        app:titleTextColor="@color/White"
         android:textAlignment="gravity"
         android:theme="@style/AppTheme"
         app:layout_constraintBottom_toTopOf="@+id/progress_bar"
@@ -23,7 +21,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/White">
+
         <TextView
             android:id="@+id/toolbar_title"
             style="@style/AppTheme"
@@ -31,22 +31,37 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/White" />
-</android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!--<ProgressBar-->
+    <!--android:id="@+id/progress_bar"-->
+    <!--style="?android:attr/progressBarStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="172dp"-->
+    <!--android:indeterminateTint="@color/colorPrimary"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--android:progressTint="@color/colorPrimary"/>-->
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="visible"
+        app:indicatorColor="@color/colorPrimary"
+        app:indicatorName="BallSpinFadeLoaderIndicator"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="172dp"
         android:indeterminateTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:progressTint="@color/colorPrimary"/>
-
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -61,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/avi" />
 
 
 </android.support.constraint.ConstraintLayout>

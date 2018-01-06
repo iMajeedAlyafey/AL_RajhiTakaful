@@ -23,6 +23,7 @@ public class PrefUtility {
     }
     public static String getToken(Context context){
         preferences= context.getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
+        Log.e(Constants.TOKEN,preferences.getString(Constants.TOKEN,""));
         return "Token "+preferences.getString(Constants.TOKEN,"");
     }
 
@@ -39,6 +40,5 @@ public class PrefUtility {
     public static void saveUserAuthToken(Context context, String authToken) {
         preferences= context.getSharedPreferences(Constants.USER_PREFERENCE,Context.MODE_PRIVATE);
         preferences.edit().putString(Constants.TOKEN,authToken).apply();
-        Log.e(Constants.TOKEN,authToken+" is SAVED successfully");
     }
 }

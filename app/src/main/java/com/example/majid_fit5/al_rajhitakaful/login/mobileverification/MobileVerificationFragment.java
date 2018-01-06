@@ -56,6 +56,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_login_verification,container,false);
         init();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return mRootView;
     }
 
@@ -63,7 +64,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void init() {

@@ -29,7 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                onBackPressed(); // For dealing with the back arrow.
+                // For dealing with the back arrow.
+                ActivityUtility.addFragmentToActivity(getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobileInsertionFragment");
                 return true;
         }
         return super.onOptionsItemSelected(item);

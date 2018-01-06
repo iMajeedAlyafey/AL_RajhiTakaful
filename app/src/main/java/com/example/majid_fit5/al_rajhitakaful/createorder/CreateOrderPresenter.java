@@ -1,6 +1,9 @@
 package com.example.majid_fit5.al_rajhitakaful.createorder;
 
 import android.support.annotation.NonNull;
+import android.widget.Toast;
+
+import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
@@ -61,6 +64,8 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
                 public void onUploadPhoto(Order currentOrder) {
                     if(mView.get()!=null)
                     mView.get().onUploadPhotoSuccess(currentOrder);
+                    Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
+
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {

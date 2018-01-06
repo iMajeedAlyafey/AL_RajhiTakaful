@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
@@ -53,18 +54,12 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         mPresenter = new RequestDetailsPresenter(Injection.provideDataRepository());
         mPresenter.onBind(RequestDetailsActivity.this);
         mCurrentOrder = (Order) getIntent().getExtras().getParcelable(Constants.CURRENT_ORDER);
-        mTxvProviderName = findViewById(R.id.txv_provider_name);
-        mTxvCarType = findViewById(R.id.txv_car_type);
-        mTxvEta = findViewById(R.id.txv_eta);
-        mTxvProviderName.setText(mCurrentOrder.getProvider().getName());
-        mTxvCarType.setText(mCurrentOrder.getProvider().getVehicle());
-        mTxvEta.setText(mCurrentOrder.getProvider().getEta().toString());
-        mBtnCallProvider = findViewById(R.id.btn_call_provider);
-        mBtnContactUs = findViewById(R.id.btn_contact_us);
-        mBtnCancel = findViewById(R.id.btn_cancel);
-        mBtnCallProvider.setOnClickListener(this);
-        mBtnContactUs.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
+        ((TextView)findViewById(R.id.txv_provider_name)).setText(mCurrentOrder.getProvider().getName());
+        ((TextView)findViewById(R.id.txv_car_type)).setText(mCurrentOrder.getProvider().getVehicle());
+        ((TextView)findViewById(R.id.txv_eta)).setText(mCurrentOrder.getProvider().getEta().toString());
+        findViewById(R.id.btn_call_provider).setOnClickListener(this);
+        findViewById(R.id.btn_contact_us).setOnClickListener(this);
+        findViewById(R.id.btn_cancel).setOnClickListener(this);
     }
 
     @Override
@@ -84,6 +79,9 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         }
     }
 
+    /**
+     * check the permission to make call, if allowed make the call if denied it will ask for permission
+     */
     public void makePhoneCall() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 10);
@@ -92,13 +90,26 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         }
     }
 
+    /**
+     * make the phone call
+     * @param phoneNumber phone number
+     */
     public void callPhone(String phoneNumber) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + phoneNumber));
-        startActivity(callIntent);
+        if (phoneNumber != null){
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + phoneNumber));
+            startActivity(callIntent);
+        }
+        else {
+            displayErrorMeassage("phone number is not available at this time");
+        }
 
     }
 
+    /**
+     * cancel the current order after display confirmation message
+     * @param orderID order id to be canceled
+     */
     public void cancelOrder(final String orderID) {
         new AlertDialog.Builder(this).setTitle(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel_Order))
                 .setMessage(getResources().getString(R.string.order_confirm_msg))
@@ -116,10 +127,13 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
                 }).create().show();
     }
 
+    /**
+     * redirect the user to the main activity,"create order activity"
+     */
     @Override
     public void onCancelOrder() {
         //should go to Home Activity
-        Snackbar.make(findViewById(R.id.lay_waiting_provider),"order number " + mCurrentOrder.getId(),Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.lay_waiting_provider),"Yout Order Canceled, thanks",Snackbar.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();    }
@@ -149,12 +163,10 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     public void showLoading() {
 
     }
-
     @Override
     public void hideLoading() {
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

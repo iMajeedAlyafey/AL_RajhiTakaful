@@ -10,16 +10,20 @@ import com.google.gson.annotations.SerializedName;
 public class CurrentUserResponse implements Parcelable
 {
 
+
     @SerializedName("user")
     @Expose
     private User user;
 
-
     @SerializedName("current_order")
     @Expose
-    private Order order;
+    private Order currentOrder;
     public final static Parcelable.Creator<CurrentUserResponse> CREATOR = new Creator<CurrentUserResponse>() {
 
+
+        @SuppressWarnings({
+                "unchecked"
+        })
         public CurrentUserResponse createFromParcel(Parcel in) {
             return new CurrentUserResponse(in);
         }
@@ -28,11 +32,13 @@ public class CurrentUserResponse implements Parcelable
             return (new CurrentUserResponse[size]);
         }
 
-    };
+    }
+            ;
+    private final static long serialVersionUID = 4682242214163964540L;
 
     protected CurrentUserResponse(Parcel in) {
         this.user = ((User) in.readValue((User.class.getClassLoader())));
-        this.order = ((Order) in.readValue((Order.class.getClassLoader())));
+        this.currentOrder = ((Order) in.readValue((Order.class.getClassLoader())));
     }
 
     public CurrentUserResponse() {
@@ -46,17 +52,17 @@ public class CurrentUserResponse implements Parcelable
         this.user = user;
     }
 
-    public Order getOrder() {
-        return order;
+    public Order getCurrentOrder() {
+        return currentOrder;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCurrentOrder(Order currentOrder) {
+        this.currentOrder = currentOrder;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(user);
-        dest.writeValue(order);
+        dest.writeValue(currentOrder);
     }
 
     public int describeContents() {

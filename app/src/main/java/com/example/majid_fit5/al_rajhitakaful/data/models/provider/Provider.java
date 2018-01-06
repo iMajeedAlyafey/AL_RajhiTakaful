@@ -35,6 +35,7 @@ public class Provider implements Parcelable
 
     }
             ;
+    private final static long serialVersionUID = 8154945612095491759L;
 
     protected Provider(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
@@ -88,5 +89,6 @@ public class Provider implements Parcelable
     public int describeContents() {
         return 0;
     }
+
 
 }

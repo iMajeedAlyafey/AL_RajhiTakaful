@@ -37,18 +37,25 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     //------------------------------------------------------------------
+
+    /**
+     * check if the user not logged in, it will open login activity, else it will will check user statues
+     */
     @Override
     public void checkUserLoginStatues() {
         if (mSplashView.get() != null) {
             if (!PrefUtility.isLogedIn()) {
                 mSplashView.get().startLogin();
-            }
-            else {
+            } else {
                 getCurrentUser();
             }
         }
     }
     //------------------------------------------------------------------
+
+    /**
+     * connect to the server and check if the user has a current request and open corresponding activity
+     */
     @Override
     public void getCurrentUser() {
         if (mSplashView.get() != null) {
@@ -56,10 +63,10 @@ public class SplashPresenter implements SplashContract.Presenter {
                 @Override
                 public void onGetCurrentUser(CurrentUserResponse currentUser) {
                     if (mSplashView.get() != null) {
-                        if (currentUser.getOrder() == null) {
+                        if (currentUser.getCurrentOrder() == null) {
                             mSplashView.get().startCreateOrder();
                         } else {
-                            mSplashView.get().startShowOrder(currentUser.getOrder());
+                            mSplashView.get().startShowOrder(currentUser.getCurrentOrder());
                         }
                     }
                 }
@@ -67,7 +74,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if (mSplashView.get() != null) {
-                        mSplashView.get().showErrorMessage(error);
+                        mSplashView.get().showErrorMessage(new AlRajhiTakafulError(999,"heeeeeeeeeeere"));
                     }
 
                 }

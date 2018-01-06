@@ -34,19 +34,23 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
         }
     }
 
+    /**
+     * get the current order and check if a Provider accept
+     * @param orderID the order id that we want to check provider acceptance
+     */
     @Override
-    public void getProvider(final String orderID) {
+    public void getProvider(String orderID) {
         if (mWaitingView.get() != null) {
             mRepository.getOrder(orderID, new DataSource.GetOrderCallBack() {
                 @Override
                 public void onGetOrder(Order currentOrder) {
-                    if(mWaitingView.get()!=null){
+
                         if ( currentOrder.getProvider() != null) {
                             mWaitingView.get().onProviderAccept(currentOrder);
                         } else {
                             mWaitingView.get().startCountDownCounter();
                         }
-                    }
+
 
                 }
 

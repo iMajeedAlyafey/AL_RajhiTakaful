@@ -1,10 +1,12 @@
 package com.example.majid_fit5.al_rajhitakaful.requestdetails;
 
 import android.support.annotation.NonNull;
+
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -26,27 +28,33 @@ public class RequestDetailsPresenter implements RequestDetailsContract.Presenter
 
     @Override
     public void onDestroy() {
-        if (mRequestView.get() != null){
+        if (mRequestView.get() != null) {
             mRequestView.clear();
             Injection.deleteProvidedDataRepository();
         }
     }
+
+    /**
+     * cancel the current order
+     *
+     * @param orderID the oder id that should be canceled
+     */
     @Override
     public void canelOrder(String orderID) {
-        if (mRequestView.get() != null){
+        if (mRequestView.get() != null) {
             mRepository.cancelOrderC(orderID, new DataSource.CancelOrderCallBack() {
                 @Override
                 public void onOrderCanceled() {
-                    if (mRequestView.get() != null){
+                    if (mRequestView.get() != null) {
                         mRequestView.get().onCancelOrder();
                     }
                 }
 
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                        if (mRequestView.get() != null){
-                            mRequestView.get().displayErrorMeassage("order Can not be canceled");
-                        }
+                    if (mRequestView.get() != null) {
+                        mRequestView.get().displayErrorMeassage("order Can not be canceled");
+                    }
                 }
             });
         }

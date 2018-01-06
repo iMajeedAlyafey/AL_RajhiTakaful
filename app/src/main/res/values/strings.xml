@@ -3,7 +3,7 @@
     <string name="get_currentuser_error">Please check your internet connection and try again.</string>
     <string name="error_401">Unauthorized</string>
     <string name="error_404">Not found</string>
-    <string name="error_400">Server Error</string>
+    <string name="error_400">Fail</string>
     <string name="txt_enter_phone">Enter your phone number</string>
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
@@ -34,7 +34,7 @@
     <string name="msg_sent_successfully">Request is sent successfully</string>
     <string name="cancel_Order">Cancel Order</string>
     <string name="cancel">CANCEL</string>
-    <string name="ok">Yes</string>
+    <string name="ok">YES</string>
     <string name="log_out">LOG OUT</string>
     <string name="confirmation_msg">Confirmation Message</string>
     <string name="log_out_confirm_msg">Are you sure you want to log out?</string>

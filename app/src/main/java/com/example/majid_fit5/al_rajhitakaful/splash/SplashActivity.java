@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
 import com.example.majid_fit5.al_rajhitakaful.MainActivity;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
@@ -20,10 +22,11 @@ import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View {
     private SplashContract.Presenter mSlashPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSlashPresenter =new SplashPresenter(Injection.provideDataRepository());
+        mSlashPresenter = new SplashPresenter(Injection.provideDataRepository());
         mSlashPresenter.onBind(SplashActivity.this);
         mSlashPresenter.checkUserLoginStatues();
     }
@@ -38,6 +41,9 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     }
 
+    /**
+     * open login activity
+     */
     @Override
     public void startLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -45,35 +51,42 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         finish();
     }
 
+    /**
+     * open HomeActivity, "open Create Order"
+     */
     @Override
     public void startCreateOrder() {
-
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * check the current order of the user, if the order accepted by provider or no, then open the corresponding activity
+     *
+     * @param currentOrder current oder for the user from the server
+     */
     @Override
     public void startShowOrder(Order currentOrder) {
-        if (currentOrder.getProvider() == null){
-            Intent intent = new Intent(this, WaitingProviderActivity.class);
-            intent.putExtra(Constants.CURRENT_ORDER,currentOrder);
-            startActivity(intent);
-            finish();
+        Intent intent;
+        if (currentOrder.getProvider() == null) {
+            intent = new Intent(this, WaitingProviderActivity.class);
+        } else {
+            intent = new Intent(this, RequestDetailsActivity.class);
         }
-        else {
-            Intent intent = new Intent(this, RequestDetailsActivity.class);
-            intent.putExtra(Constants.CURRENT_ORDER,currentOrder);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    @Override
-    public void showErrorMessage(AlRajhiTakafulError alRajhiTakafulError) {
-        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Constants.CURRENT_ORDER, currentOrder);
         startActivity(intent);
         finish();
+    }
+
+    /**
+     * display error message if there is a problem when getting the current order from the server
+     *
+     * @param alRajhiTakafulError object contain error message and code
+     */
+    @Override
+    public void showErrorMessage(AlRajhiTakafulError alRajhiTakafulError) {
+        Toast.makeText(this, alRajhiTakafulError.getMessage() + " : " + alRajhiTakafulError.getCode(), Toast.LENGTH_LONG).show();
     }
 
     @Override

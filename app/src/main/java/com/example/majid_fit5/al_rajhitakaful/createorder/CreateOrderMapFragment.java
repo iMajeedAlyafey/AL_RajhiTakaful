@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
@@ -43,8 +44,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
+
+import java.io.ByteArrayOutputStream;
 
 public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener{
     private CreateOrderContract.Presenter mPresenter;
@@ -57,10 +61,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private final int CAMERA_REQUEST_CODE =2222;
     private BottomSheetDialog mBottomSheetDialog;
     private BottomSheetBehavior mBottomSheetBehavior;
-    private Button mBtnRequestHome, mBtnHideBottomSheet,mBtnRequestBottomSheet;
-    private ImageView mImgView,ImgViewLogOut;
     private String mImgUri;
-    LocationManager mLocationManager;
+    private LocationManager mLocationManager;
+    private Button mBtnRequestHome, mBtnHideBottomSheet, mBtnRequestBottomSheet;
+    private ImageView mImgView, ImgViewLogOut;
+    private String imagePath;
+    private Cursor cursor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -202,19 +208,31 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode==13333 &&data != null) {
-            if(resultCode== Activity.RESULT_OK ) {
-            Bitmap bitmap=(Bitmap)data.getExtras().get("data"); // key "data" is for photo..
-            mImgView.setImageBitmap(bitmap); // show the photo.
-            mImgUri=String.valueOf(getImageUri(getActivity(),bitmap));// to get URI of photo, first compressIt , save it and get the path..
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 13333 && data != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data"); // key "data" is for photo..
+                mImgView.setImageBitmap(bitmap); // show the photo.
+                Uri tempUri = getImageUri(getActivity(), bitmap);
+                imagePath = getRealPathFromURI(tempUri);
+                cursor.close();
             }
         }
     }
-    private Uri getImageUri(Context inContext, Bitmap inImage) {//This takes context and bitmap, save the photo and return its Uri to get it later in any time.
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Image", null);
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+    public String getRealPathFromURI(Uri uri) {
+        cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+    }
+
     @Override
     public void showLoading() {
 
@@ -229,9 +247,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
      */
     @Override
     public void onCreateOrderSuccess(Order order) {
-        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_sent_successfully), Snackbar.LENGTH_LONG).show();
-        if(mImgUri!=null)
-        mPresenter.uploadPhoto(order.getId(),mImgUri);
+        Log.e("order", " and number is order :" + order.getId());
+        if (imagePath != null && !imagePath.trim().isEmpty()) {
+            Log.e("PATH", imagePath);
+
+            mPresenter.uploadPhoto(order.getId(), imagePath);
+        }
         Intent intent = new Intent(getActivity(), WaitingProviderActivity.class);
         intent.putExtra(Constants.CURRENT_ORDER,order);
         startActivity(intent);
@@ -246,12 +267,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onUploadPhotoSuccess(Order order) {
-
+        //bash .. check if it is good practice to display Snackbar in other activity from this activity.. any way it is just for testing
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onUploadPhotoFailure(AlRajhiTakafulError error) {
-        Log.e("onUploadPhotoFailure","Error is "+error.getMessage()+" and number is :"+ error.getCode() );
+        //bash .. check if it is good practice to display Snackbar in other activity from this activity.. any way it is just for testing
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -275,8 +298,10 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                     public void onClick(DialogInterface dialog, int id) {
                         mPresenter.logOut();
                     }
-                }).setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                })
+                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
                     }
                 }).create().show();
     }

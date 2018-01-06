@@ -1,6 +1,8 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
 import android.content.Intent;
+import android.util.Log;
+
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
@@ -216,13 +218,10 @@ public class RemoteDataSource implements DataSource {
     public void uploadPhoto(String orderID, String filePath, final UploadPhoto callback) {
 
         File file = new File(filePath);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("image", "image", mFile);
 
-// MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part multiPartBody =
-                MultipartBody.Part.createFormData("image", "image", requestFile);
-
-        Call<Order> call = mEndpoints.uploadPhoto(orderID,multiPartBody);
+        Call<Order> call = mEndpoints.uploadPhoto(orderID,fileToUpload);
         call.enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
@@ -234,7 +233,8 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
-                callback.onFailure(getError(10));
+                callback.onFailure(new AlRajhiTakafulError(10,"problem in file upload"));
+
             }
         });
 

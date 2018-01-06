@@ -122,22 +122,24 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
             }
         };
     }
+    /**
+     * This function redirect the user to home screen. However, it checks for situation of "Unauthorized Access" to the app.
+     * This code is already coded in splash, but we have to do it again here to cover this case, the "Unauthorized Access" case.
+     * @param userResponse
+     */
     @Override
     public void onCodeVerificationSuccess(CurrentUserResponse userResponse) {
         hideLoading();
         mPresenter.saveUserInPreference(userResponse);
         Intent intent;
-        if (userResponse.getCurrentOrder() != null ) {
-            if (userResponse.getCurrentOrder().getProvider() !=null){
+        if (userResponse.getCurrentOrder() != null ) {// the user has order.
+            if (userResponse.getCurrentOrder().getProvider() !=null) // if there is a provider assigned to user's order, redirect the user to the Request activity.
                 intent = new Intent(getActivity(), RequestDetailsActivity.class);
-            }
-            else {
+            else // here the user made a request but sill NOT assigned to any provider.
                 intent = new Intent(getActivity(), WaitingProviderActivity.class);
-            }
 
-        } else {
+        } else  // the user has no orders, redirect him to home activity.
             intent = new Intent(getActivity(), HomeActivity.class);
-        }
         intent.putExtra(Constants.CURRENT_ORDER, userResponse.getCurrentOrder());
         getActivity().startActivity(intent);
         getActivity().finish();

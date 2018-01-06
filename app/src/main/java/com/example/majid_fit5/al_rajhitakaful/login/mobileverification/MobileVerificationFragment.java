@@ -24,7 +24,11 @@ import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
+import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActivity;
+import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
+import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
+
 import java.text.SimpleDateFormat;
 
 /**
@@ -122,7 +126,19 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     public void onCodeVerificationSuccess(CurrentUserResponse userResponse) {
         hideLoading();
         mPresenter.saveUserInPreference(userResponse);
-        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        Intent intent;
+        if (userResponse.getCurrentOrder() != null ) {
+            if (userResponse.getCurrentOrder().getProvider() !=null){
+                intent = new Intent(getActivity(), RequestDetailsActivity.class);
+            }
+            else {
+                intent = new Intent(getActivity(), WaitingProviderActivity.class);
+            }
+
+        } else {
+            intent = new Intent(getActivity(), HomeActivity.class);
+        }
+        intent.putExtra(Constants.CURRENT_ORDER, userResponse.getCurrentOrder());
         getActivity().startActivity(intent);
         getActivity().finish();
     }

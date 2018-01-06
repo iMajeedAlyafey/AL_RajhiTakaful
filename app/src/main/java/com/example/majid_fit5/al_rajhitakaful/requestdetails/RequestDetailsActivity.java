@@ -15,8 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
@@ -67,11 +68,11 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         switch (view.getId()) {
             case R.id.btn_call_provider:
                 phoneNumber = mCurrentOrder.getProvider().getPhoneNumber();
-                makePhoneCall();
+                checkPhonePermission();
                 break;
             case R.id.btn_contact_us:
                 phoneNumber = "1100";
-                makePhoneCall();
+                checkPhonePermission();
                 break;
             case R.id.btn_cancel:
                 cancelOrder(mCurrentOrder.getId());
@@ -82,7 +83,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     /**
      * check the permission to make call, if allowed make the call if denied it will ask for permission
      */
-    public void makePhoneCall() {
+    public void checkPhonePermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 10);
         } else {
@@ -133,7 +134,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     @Override
     public void onCancelOrder() {
         //should go to Home Activity
-        Snackbar.make(findViewById(R.id.lay_waiting_provider),"Yout Order Canceled, thanks",Snackbar.LENGTH_LONG).show();
+        Toast.makeText(this,"Yout Order Canceled, thanks",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();    }

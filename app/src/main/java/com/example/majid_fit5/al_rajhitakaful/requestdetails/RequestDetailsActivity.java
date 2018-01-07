@@ -32,8 +32,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     private RequestDetailsContract.Presenter mPresenter;
     private Toolbar mToolBar;
     private TextView mToolbarTitle;
-    private TextView mTxvProviderName, mTxvCarType, mTxvEta;
-    private Button mBtnCallProvider, mBtnContactUs, mBtnCancel;
     private Order mCurrentOrder;
     private String phoneNumber;
 

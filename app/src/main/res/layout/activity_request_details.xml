@@ -60,6 +60,7 @@
             android:fontFamily="sans-serif-condensed"
             android:padding="@dimen/dim_14_dp"
             android:text="Hi there!"
+            android:layout_marginBottom="@dimen/dim_3_dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dim_20_dp" />
 
@@ -99,7 +100,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_4_dp"
+            android:layout_marginTop="@dimen/dim_2_dp"
             android:layout_weight="0.5"
             android:background="@drawable/background_red"
             android:shadowColor="#A8A8A8"

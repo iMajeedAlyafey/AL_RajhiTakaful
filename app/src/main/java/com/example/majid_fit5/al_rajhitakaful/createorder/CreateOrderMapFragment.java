@@ -129,7 +129,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     private void getCurrentLocationCoordinates() {
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER|,0,0,this);
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
         mMapView.getMapAsync(this); // needs to be here after getting permissions.
     }
@@ -156,7 +156,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
         }
     }
-
     /**
      * This is responsible on the marker on the screen. This may be changed by user.
      */
@@ -294,8 +293,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                     }
                 })
                 .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
+                    public void onClick(DialogInterface dialog, int id) {// do nothing..
                     }
                 }).create().show();
     }

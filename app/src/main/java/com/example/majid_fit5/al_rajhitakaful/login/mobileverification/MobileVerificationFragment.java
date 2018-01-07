@@ -37,9 +37,7 @@ import java.text.SimpleDateFormat;
 
 public class MobileVerificationFragment extends BaseFragment implements MobileVerificationContract.View,View.OnClickListener{
     private View mRootView;
-    private TextView mTxtCountDownTimer;
-    private TextView mTxtPhoneNumber;
-    private TextView mTxtResned;
+    private TextView mTxtCountDownTimer,mTxtPhoneNumber,mTxtResned;
     private EditText mEdtVerificationCode;
     private LinearLayout mLayoutResendMessage;
     private Button mBtnSendCode;

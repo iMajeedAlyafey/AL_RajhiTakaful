@@ -129,7 +129,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     private void getCurrentLocationCoordinates() {
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER|,0,0,this);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
         mMapView.getMapAsync(this); // needs to be here after getting permissions.
     }

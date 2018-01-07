@@ -74,7 +74,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if (mSplashView.get() != null) {
-                        mSplashView.get().showErrorMessage(new AlRajhiTakafulError(999,"heeeeeeeeeeere"));
+                        mSplashView.get().showErrorMessage(new AlRajhiTakafulError(999,"Provider Error, Splash"));
                     }
 
                 }

@@ -18,7 +18,7 @@ public class Provider implements Parcelable
     private String vehicle;
     @SerializedName("eta")
     @Expose
-    private Integer eta;
+    private String eta;
     public final static Parcelable.Creator<Provider> CREATOR = new Creator<Provider>() {
 
 
@@ -41,7 +41,7 @@ public class Provider implements Parcelable
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.phoneNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.vehicle = ((String) in.readValue((String.class.getClassLoader())));
-        this.eta = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.eta = ((String) in.readValue((Integer.class.getClassLoader())));
     }
 
     public Provider() {
@@ -71,11 +71,11 @@ public class Provider implements Parcelable
         this.vehicle = vehicle;
     }
 
-    public Integer getEta() {
+    public String getEta() {
         return eta;
     }
 
-    public void setEta(Integer eta) {
+    public void setEta(String eta) {
         this.eta = eta;
     }
 

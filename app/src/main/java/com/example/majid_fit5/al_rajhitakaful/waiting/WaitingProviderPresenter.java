@@ -57,7 +57,7 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if(mWaitingView.get()!=null){
-                        mWaitingView.get().showWaitingError(error);
+                        mWaitingView.get().showWaitingError(new AlRajhiTakafulError(999,"Provider Error, waiting provider"));
                         mWaitingView.get().startCountDownCounter();
                     }
 

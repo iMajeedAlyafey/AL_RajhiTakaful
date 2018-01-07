@@ -21,7 +21,7 @@
         android:allowBackup="true"
         android:icon="@drawable/logo_takful"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_takful"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
@@ -33,9 +33,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".splash.SplashActivity"
-            android:theme="@style/SplashTheme"
-
-            >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

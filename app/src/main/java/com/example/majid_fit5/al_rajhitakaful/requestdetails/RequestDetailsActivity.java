@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +43,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         setSupportActionBar(mToolBar);
         mToolbarTitle = findViewById(R.id.toolbar_title);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbarTitle.setText("In Route");
+        mToolbarTitle.setText(getString(R.string.in_route));
         init();
 
     }
@@ -132,7 +131,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     @Override
     public void onCancelOrder() {
         //should go to Home Activity
-        Toast.makeText(this,"Yout Order Canceled, thanks",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,getString(R.string.caneled_succ),Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();    }

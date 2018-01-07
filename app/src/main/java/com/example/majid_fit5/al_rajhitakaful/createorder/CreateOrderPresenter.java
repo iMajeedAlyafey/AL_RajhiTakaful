@@ -62,10 +62,9 @@ public class CreateOrderPresenter implements CreateOrderContract.Presenter {
             mDataRepository.uploadPhoto(orderID, filePath, new DataSource.UploadPhoto() {
                 @Override
                 public void onUploadPhoto(Order currentOrder) {
-                    if(mView.get()!=null)
-                    mView.get().onUploadPhotoSuccess(currentOrder);
-                    Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
-
+                    if(mView.get()!=null){
+                        mView.get().onUploadPhotoSuccess(currentOrder);
+                    }
                 }
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {

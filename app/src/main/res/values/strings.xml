@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">AL_RajhiTakaful</string>
+    <string name="app_name">Takaful Morni</string>
     <string name="get_currentuser_error">Please check your internet connection and try again.</string>
-    <string name="error_401">Unauthorized</string>
-    <string name="error_404">Not found</string>
-    <string name="error_400">Fail</string>
+    <string name="error_401" translatable="false">Unauthorized</string>
+    <string name="error_404" translatable="false">Not found</string>
+    <string name="error_400" translatable="false">Fail</string>
     <string name="txt_enter_phone">Enter your phone number</string>
     <string name="txt_need_login">You need to login to Morni in order to use services</string>
     <string name="txt_login">Login</string>
@@ -41,4 +41,11 @@
     <string name="title_edt_hint">05XXXXXXXX</string>
     <string name="error_503">No Internet connection. Check you connection.</string>
     <string name="msg_unknown_error">Please check your internet connection and try again.</string>
+    <string name="waiting_toolbar_title">Waiting For Provider</string>
+    <string name="in_route">In Route</string>
+    <string name="call_provider">Call Provider</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="caneled_succ">Your Order Canceled, thanks</string>
+    <string name="photo_updated">Photo Uploaded, Thanks</string>
+    <string name="photo_upload_fail">Photo is not uploaded</string>
 </resources>

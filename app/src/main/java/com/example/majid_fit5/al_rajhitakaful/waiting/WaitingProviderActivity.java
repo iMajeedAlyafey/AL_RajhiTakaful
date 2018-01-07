@@ -36,7 +36,7 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
         setSupportActionBar(mToolbar);
         mToolbarTitle = findViewById(R.id.toolbar_title);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbarTitle.setText("Waiting For Provider");
+        mToolbarTitle.setText(getString(R.string.waiting_toolbar_title));
         init();
     }
 

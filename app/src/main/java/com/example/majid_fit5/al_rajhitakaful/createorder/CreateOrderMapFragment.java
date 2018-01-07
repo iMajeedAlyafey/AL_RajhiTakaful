@@ -260,14 +260,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onUploadPhotoSuccess(Order order) {
-        //bash .. check if it is good practice to display Snackbar in other activity from this activity.. any way it is just for testing
-        Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), getString(R.string.photo_updated), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onUploadPhotoFailure(AlRajhiTakafulError error) {
-        //bash .. check if it is good practice to display Snackbar in other activity from this activity.. any way it is just for testing
-        Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Photo updated, Thanks", Toast.LENGTH_LONG).show();
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), getString(R.string.photo_upload_fail), Toast.LENGTH_LONG).show();
     }
 
     @Override

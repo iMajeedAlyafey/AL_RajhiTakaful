@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+
+    android:background="">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -35,11 +37,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/Gray"
+                android:layout_marginBottom="@dimen/dim_1_dp"
                 android:fontFamily="sans-serif-condensed"
+                android:layout_margin="@dimen/dim_1_dp"
                 android:padding="@dimen/dim_14_dp"
                 android:text="Hi there!"
-                android:layout_marginRight="@dimen/dim_1_dp"
-                android:layout_marginLeft="@dimen/dim_1_dp"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/dim_20_dp" />
@@ -49,14 +51,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/Gray"
+                android:layout_margin="@dimen/dim_1_dp"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="@dimen/dim_14_dp"
                 android:text="Hi there!"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/dim_20_dp"
-                android:layout_marginRight="@dimen/dim_1_dp"
-                android:layout_marginLeft="@dimen/dim_1_dp"/>
+                android:textSize="@dimen/dim_20_dp" />
 
             <TextView
                 android:id="@+id/txv_eta"
@@ -65,8 +66,7 @@
                 android:background="@color/Gray"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="@dimen/dim_14_dp"
-                android:layout_marginRight="@dimen/dim_1_dp"
-                android:layout_marginLeft="@dimen/dim_1_dp"
+                android:layout_margin="@dimen/dim_1_dp"
                 android:text="Hi there!"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
@@ -105,6 +105,7 @@
             </LinearLayout>
 
             <Button
+
                 android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

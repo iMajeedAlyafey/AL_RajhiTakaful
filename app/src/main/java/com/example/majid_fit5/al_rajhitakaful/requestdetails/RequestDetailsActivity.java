@@ -22,6 +22,7 @@ import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
+import com.example.majid_fit5.al_rajhitakaful.utility.AlertDialogUtility;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 /**
  * Created by BASH on 12/31/2017.
@@ -109,9 +110,9 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
      * @param orderID order id to be canceled
      */
     public void cancelOrder(final String orderID) {
-        new AlertDialog.Builder(this).setTitle(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel_Order))
+        new AlertDialog.Builder(this).setTitle(getResources().getString(R.string.cancel_Order))
                 .setMessage(getResources().getString(R.string.order_confirm_msg))
-                .setPositiveButton(AlRajhiTakafulApplication.getInstance().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mPresenter.canelOrder(orderID);
                         //user select ok and the system should cancel the order
@@ -123,6 +124,24 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
 
                     }
                 }).create().show();
+
+
+        new AlertDialogUtility // my custom dialog..
+                (this,
+                        AlRajhiTakafulApplication.getInstance().getString(R.string.cancel_Order),
+                        AlRajhiTakafulApplication.getInstance().getString(R.string.order_confirm_msg),
+                        AlRajhiTakafulApplication.getInstance().getString(R.string.ok),
+                        AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                mPresenter.canelOrder(orderID);
+                            }
+                        },new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
     }
 
     /**

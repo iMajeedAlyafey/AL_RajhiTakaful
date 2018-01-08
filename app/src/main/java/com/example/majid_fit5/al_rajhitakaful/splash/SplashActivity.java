@@ -14,6 +14,7 @@ import com.example.majid_fit5.al_rajhitakaful.login.LoginActivity;
 import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
+import com.google.firebase.crash.FirebaseCrash;
 
 /**
  * Created by BASH on 12/27/2017.
@@ -28,6 +29,9 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         mSlashPresenter = new SplashPresenter(Injection.provideDataRepository());
         mSlashPresenter.onBind(SplashActivity.this);
         mSlashPresenter.checkUserLoginStatues();
+
+        // Test the firebase
+        FirebaseCrash.report(new Exception("This is just for testing the firebase"));
     }
 
     @Override

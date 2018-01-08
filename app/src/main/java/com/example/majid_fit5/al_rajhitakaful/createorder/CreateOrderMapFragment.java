@@ -133,6 +133,28 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
         mMapView.getMapAsync(this); // needs to be here after getting permissions.
+        checkIsGPSEnable(); // to check if the user disable GPS or not.
+    }
+
+    private void checkIsGPSEnable(){
+        if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            new AlertDialogUtility // my custom dialog..
+                    (getActivity(),
+                            AlRajhiTakafulApplication.getInstance().getString(R.string.confirmation_msg),
+                            AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled),
+                            AlRajhiTakafulApplication.getInstance().getString(R.string.msg_turn_on),
+                            AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            },new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -297,7 +319,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 },new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mPresenter.logOut();
                     }
                 });
     }

@@ -25,7 +25,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     @Override
     public void onBind(@NonNull SplashContract.View view) {
         if (view != null)// check if i write it in right way
-            mSplashView = new WeakReference<SplashContract.View>(view);
+            mSplashView = new WeakReference<>(view);
 
     }
 
@@ -74,7 +74,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if (mSplashView.get() != null) {
-                        mSplashView.get().showErrorMessage(new AlRajhiTakafulError(999,"Provider Error, Splash"));
+                        mSplashView.get().showErrorMessage(error);
                     }
 
                 }

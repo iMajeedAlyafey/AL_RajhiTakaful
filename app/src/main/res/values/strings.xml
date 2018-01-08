@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Takaful Morni</string>
-    <string name="get_currentuser_error">Please check your internet connection and try again.</string>
+    <string name="get_currentuser_error">Getting current user error .</string>
     <string name="error_401" translatable="false">Unauthorized</string>
     <string name="error_404" translatable="false">Not found</string>
     <string name="error_400" translatable="false">Fail</string>
@@ -39,7 +39,7 @@
     <string name="confirmation_msg">Confirmation Message</string>
     <string name="log_out_confirm_msg">Are you sure you want to log out?</string>
     <string name="title_edt_hint">05XXXXXXXX</string>
-    <string name="error_503">No Internet connection. Check you connection.</string>
+    <string name="error_503">No Internet connection. Please check your connection.</string>
     <string name="msg_unknown_error">Please check your internet connection and try again.</string>
     <string name="waiting_toolbar_title">Waiting For Provider</string>
     <string name="in_route">In Route</string>
@@ -48,4 +48,5 @@
     <string name="caneled_succ">Your Order Canceled, thanks</string>
     <string name="photo_updated">Photo Uploaded, Thanks</string>
     <string name="photo_upload_fail">Photo is not uploaded</string>
+    <string name="error_408">Time out, try again later.</string>
 </resources>

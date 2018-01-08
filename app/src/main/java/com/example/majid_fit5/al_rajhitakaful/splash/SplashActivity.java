@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.MainActivity;
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.createorder.HomeActivity;
@@ -62,8 +61,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
     }
 
     /**
-     * check the current order of the user, if the order accepted by provider or no, then open the corresponding activity
-     *
+     * check the current order of the user, if the order accepted by provider or no, then open the corresponding activity.
      * @param currentOrder current oder for the user from the server
      */
     @Override
@@ -81,12 +79,16 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     /**
      * display error message if there is a problem when getting the current order from the server
-     *
-     * @param alRajhiTakafulError object contain error message and code
+     * @param error object contain error message and code
      */
     @Override
-    public void showErrorMessage(AlRajhiTakafulError alRajhiTakafulError) {
-        Toast.makeText(this, alRajhiTakafulError.getMessage() + " : " + alRajhiTakafulError.getCode(), Toast.LENGTH_LONG).show();
+    public void showErrorMessage(AlRajhiTakafulError error) {
+        if(error.getCode()==503) { // Network connection error = NO internet connection.
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("ErrorMsg", error.getMessage());
+            startActivity(intent);
+            finish();
+        }else Toast.makeText(this, error.getMessage()+": "+error.getCode(), Toast.LENGTH_LONG).show();
     }
 
     @Override

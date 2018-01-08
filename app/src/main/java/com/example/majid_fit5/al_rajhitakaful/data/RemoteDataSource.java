@@ -1,5 +1,6 @@
 package com.example.majid_fit5.al_rajhitakaful.data;
 
+import android.accounts.NetworkErrorException;
 import android.content.Intent;
 import android.util.Log;
 
@@ -15,6 +16,10 @@ import com.example.majid_fit5.al_rajhitakaful.login.LoginActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -52,7 +57,7 @@ public class RemoteDataSource implements DataSource {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","multipart/form-data")
-                        .addHeader("Authorization", PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
+                        .addHeader("Authorization",PrefUtility.getToken(AlRajhiTakafulApplication.getInstance()))
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
@@ -87,7 +92,7 @@ public class RemoteDataSource implements DataSource {
 
             @Override
             public void onFailure(Call<AlRajhiTakafulResponse> call, Throwable t) {
-                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+                callback.onFailure(getError(t)); // err code 10 for Unknown errors.
             }
         });
     }
@@ -107,7 +112,7 @@ public class RemoteDataSource implements DataSource {
 
             @Override
             public void onFailure(Call<CurrentUserResponse> call, Throwable t) {
-                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+                callback.onFailure(getError(t)); // err code 10 for Unknown errors.
             }
         });
     }
@@ -126,7 +131,7 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<AlRajhiTakafulResponse> call, Throwable t) {
-                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+                callback.onFailure(getError(t)); // err code 10 for Unknown errors.
             }
         });
     }
@@ -145,7 +150,7 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
-                callback.onFailure(getError(10)); // err code 10 for Unknown errors.
+                callback.onFailure(getError(t)); // err code 10 for Unknown errors.
             }
         });
     }
@@ -166,7 +171,7 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<CurrentUserResponse> call, Throwable t) {
-                callBack.onFailure(getError(10));
+                callBack.onFailure(getError(t));
             }
         });
     }
@@ -186,7 +191,7 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                callBack.onFailure(getError(10));
+                callBack.onFailure(getError(t));
             }
         });
     }
@@ -209,7 +214,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
                 t.printStackTrace();
-                callBack.onFailure(getError(10));
+                callBack.onFailure(getError(t));
             }
         });
     }
@@ -249,9 +254,7 @@ public class RemoteDataSource implements DataSource {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 AlRajhiTakafulApplication.getInstance().startActivity(intent);
                 PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
-
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
-
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
             case 400:
@@ -260,6 +263,30 @@ public class RemoteDataSource implements DataSource {
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_503));
         }
         return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
+    }
+
+    // ----------------- handling Throwable error --------------------------
+    private AlRajhiTakafulError getError(Object anonymous) {
+        AlRajhiTakafulError error ;
+        if (anonymous instanceof NetworkErrorException
+                || anonymous instanceof ConnectException || anonymous instanceof UnknownHostException) {
+            // Network issue
+            error = new AlRajhiTakafulError();
+            error.setCode(503);
+            error.setMessage(
+                    AlRajhiTakafulApplication.getInstance().getString(R.string.error_503));
+        } else if (anonymous instanceof SocketTimeoutException) {
+            error = new AlRajhiTakafulError();
+            error.setCode(408);
+            error.setMessage(
+                    AlRajhiTakafulApplication.getInstance().getString(R.string.error_408));
+        }else {
+            error = new AlRajhiTakafulError();
+            error.setCode(10);
+            error.setMessage(
+                    AlRajhiTakafulApplication.getInstance().getString(R.string.msg_unknown_error));
+        }
+        return error;
     }
 
 

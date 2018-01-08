@@ -8,10 +8,9 @@
     tools:context="com.example.majid_fit5.al_rajhitakaful.MainActivity">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txt_error_msg"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:text="@string/msg_unknown_error"
         android:textColor="@color/White"
         android:textSize="@dimen/dim_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"

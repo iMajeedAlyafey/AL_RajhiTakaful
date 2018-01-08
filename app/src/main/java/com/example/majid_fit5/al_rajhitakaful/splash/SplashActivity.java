@@ -88,7 +88,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
             intent.putExtra("ErrorMsg", error.getMessage());
             startActivity(intent);
             finish();
-        }else Toast.makeText(this, error.getMessage()+": "+error.getCode(), Toast.LENGTH_LONG).show();
+        }else Toast.makeText(this, error.getMessage()+":#####"+error.getCode(), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -36,6 +36,7 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
+import com.example.majid_fit5.al_rajhitakaful.utility.AlertDialogUtility;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
@@ -48,7 +49,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
 import java.io.ByteArrayOutputStream;
 
-public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener{
+public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener,DialogInterface.OnClickListener{
     private CreateOrderContract.Presenter mPresenter;
     private View mFragmentRootView, mBottomSheetView;
     private MapView mMapView;
@@ -282,18 +283,23 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     private void confirmLogoutDialog() {
-      new AlertDialog.Builder(getActivity())
-        .setTitle(AlRajhiTakafulApplication.getInstance().getString(R.string.confirmation_msg))
-              .setMessage(AlRajhiTakafulApplication.getInstance().getResources().getString(R.string.log_out_confirm_msg))
-                .setPositiveButton(AlRajhiTakafulApplication.getInstance().getString(R.string.log_out), new DialogInterface.OnClickListener() {
+        new AlertDialogUtility // my custom dialog..
+                (getActivity(),
+                AlRajhiTakafulApplication.getInstance().getString(R.string.confirmation_msg),
+                AlRajhiTakafulApplication.getInstance().getString(R.string.log_out_confirm_msg),
+                AlRajhiTakafulApplication.getInstance().getString(R.string.log_out),
+                AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         mPresenter.logOut();
                     }
-                })
-                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {// do nothing..
+                },new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        mPresenter.logOut();
                     }
-                }).create().show();
+                });
     }
     @Override
     public void onDestroy() {
@@ -325,6 +331,11 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
 
     }
 }

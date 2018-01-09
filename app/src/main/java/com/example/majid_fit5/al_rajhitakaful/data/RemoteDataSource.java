@@ -238,7 +238,7 @@ public class RemoteDataSource implements DataSource {
             }
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
-                callback.onFailure(new AlRajhiTakafulError(10,"problem in file upload"));
+                callback.onFailure(getError(t));
 
             }
         });
@@ -252,8 +252,9 @@ public class RemoteDataSource implements DataSource {
             case 401:
                 Intent intent = new Intent(AlRajhiTakafulApplication.getInstance(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                AlRajhiTakafulApplication.getInstance().startActivity(intent);
                 PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
+                AlRajhiTakafulApplication.getInstance().startActivity(intent);
+
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
@@ -261,6 +262,8 @@ public class RemoteDataSource implements DataSource {
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_400));
             case 503:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_503));
+            case 422: // unprocessable entity.
+                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_422));
         }
         return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
     }
@@ -269,7 +272,8 @@ public class RemoteDataSource implements DataSource {
     private AlRajhiTakafulError getError(Object anonymous) {
         AlRajhiTakafulError error ;
         if (anonymous instanceof NetworkErrorException
-                || anonymous instanceof ConnectException || anonymous instanceof UnknownHostException) {
+                || anonymous instanceof ConnectException
+                || anonymous instanceof UnknownHostException) {
             // Network issue
             error = new AlRajhiTakafulError();
             error.setCode(503);

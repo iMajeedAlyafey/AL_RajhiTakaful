@@ -147,7 +147,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {
-                                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),1);
                                 }
                             },new DialogInterface.OnClickListener() {
                         @Override
@@ -156,6 +156,15 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                     });
         }
     }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        if(requestCode==1){
+            if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

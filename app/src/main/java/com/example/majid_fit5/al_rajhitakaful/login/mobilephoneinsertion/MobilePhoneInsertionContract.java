@@ -20,6 +20,7 @@ public interface MobilePhoneInsertionContract {
     }
 
     interface Presenter extends BasePresenter<View>{
+        //no need, remooove it
         void validatePhoneNumber(String phoneNumber);
         void submitAndGetOTP(String phoneNumber);
     }

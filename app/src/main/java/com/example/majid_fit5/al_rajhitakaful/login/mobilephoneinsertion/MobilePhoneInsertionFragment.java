@@ -20,6 +20,7 @@ import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVerificationFragment;
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
+import com.hbb20.CountryCodePicker;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
@@ -32,6 +33,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     private Button mBtnLogin;
     private ProgressDialog mProgressDialog;
     private MobileVerificationFragment mMobileVerificationFragment;
+    private CountryCodePicker ccp;
 
 
     @Override
@@ -53,6 +55,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
         mEdtPhoneNumber= mRootView.findViewById(R.id.edt_mobile_input);
         mBtnLogin= mRootView.findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
+        ccp = mRootView.findViewById(R.id.ccp);
     }
 
     @Override
@@ -103,9 +106,12 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:
-                mPresenter.validatePhoneNumber(mEdtPhoneNumber.getText().toString());
+//                validatePhoneNumber(ccp.getSelectedCountryCode(),);
                 break;
         }
+    }
+
+    private void validatePhoneNumber(String s) {
     }
 
     @Override

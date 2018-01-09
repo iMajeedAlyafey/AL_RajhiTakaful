@@ -40,20 +40,20 @@ public class RequestDetailsPresenter implements RequestDetailsContract.Presenter
      * @param orderID the oder id that should be canceled
      */
     @Override
-    public void canelOrder(String orderID) {
+    public void cancelOrder(String orderID) {
         if (mRequestView.get() != null) {
             mRepository.cancelOrderC(orderID, new DataSource.CancelOrderCallBack() {
                 @Override
                 public void onOrderCanceled() {
                     if (mRequestView.get() != null) {
-                        mRequestView.get().onCancelOrder();
+                        mRequestView.get().onCancelOrderSuccess();
                     }
                 }
 
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
                     if (mRequestView.get() != null) {
-                        mRequestView.get().displayErrorMeassage("order Can not be canceled");
+                        mRequestView.get().onCancelOrderFailure("order Can not be canceled");
                     }
                 }
             });

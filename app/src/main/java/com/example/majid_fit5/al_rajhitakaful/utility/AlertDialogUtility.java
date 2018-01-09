@@ -26,6 +26,7 @@ public class AlertDialogUtility {
       new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton(positiveBtnTxt, positiveButtonListener)
                 .setNegativeButton(negativeBtnTxt, negativeButtonListener)
                 .create().show();
@@ -39,6 +40,7 @@ public class AlertDialogUtility {
     {
         new AlertDialog.Builder(context)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton(positiveBtnTxt, positiveButtonListener)
                 .create().show();
     }

@@ -42,21 +42,19 @@
             app:ccp_autoDetectLanguage="true"
             app:ccpDialog_keyboardAutoPopup="false"
             app:ccp_defaultNameCode="SA"
+            app:ccp_flagBorderColor="@color/colorPrimary"
             app:ccp_contentColor="@color/colorPrimary"
             app:ccp_countryPreference="SA,BH,KW,AE,OM"
-            app:ccp_showNameCode="false"
-            />
+            app:ccp_showNameCode="false" />
 
         <EditText
             android:id="@+id/edt_mobile_input"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim_40_dp"
-
+            android:maxLength="10"
             android:background="@drawable/bg_white"
-            android:ems="10"
             android:hint="@string/title_edt_hint"
             android:inputType="number"
-            android:maxLength="10"
             android:textAlignment="center" />
     </LinearLayout>
 

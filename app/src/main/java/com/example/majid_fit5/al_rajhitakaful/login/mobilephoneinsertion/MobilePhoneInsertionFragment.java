@@ -6,13 +6,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
@@ -22,20 +23,25 @@ import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVer
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 import com.hbb20.CountryCodePicker;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
  */
 
-public class MobilePhoneInsertionFragment extends BaseFragment implements MobilePhoneInsertionContract.View, View.OnClickListener {
+public class MobilePhoneInsertionFragment extends BaseFragment implements MobilePhoneInsertionContract.View, View.OnClickListener,CountryCodePicker.OnCountryChangeListener {
     private View mRootView;
     MobilePhoneInsertionContract.Presenter mPresenter;
     private EditText mEdtPhoneNumber;
     private Button mBtnLogin;
     private ProgressDialog mProgressDialog;
     private MobileVerificationFragment mMobileVerificationFragment;
-    private CountryCodePicker ccp;
+    private CountryCodePicker mCCP;
+    private PhoneNumberUtil mPhoneUtil;
+    private Phonenumber.PhoneNumber mPhoneNumber ;
+    private String mEdtPhoneNumberHint;
 
 
     @Override
@@ -54,10 +60,13 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
         return mRootView;
     }
     private void init() {
+        mPhoneUtil = PhoneNumberUtil.createInstance(AlRajhiTakafulApplication.getInstance().getApplicationContext());
+        mCCP = mRootView.findViewById(R.id.ccp);
         mEdtPhoneNumber= mRootView.findViewById(R.id.edt_mobile_input);
+        mCCP.registerCarrierNumberEditText(mEdtPhoneNumber); // Attach edit text to CCP.
+        mCCP.setOnCountryChangeListener(this); // for handling the examples of the countries.
         mBtnLogin= mRootView.findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
-        ccp = mRootView.findViewById(R.id.ccp);
     }
 
     @Override
@@ -108,18 +117,33 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:
-                validatePhoneNumber(ccp.getSelectedCountryCode());
+                if(mCCP.isValidFullNumber()){ // is 100% not empty and valid.
+                    try { // try and catch is must.
+                        mPhoneNumber = mPhoneUtil.parse(mEdtPhoneNumber.getText().toString(),mCCP.getSelectedCountryNameCode());
+                    }catch (NumberParseException e) {
+                        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_something_went_wrong),Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    onValidPhoneNumber(mPhoneUtil.format(mPhoneNumber,PhoneNumberUtil.PhoneNumberFormat.E164).substring(1)); //substring(1) delete +
+                }else{
+                    Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
+                }
                 break;
         }
-    }
-
-    private void validatePhoneNumber(String s) {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+    }
+
+    @Override
+    public void onCountrySelected() {
+        mEdtPhoneNumber.setText("");
+        mEdtPhoneNumberHint=""+mPhoneUtil.getExampleNumberForType(mCCP.getSelectedCountryNameCode(), PhoneNumberUtil.PhoneNumberType.MOBILE).getNationalNumber();
+        mEdtPhoneNumber.setHint(mEdtPhoneNumberHint);
+        //Toast.makeText(mRootView.getContext(),"Length is :" + mEdtPhoneNumberHint.length(),Toast.LENGTH_LONG).show();
+        //mEdtPhoneNumber.setFilters(new InputFilter[] { new InputFilter.LengthFilter(mEdtPhoneNumberHint.length())}); // to force the user to input as the same length of the hint.
     }
 }

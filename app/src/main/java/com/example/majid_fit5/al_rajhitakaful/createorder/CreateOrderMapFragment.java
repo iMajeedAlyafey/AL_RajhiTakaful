@@ -154,6 +154,10 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                             },new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id){ // the user cancel the pop up.
+                            if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ // in case the user turn on the GPS directly.
+                                getLocationUpdates();
+                                enableRequestButton();
+                            } else
                             Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                         }
                     });}
@@ -162,6 +166,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -376,7 +381,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
         mGoogleMap.addMarker(mMarkerOptions);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng, 15.0f));
-        mLocationManager.removeUpdates(this);
+        mLocationManager.removeUpdates(this); // if you not code this, you will get to your position every time you move the camera.
     }
 
     @Override

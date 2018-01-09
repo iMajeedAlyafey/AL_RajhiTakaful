@@ -36,7 +36,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         }
     }
 
-    @Override
+ /*   @Override
     public void validatePhoneNumber(String phoneNumber) {
         if(mView.get()!=null){
             if(ValidationsUtility.isEmpty(phoneNumber)){mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_required));
@@ -51,7 +51,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
             }
 
         }
-    }
+    }*/
 
     @Override
     public void submitAndGetOTP(final String phoneNumber) {

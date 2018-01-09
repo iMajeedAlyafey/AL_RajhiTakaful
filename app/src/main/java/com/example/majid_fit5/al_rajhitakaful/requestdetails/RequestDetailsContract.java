@@ -9,10 +9,11 @@ import com.example.majid_fit5.al_rajhitakaful.base.BaseView;
 
 public interface RequestDetailsContract {
     interface View extends BaseView{
-        void onCancelOrder();
-        void displayErrorMeassage(String message);//should be deleted
+        void onCancelOrderSuccess();
+        void onCancelOrderFailure(String message);//should be deleted
     }
     interface Presenter extends BasePresenter<RequestDetailsContract.View>{
-        void canelOrder(String orderID);
+        void cancelOrder(String orderID);
     }
 }
+

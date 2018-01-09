@@ -59,7 +59,6 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
 
             }
         };
-        Snackbar.make(findViewById(R.id.lay_waiting_provider), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_sent_successfully), Snackbar.LENGTH_LONG).show();
         startCountDownTimer();
     }
 

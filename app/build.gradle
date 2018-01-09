@@ -24,7 +24,9 @@ dependencies {
     compile 'com.android.support:support-v4:27.0.2'
     compile 'com.google.android.gms:play-services-maps:11.8.0'
 
+    // Firebase reporting crash tool.
     compile 'com.google.firebase:firebase-crash:11.8.0'
+
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.google.code.gson:gson:2.7'

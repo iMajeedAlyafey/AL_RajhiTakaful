@@ -28,7 +28,6 @@ import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActiv
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
 import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
 import com.example.majid_fit5.al_rajhitakaful.waiting.WaitingProviderActivity;
-
 import java.text.SimpleDateFormat;
 
 /**
@@ -151,7 +150,7 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
                 Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
                 break;
             default:
-                Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.error_503),Toast.LENGTH_LONG).show(); // here to show "Something Wrong Happens" ..
+                Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.error_503),Toast.LENGTH_LONG).show(); // here to show  internet connection error." ..
                 break;
         }
         Log.e("VerificationFailure", error.getMessage()+"::Code::"+error.getCode());

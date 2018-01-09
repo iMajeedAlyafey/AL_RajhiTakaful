@@ -1,16 +1,18 @@
 package com.example.majid_fit5.al_rajhitakaful.requestdetails;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -34,7 +36,7 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
     private TextView mToolbarTitle;
     private Order mCurrentOrder;
     private String phoneNumber;
-
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         init();
 
     }
-
     private void init() {
         mPresenter = new RequestDetailsPresenter(Injection.provideDataRepository());
         mPresenter.onBind(RequestDetailsActivity.this);
@@ -74,7 +75,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
                 break;
             case R.id.btn_cancel:
                 cancelOrder(mCurrentOrder.getId());
-
         }
     }
 
@@ -88,7 +88,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
             callPhone(phoneNumber);
         }
     }
-
     /**
      * make the phone call
      * @param phoneNumber phone number
@@ -100,11 +99,10 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
             startActivity(callIntent);
         }
         else {
-            displayErrorMeassage("phone number is not available at this time");
+            onCancelOrderFailure("phone number is not available at this time");
         }
 
     }
-
     /**
      * cancel the current order after display confirmation message
      * @param orderID order id to be canceled
@@ -120,7 +118,9 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                mPresenter.canelOrder(orderID);
+                                showLoading();
+                                mPresenter.cancelOrder(orderID);
+
                             }
                         },new DialogInterface.OnClickListener() {
                     @Override
@@ -133,7 +133,8 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
      * redirect the user to the main activity,"create order activity"
      */
     @Override
-    public void onCancelOrder() {
+    public void onCancelOrderSuccess() {
+        hideLoading();
         //should go to Home Activity
         Toast.makeText(this,getString(R.string.caneled_succ),Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
@@ -141,8 +142,9 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
         finish();    }
 
     @Override
-    public void displayErrorMeassage(String message) {
-        Snackbar.make(findViewById(R.id.lay_waiting_provider),message,Snackbar.LENGTH_LONG).show();
+    public void onCancelOrderFailure(String message) {
+        hideLoading();
+        Snackbar.make(findViewById(R.id.lay_request_details),message,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -154,20 +156,25 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
                     callPhone(phoneNumber);
 
                 } else {
-                    displayErrorMeassage("please give call permission");
-
+                    Snackbar.make(findViewById(R.id.lay_request_details),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_permission_denied),Snackbar.LENGTH_LONG).show();
                 }
         }
-
     }
 
     @Override
     public void showLoading() {
-
+        if(mProgressDialog==null){
+            mProgressDialog= ProgressDialog.show(this,"","",false,false);
+            mProgressDialog.setProgressDrawable(AlRajhiTakafulApplication.getInstance().getDrawable(R.drawable.custom_progressbar));
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mProgressDialog.setContentView(R.layout.progress_dialog);
+        }else{
+            mProgressDialog.show();
+        }
     }
     @Override
     public void hideLoading() {
-
+        mProgressDialog.cancel();
     }
     @Override
     protected void onDestroy() {

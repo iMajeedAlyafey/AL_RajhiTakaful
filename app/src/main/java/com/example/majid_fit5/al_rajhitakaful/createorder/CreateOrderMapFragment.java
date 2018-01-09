@@ -147,7 +147,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {
-                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),1);
+                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),1234,null);
                                 }
                             },new DialogInterface.OnClickListener() {
                         @Override
@@ -236,14 +236,25 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode){
+            case 13333:
+                if(data!=null){
+                    if (resultCode == Activity.RESULT_OK) {
+                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                        mImgView.setImageBitmap(bitmap); // show the photo.
+                        Uri tempUri = getImageUri(getActivity(), bitmap);
+                        mImagePath = getRealPathFromURI(tempUri);
+                        mCursor.close();
+                    }
+                }
+                break;
+            case 1234:
+
+                break;
+        }
         if (requestCode == 13333 && data != null) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                mImgView.setImageBitmap(bitmap); // show the photo.
-                Uri tempUri = getImageUri(getActivity(), bitmap);
-                mImagePath = getRealPathFromURI(tempUri);
-                mCursor.close();
-            }
+
         }
     }
 

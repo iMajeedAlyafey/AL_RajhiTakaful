@@ -313,7 +313,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onCreateOrderFailure(AlRajhiTakafulError error) {
-        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_again), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mFragmentRootView, error.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -323,7 +323,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onUploadPhotoFailure(AlRajhiTakafulError error) {
-        Toast.makeText(AlRajhiTakafulApplication.getInstance(), getString(R.string.photo_upload_fail), Toast.LENGTH_LONG).show();
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), error.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -335,7 +335,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void OnLogOutFailure(AlRajhiTakafulError error) {
-        Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_try_log_out_again), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mFragmentRootView, error.getMessage(), Snackbar.LENGTH_LONG).show();
         Log.e("",error.getMessage()+"--"+error.getCode());
     }
 

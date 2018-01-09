@@ -146,7 +146,14 @@ public class MobileVerificationFragment extends BaseFragment implements MobileVe
     @Override
     public void onCodeVerificationFailure(AlRajhiTakafulError error) {
         hideLoading();
-        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
+        switch (error.getCode()){
+            case 400:
+                Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_code_invalid),Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.error_503),Toast.LENGTH_LONG).show(); // here to show "Something Wrong Happens" ..
+                break;
+        }
         Log.e("VerificationFailure", error.getMessage()+"::Code::"+error.getCode());
     }
 

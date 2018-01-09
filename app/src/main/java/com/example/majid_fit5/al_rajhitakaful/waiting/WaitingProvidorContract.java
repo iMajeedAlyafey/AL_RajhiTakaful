@@ -11,7 +11,8 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 interface WaitingProvidorContract  {
     interface View extends BaseView{
         void onProviderAccept(Order currentOrder);
-        void startCountDownCounter();
+        void startCountDownTimer();
+        void cancelCountDownTimer();
         void showWaitingError(AlRajhiTakafulError error);
 
     }

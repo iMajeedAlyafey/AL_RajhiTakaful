@@ -23,7 +23,7 @@ public class RequestDetailsPresenter implements RequestDetailsContract.Presenter
 
     @Override
     public void onBind(@NonNull RequestDetailsContract.View view) {
-        mRequestView = new WeakReference<RequestDetailsContract.View>(view);
+        mRequestView = new WeakReference<>(view);
     }
 
     @Override

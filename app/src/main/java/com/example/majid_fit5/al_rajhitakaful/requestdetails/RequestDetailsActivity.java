@@ -110,21 +110,6 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
      * @param orderID order id to be canceled
      */
     public void cancelOrder(final String orderID) {
-        new AlertDialog.Builder(this).setTitle(getResources().getString(R.string.cancel_Order))
-                .setMessage(getResources().getString(R.string.order_confirm_msg))
-                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mPresenter.canelOrder(orderID);
-                        //user select ok and the system should cancel the order
-                    }
-                })
-                .setNegativeButton(AlRajhiTakafulApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-
-                    }
-                }).create().show();
-
 
         new AlertDialogUtility // my custom dialog..
                 (this,

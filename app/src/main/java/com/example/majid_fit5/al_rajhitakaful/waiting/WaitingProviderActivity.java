@@ -15,7 +15,6 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
 import com.example.majid_fit5.al_rajhitakaful.requestdetails.RequestDetailsActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.Constants;
-import com.wang.avi.AVLoadingIndicatorView;
 
 /**
  * Created by BASH on 12/28/2017.
@@ -40,10 +39,6 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
         init();
     }
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
 
     private void init() {
         mWaitingPresenter = new WaitingProviderPresenter(Injection.provideDataRepository());
@@ -65,12 +60,12 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
             }
         };
         Snackbar.make(findViewById(R.id.lay_waiting_provider), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_sent_successfully), Snackbar.LENGTH_LONG).show();
+        startCountDownTimer();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startCountDownCounter();
     }
 
 
@@ -101,8 +96,13 @@ public class WaitingProviderActivity extends AppCompatActivity implements Waitin
      * used when we want to count 15 second
      */
     @Override
-    public void startCountDownCounter() {
+    public void startCountDownTimer() {
         mCountDownTimer.start();
+    }
+
+    @Override
+    public void cancelCountDownTimer() {
+        mCountDownTimer.cancel();
     }
 
     /**

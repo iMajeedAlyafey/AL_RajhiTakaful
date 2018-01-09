@@ -1,11 +1,13 @@
 package com.example.majid_fit5.al_rajhitakaful.waiting;
 
 import android.support.annotation.NonNull;
+
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -23,12 +25,12 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
 
     @Override
     public void onBind(@NonNull WaitingProvidorContract.View view) {
-            mWaitingView = new WeakReference<WaitingProvidorContract.View>(view);
+        mWaitingView = new WeakReference<>(view);
     }
 
     @Override
     public void onDestroy() {
-        if (mWaitingView.get() != null){
+        if (mWaitingView.get() != null) {
             mWaitingView.clear();
             Injection.deleteProvidedDataRepository();
         }
@@ -36,34 +38,35 @@ public class WaitingProviderPresenter implements WaitingProvidorContract.Present
 
     /**
      * get the current order and check if a Provider accept
+     *
      * @param orderID the order id that we want to check provider acceptance
      */
     @Override
     public void getProvider(String orderID) {
-        if (mWaitingView.get() != null) {
+
             mRepository.getOrder(orderID, new DataSource.GetOrderCallBack() {
                 @Override
                 public void onGetOrder(Order currentOrder) {
-
-                        if ( currentOrder.getProvider() != null) {
+                    if (mWaitingView.get() != null) {
+                        if (currentOrder.getProvider() != null) {
+                            mWaitingView.get().cancelCountDownTimer();
                             mWaitingView.get().onProviderAccept(currentOrder);
                         } else {
-                            mWaitingView.get().startCountDownCounter();
+                            //check if we really need this call
+                            mWaitingView.get().startCountDownTimer();
                         }
-
-
+                    }
                 }
 
                 @Override
                 public void onFailure(AlRajhiTakafulError error) {
-                    if(mWaitingView.get()!=null){
-                        mWaitingView.get().showWaitingError(new AlRajhiTakafulError(999,"Provider Error, waiting provider"));
-                        mWaitingView.get().startCountDownCounter();
+                    if (mWaitingView.get() != null) {
+                        mWaitingView.get().showWaitingError(error);
+                        mWaitingView.get().startCountDownTimer();
                     }
-
                 }
             });
-        }
+
     }
 
 

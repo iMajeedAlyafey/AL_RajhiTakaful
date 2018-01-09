@@ -49,7 +49,8 @@
     <string name="photo_updated">Photo Uploaded, Thanks</string>
     <string name="photo_upload_fail">Photo is not uploaded</string>
     <string name="error_408">Time out, try again later.</string>
-    <string name="msg_gps_disabled">GPS is disabled, do you want to turn in on?</string>
+    <string name="msg_gps_disabled_asking">GPS is disabled, do you want to turn in on?</string>
+    <string name="msg_gps_disabled">GPS is disabled.</string>
     <string name="msg_yes">Yes</string>
     <string name="msg_no">No</string>
     <string name="msg_turn_on">TURN ON</string>

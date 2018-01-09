@@ -2,7 +2,6 @@ package com.example.majid_fit5.al_rajhitakaful.createorder;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +45,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.support.design.widget.Snackbar;
 import java.io.ByteArrayOutputStream;
 
@@ -129,19 +129,21 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     private void getCurrentLocationCoordinates() {
-        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);;
         mMapView.getMapAsync(this); // needs to be here after getting permissions.
         checkIsGPSEnable(); // to check if the user disable GPS or not.
     }
 
     private void checkIsGPSEnable(){
-        if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){// the GPS is enabled and works good.
+            getLocationUpdates();
+
+        }else{ // The GPS is disabled. Prompt the user for enabling it and WATCH for his request. The result of his actions is delivered to startActivityForResult().
+            disableRequestButton(); // to prevent use from requesting.
             new AlertDialogUtility // my custom dialog..
                     (getActivity(),
                             AlRajhiTakafulApplication.getInstance().getString(R.string.confirmation_msg),
-                            AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled),
+                            AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled_asking),
                             AlRajhiTakafulApplication.getInstance().getString(R.string.msg_turn_on),
                             AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
                             new DialogInterface.OnClickListener() {
@@ -151,18 +153,14 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                                 }
                             },new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id) {
+                        public void onClick(DialogInterface dialog, int id){ // the user cancel the pop up.
+                            Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                         }
-                    });
-        }
+                    });}
     }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        if(requestCode==1){
-            if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        }
+    private void getLocationUpdates() { // this fires the functions of the Location Listener Interface.
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
     }
 
     @Override
@@ -173,8 +171,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                     getCurrentLocationCoordinates(); //gps call
                  else{
                     Toast.makeText( getActivity(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_location_permission_denied), Toast.LENGTH_LONG).show();
-                    mBtnRequestHome.setEnabled(false);
-                    mBtnRequestHome.setBackgroundColor(AlRajhiTakafulApplication.getInstance().getResources().getColor(R.color.Gray));
+                    disableRequestButton (); // this
                 }
                 break;
             case CAMERA_REQUEST_CODE:
@@ -194,7 +191,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     @Override
     public void onCameraIdle() {
         mCurrentMarkerPosition=mGoogleMap.getCameraPosition().target;
-        //Toast.makeText( getActivity(),"mCurrentMarkerPosition/////"+mCurrentMarkerPosition, Toast.LENGTH_LONG).show();
     }
     @Override
     public void onClick(View v) {
@@ -210,7 +206,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 mPresenter.createOrder(new OrderRequest((float)mCurrentMarkerPosition.latitude,(float)mCurrentMarkerPosition.longitude));
                 break;
             case R.id.img: // of bottom sheet
-              checkPhotoPermission();
+                checkPhotoPermission();
                 break;
             case R.id.map_frag_logout: // of bottom sheet
                 confirmLogoutDialog();
@@ -234,38 +230,57 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         this.startActivityForResult(intent,13333);// If  request code >= 0, this code will be returned in requestCode in onActivityResult() when the activity exits.
     }
 
+    /**
+     * This function gets the results from 2 intents : 1- Camera Intent , 2- Settings Intent.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         switch (requestCode){
-            case 13333:
-                if(data!=null){
-                    if (resultCode == Activity.RESULT_OK) {
+            case 13333: //Camera Intent
+                if(data!=null && resultCode == Activity.RESULT_OK){
                         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                         mImgView.setImageBitmap(bitmap); // show the photo.
                         Uri tempUri = getImageUri(getActivity(), bitmap);
                         mImagePath = getRealPathFromURI(tempUri);
                         mCursor.close();
+                }break;
+            case 1234://Settings Intent.
+                if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { // after opening the setting to the user.
+                    enableRequestButton();
+                    try {
+                        getLocationUpdates();
+                    }catch (Exception e){
+                        Snackbar.make(mFragmentRootView, "ERROR", Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
                     }
                 }
-                break;
-            case 1234:
-
+                else
+                    Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                 break;
         }
-        if (requestCode == 13333 && data != null) {
 
-        }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+    private void disableRequestButton() {
+        mBtnRequestHome.setEnabled(false);
+        mBtnRequestHome.setBackgroundColor(AlRajhiTakafulApplication.getInstance().getResources().getColor(R.color.Gray));
+    }
+    private void enableRequestButton() {
+        mBtnRequestHome.setEnabled(true);
+        mBtnRequestHome.setBackground(AlRajhiTakafulApplication.getInstance().getDrawable(R.drawable.background_green_no_corner));
+    }
+
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
-    public String getRealPathFromURI(Uri uri) {
+    private String getRealPathFromURI(Uri uri) {
         mCursor = getActivity().getContentResolver().query(uri, null, null, null, null);
         mCursor.moveToFirst();
         return mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
@@ -351,6 +366,10 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+        zoomInToCurrentLocation();
+    }
+
+    private void zoomInToCurrentLocation() { // this may be used in other place.
         mMarkerOptions = new MarkerOptions()
                 .position(mCurrentLatLng)
                 .visible(false)

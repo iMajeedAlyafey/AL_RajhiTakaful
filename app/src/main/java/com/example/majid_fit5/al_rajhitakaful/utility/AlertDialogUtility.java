@@ -15,15 +15,14 @@ import com.example.majid_fit5.al_rajhitakaful.R;
 public class AlertDialogUtility {
     private AlertDialog.Builder alBuilder;
 
+    // 1- Dialog
     public AlertDialogUtility(Context context,
                               String title,
                               String message,
                               String positiveBtnTxt,
                               String negativeBtnTxt,
                               DialogInterface.OnClickListener positiveButtonListener,
-                              DialogInterface.OnClickListener negativeButtonListener)
-
-    {
+                              DialogInterface.OnClickListener negativeButtonListener) {
       new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
@@ -31,4 +30,17 @@ public class AlertDialogUtility {
                 .setNegativeButton(negativeBtnTxt, negativeButtonListener)
                 .create().show();
     }
+
+    // 2 - Dialog
+    public AlertDialogUtility(Context context,
+                              String message,
+                              String positiveBtnTxt,
+                              DialogInterface.OnClickListener positiveButtonListener)
+    {
+        new AlertDialog.Builder(context)
+                .setMessage(message)
+                .setPositiveButton(positiveBtnTxt, positiveButtonListener)
+                .create().show();
+    }
+
 }

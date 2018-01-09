@@ -87,7 +87,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
      */
     @Override
     public void showErrorMessage(AlRajhiTakafulError error) {
-        if(error.getCode()==503) { // Network connection error = NO internet connection.
+        if(error.getCode()==503|| error.getCode()==408) { // Network connection error = NO internet connection.
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("ErrorMsg", error.getMessage());
             startActivity(intent);

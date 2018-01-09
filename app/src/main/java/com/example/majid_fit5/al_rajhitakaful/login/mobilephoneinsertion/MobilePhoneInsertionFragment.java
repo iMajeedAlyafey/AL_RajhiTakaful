@@ -91,7 +91,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     @Override
     public void onSubmitAndGetOTPError(AlRajhiTakafulError error) {
         hideLoading();
-        Toast.makeText(mRootView.getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+        Toast.makeText(mRootView.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
     }
 
     @Override

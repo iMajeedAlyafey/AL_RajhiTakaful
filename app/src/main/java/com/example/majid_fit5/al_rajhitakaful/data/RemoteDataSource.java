@@ -254,7 +254,6 @@ public class RemoteDataSource implements DataSource {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
                 AlRajhiTakafulApplication.getInstance().startActivity(intent);
-
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
             case 404:
                 return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));

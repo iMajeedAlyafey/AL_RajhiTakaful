@@ -22,6 +22,8 @@ import com.example.majid_fit5.al_rajhitakaful.login.mobileverification.MobileVer
 import com.example.majid_fit5.al_rajhitakaful.utility.ActivityUtility;
 import com.hbb20.CountryCodePicker;
 
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
  */
@@ -106,12 +108,13 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:
-//                validatePhoneNumber(ccp.getSelectedCountryCode(),);
+                validatePhoneNumber(ccp.getSelectedCountryCode());
                 break;
         }
     }
 
     private void validatePhoneNumber(String s) {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
     }
 
     @Override

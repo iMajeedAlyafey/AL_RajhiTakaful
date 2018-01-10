@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -49,7 +51,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
 import java.io.ByteArrayOutputStream;
 
-public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener,DialogInterface.OnClickListener{
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener, GpsStatus.Listener {
     private CreateOrderContract.Presenter mPresenter;
     private View mFragmentRootView, mBottomSheetView;
     private MapView mMapView;
@@ -76,16 +79,18 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentRootView = inflater.inflate(R.layout.fragment_map, container, false);
-        init();
+        init(); // needs to be here after mFragmentRootView.
         return mFragmentRootView;
     }
     private void init() {
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mMapView = mFragmentRootView.findViewById(R.id.map);
         ImgViewLogOut=mFragmentRootView.findViewById(R.id.map_frag_logout);
         ImgViewLogOut.setOnClickListener(this);
         mBtnRequestHome = mFragmentRootView.findViewById(R.id.but_request); // mBtnRequestHome
         mBtnRequestHome.setOnClickListener(this);
         initiateBottomSheet();
+        checkLocationPermission(); // here important because it uses above controls.
     }
     /**
      * This is responsible on creating bottom sheet in home screen.
@@ -110,35 +115,34 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         super.onViewCreated(view, savedInstanceState);
         mMapView.onCreate(null);
         mMapView.onResume();
-        checkLocationPermission();
+        mMapView.getMapAsync(this);
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mGoogleMap.setOnCameraIdleListener(this);
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mGoogleMap.setMyLocationEnabled(true); // icon of current location.
     }
+
     private void checkLocationPermission() {
         if ( Build.VERSION.SDK_INT >= 23){
             if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED  ){
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-                return ;
+                return  ;
             }
-        }getCurrentLocationCoordinates();
+        }setupLocationManager();
     }
 
-    private void getCurrentLocationCoordinates() {
-        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);;
-        mMapView.getMapAsync(this); // needs to be here after getting permissions.
-        checkIsGPSEnable(); // to check if the user disable GPS or not.
+    private void setupLocationManager() { //  // after getting the permission
+       mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+       mLocationManager.addGpsStatusListener(this); // needs to be here because it needs permission.
+       checkIsGPSEnable();
     }
 
-    private void checkIsGPSEnable(){
-        if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){// the GPS is enabled and works good.
-            getLocationUpdates();
+    private void checkIsGPSEnable(){ // Needs to be called after initializing the location manager.
+        if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        requestLocationUpdates();// the GPS is  enabled
 
-        }else{ // The GPS is disabled. Prompt the user for enabling it and WATCH for his request. The result of his actions is delivered to startActivityForResult().
+        else{
+            // The GPS is disabled. Prompt the user for enabling it and WATCH for his request. The result of his actions is delivered to startActivityForResult().
             disableRequestButton(); // to prevent use from requesting.
             new AlertDialogUtility // my custom dialog..
                     (getActivity(),
@@ -148,32 +152,32 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                             AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
                             new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),1234,null);
+                                public void onClick(DialogInterface dialog, int id) { // OK
+                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1234, null);
                                 }
-                            },new DialogInterface.OnClickListener() {
+                            }, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id){ // the user cancel the pop up.
-                            if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ // in case the user turn on the GPS directly.
-                                getLocationUpdates();
+                        public void onClick(DialogInterface dialog, int id) { // the user cancel the pop up.
+                            if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ // in case the user turn on the GPS directly by himself and click cancel.
+                                requestLocationUpdates();
                                 enableRequestButton();
                             } else
-                            Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                         }
-                    });}
+                    });
+           }
     }
-    private void getLocationUpdates() { // this fires the functions of the Location Listener Interface.
+    private void requestLocationUpdates() { // this fires the functions of the Location Listener Interface.
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case LOCATION_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    getCurrentLocationCoordinates(); //gps call
+                    setupLocationManager();
                  else{
                     Toast.makeText( getActivity(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_location_permission_denied), Toast.LENGTH_LONG).show();
                     disableRequestButton (); // this
@@ -218,7 +222,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
         }
     }
-
     private void checkPhotoPermission() {
         if ( Build.VERSION.SDK_INT >= 23){
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -254,21 +257,13 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 }break;
             case 1234://Settings Intent.
                 if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { // after opening the setting to the user.
-                    enableRequestButton();
-                    try {
-                        getLocationUpdates();
-                    }catch (Exception e){
-                        Snackbar.make(mFragmentRootView, "ERROR", Snackbar.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-                else
+                    enableRequestButton(); // in case the user turn on the GPS after showing the setting.
+                    requestLocationUpdates();
+                } else
                     Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                 break;
         }
-
     }
-
     private void disableRequestButton() {
         mBtnRequestHome.setEnabled(false);
         mBtnRequestHome.setBackgroundColor(AlRajhiTakafulApplication.getInstance().getResources().getColor(R.color.Gray));
@@ -290,7 +285,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mCursor.moveToFirst();
         return mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
     }
-
     @Override
     public void showLoading() {
 
@@ -370,15 +364,18 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onLocationChanged(Location location) {
+       // Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Location changed", Toast.LENGTH_LONG).show();
         mCurrentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
         zoomInToCurrentLocation();
     }
 
-    private void zoomInToCurrentLocation() { // this may be used in other place.
+    private void zoomInToCurrentLocation() { // this may be used in other place.z
         mMarkerOptions = new MarkerOptions()
                 .position(mCurrentLatLng)
                 .visible(false)
                 .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
+        mGoogleMap.setMyLocationEnabled(true); // icon of current location.
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.addMarker(mMarkerOptions);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng, 15.0f));
         mLocationManager.removeUpdates(this); // if you not code this, you will get to your position every time you move the camera.
@@ -386,22 +383,32 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
+        }
     @Override
     public void onProviderEnabled(String provider) {
-
     }
-
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
+    public void onGpsStatusChanged(int i) {
+        switch (i) {
+            case GpsStatus.GPS_EVENT_STARTED:
+                if(mGoogleMap!=null)
+                enableRequestButton();
+                break;
 
+            case GpsStatus.GPS_EVENT_STOPPED:
+                if(mGoogleMap!=null)
+                disableRequestButton();
+                break;
+
+            case GpsStatus.GPS_EVENT_FIRST_FIX:
+                break;
+            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+                break;
+        }
     }
 }
 

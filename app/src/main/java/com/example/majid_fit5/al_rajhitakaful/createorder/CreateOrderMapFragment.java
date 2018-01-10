@@ -90,7 +90,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mBtnRequestHome = mFragmentRootView.findViewById(R.id.but_request); // mBtnRequestHome
         mBtnRequestHome.setOnClickListener(this);
         initiateBottomSheet();
-        checkLocationPermission(); // here important because it uses above controls.
     }
     /**
      * This is responsible on creating bottom sheet in home screen.
@@ -102,7 +101,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mBottomSheetDialog.setContentView(mBottomSheetView);
         mBottomSheetBehavior = BottomSheetBehavior.from((View) mBottomSheetView.getParent());
         mBottomSheetBehavior.setPeekHeight(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,600,getResources().getDisplayMetrics()));
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,600,AlRajhiTakafulApplication.getInstance().getResources().getDisplayMetrics()));
         mBtnRequestBottomSheet= mBottomSheetView.findViewById(R.id.btn_request2);// buttons inside bottom sheet
         mBtnRequestBottomSheet.setOnClickListener(this);
         mImgView = mBottomSheetView.findViewById(R.id.img);// image inside bottom sheet
@@ -115,11 +114,13 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         super.onViewCreated(view, savedInstanceState);
         mMapView.onCreate(null);
         mMapView.onResume();
-        mMapView.getMapAsync(this);
+        checkLocationPermission(); // here important because it uses above controls.
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        mLocationManager.addGpsStatusListener(this); // Important to put after it requestLocationUpdates(); , or it will not work.
+        requestLocationUpdates();// call the interface methods...
     }
 
     private void checkLocationPermission() {
@@ -128,18 +129,39 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                 return  ;
             }
-        }setupLocationManager();
+        }setupLocationManager(); // most important part.
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    setupLocationManager();
+                else{
+                    Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_location_permission_denied), Snackbar.LENGTH_LONG).show();
+                    disableRequestButton ();
+                }
+                break;
+            case CAMERA_REQUEST_CODE:
+                boolean ok=true;
+                for (int i = 0; i < permissions.length; i++) { // 2 permissions..
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                        ok=false;
+                }
+                if(ok) takePhoto();
+                else  Snackbar.make(mBottomSheetView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_camera_permission_denied), Snackbar.LENGTH_LONG).show();
+                break;
+        }
     }
 
     private void setupLocationManager() { //  // after getting the permission
        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-       mLocationManager.addGpsStatusListener(this); // needs to be here because it needs permission.
-       checkIsGPSEnable();
+       checkIsGPSEnable(); /// if the GPS ok, get location updates, ELSE, show dialog.
     }
 
     private void checkIsGPSEnable(){ // Needs to be called after initializing the location manager.
         if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        requestLocationUpdates();// the GPS is  enabled
+            mMapView.getMapAsync(this); // only in this place prepare the map.
 
         else{
             // The GPS is disabled. Prompt the user for enabling it and WATCH for his request. The result of his actions is delivered to startActivityForResult().
@@ -154,12 +176,13 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) { // OK
                                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1234, null);
+
                                 }
                             }, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) { // the user cancel the pop up.
                             if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ // in case the user turn on the GPS directly by himself and click cancel.
-                                requestLocationUpdates();
+                                mMapView.getMapAsync(CreateOrderMapFragment.this);
                                 enableRequestButton();
                             } else
                                 Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
@@ -172,28 +195,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    setupLocationManager();
-                 else{
-                    Toast.makeText( getActivity(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_location_permission_denied), Toast.LENGTH_LONG).show();
-                    disableRequestButton (); // this
-                }
-                break;
-            case CAMERA_REQUEST_CODE:
-                boolean ok=true;
-                for (int i = 0; i < permissions.length; i++) { // 2 permissions..
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
-                        ok=false;
-                }
-                    if(ok) takePhoto();
-                    else  Snackbar.make(mBottomSheetView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_camera_permission_denied), Snackbar.LENGTH_LONG).show();
-                break;
-        }
-    }
     /**
      * This is responsible on the marker on the screen. This may be changed by user.
      */
@@ -257,8 +258,8 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 }break;
             case 1234://Settings Intent.
                 if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { // after opening the setting to the user.
+                    mMapView.getMapAsync(this);
                     enableRequestButton(); // in case the user turn on the GPS after showing the setting.
-                    requestLocationUpdates();
                 } else
                     Snackbar.make(mFragmentRootView, AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Snackbar.LENGTH_LONG).show();
                 break;
@@ -317,7 +318,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void onUploadPhotoSuccess(Order order) {
-        Toast.makeText(AlRajhiTakafulApplication.getInstance(), getString(R.string.photo_updated), Toast.LENGTH_LONG).show();
+        Toast.makeText(AlRajhiTakafulApplication.getInstance(), AlRajhiTakafulApplication.getInstance().getString(R.string.photo_updated), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -363,22 +364,23 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-       // Toast.makeText(AlRajhiTakafulApplication.getInstance(), "Location changed", Toast.LENGTH_LONG).show();
+    public void onLocationChanged(Location location) { // this is fired by calling requestLocationUpdates();
         mCurrentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
         zoomInToCurrentLocation();
     }
 
     private void zoomInToCurrentLocation() { // this may be used in other place.z
-        mMarkerOptions = new MarkerOptions()
-                .position(mCurrentLatLng)
-                .visible(false)
-                .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
-        mGoogleMap.setMyLocationEnabled(true); // icon of current location.
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mGoogleMap.addMarker(mMarkerOptions);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng, 15.0f));
-        mLocationManager.removeUpdates(this); // if you not code this, you will get to your position every time you move the camera.
+        if(mGoogleMap!=null) {
+            mMarkerOptions = new MarkerOptions()
+                    .position(mCurrentLatLng)
+                    .visible(false)
+                    .title(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_current_location));
+            mGoogleMap.setMyLocationEnabled(true); // icon of current location.
+            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mGoogleMap.addMarker(mMarkerOptions);
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrentLatLng, 15.0f));
+            mLocationManager.removeUpdates(this); // if you not code this, you will get to your position every time you move the camera.
+        }
     }
 
     @Override
@@ -386,22 +388,26 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         }
     @Override
     public void onProviderEnabled(String provider) {
+
     }
     @Override
     public void onProviderDisabled(String provider) {
+
     }
 
     @Override
     public void onGpsStatusChanged(int i) {
-        switch (i) {
+       switch (i) {
             case GpsStatus.GPS_EVENT_STARTED:
                 if(mGoogleMap!=null)
-                enableRequestButton();
+                    enableRequestButton();
                 break;
 
             case GpsStatus.GPS_EVENT_STOPPED:
-                if(mGoogleMap!=null)
-                disableRequestButton();
+                if(mGoogleMap!=null){
+                    Toast.makeText(AlRajhiTakafulApplication.getInstance(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Toast.LENGTH_SHORT).show();
+                    disableRequestButton();
+                }
                 break;
 
             case GpsStatus.GPS_EVENT_FIRST_FIX:
@@ -410,5 +416,6 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 break;
         }
     }
+
 }
 

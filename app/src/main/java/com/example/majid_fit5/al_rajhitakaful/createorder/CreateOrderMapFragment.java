@@ -366,6 +366,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     @Override
     public void onLocationChanged(Location location) { // this is fired by calling requestLocationUpdates();
         mCurrentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+        mCurrentMarkerPosition=mCurrentLatLng;
         zoomInToCurrentLocation();
     }
 

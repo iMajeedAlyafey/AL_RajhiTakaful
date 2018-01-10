@@ -38,7 +38,7 @@
     <string name="log_out">LOG OUT</string>
     <string name="confirmation_msg">Confirmation Message</string>
     <string name="log_out_confirm_msg">Are you sure you want to log out?</string>
-    <string name="title_edt_hint">512345678</string>
+    <string name="title_edt_hint">5xxxxxxx</string>
     <string name="error_503">No Internet connection. Please check your connection.</string>
     <string name="msg_unknown_error">Please check your internet connection and try again.</string>
     <string name="waiting_toolbar_title">Waiting For Provider</string>

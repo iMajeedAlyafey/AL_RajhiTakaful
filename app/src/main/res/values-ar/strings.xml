@@ -46,4 +46,5 @@
     <string name="caneled_succ">تم إلغاء الطلب بنجاح</string>
     <string name="photo_updated">تم إرفاق الصورة</string>
     <string name="photo_upload_fail">لم يتم إرفاق الصورة</string>
+    <string name="invalid_phone_number">phone number is not available at this time</string>
 </resources>

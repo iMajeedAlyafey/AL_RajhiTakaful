@@ -99,7 +99,8 @@ public class RequestDetailsActivity extends AppCompatActivity implements Request
             startActivity(callIntent);
         }
         else {
-            onCancelOrderFailure("phone number is not available at this time");
+            Snackbar.make(findViewById(R.id.lay_request_details),getString(R.string.invalid_phone_number),Snackbar.LENGTH_LONG).show();
+
         }
 
     }

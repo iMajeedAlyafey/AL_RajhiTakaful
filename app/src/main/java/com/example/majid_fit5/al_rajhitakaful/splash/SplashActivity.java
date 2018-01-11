@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
         mSlashPresenter.checkUserLoginStatues();
 
         // Test the firebase
-        FirebaseCrash.report(new Exception("This is just for testing the firebase"));
+       // FirebaseCrash.report(new Exception("This is just for testing the firebase"));
     }
 
     @Override
@@ -87,12 +87,12 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
      */
     @Override
     public void showErrorMessage(AlRajhiTakafulError error) {
-        if(error.getCode()==503|| error.getCode()==408) { // Network connection error = NO internet connection.
+        if(error.getCode()==503|| error.getCode()==408 || error.getCode()==504) { // Network connection error = NO internet connection.
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("ErrorMsg", error.getMessage());
             startActivity(intent);
             finish();
-        }else Toast.makeText(this, error.getMessage()+":#####"+error.getCode(), Toast.LENGTH_LONG).show();
+        }else Toast.makeText(this, error.getMessage()+" : "+error.getCode(), Toast.LENGTH_LONG).show();
     }
 
     @Override

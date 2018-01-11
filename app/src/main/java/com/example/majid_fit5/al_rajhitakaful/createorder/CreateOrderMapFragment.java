@@ -2,12 +2,15 @@ package com.example.majid_fit5.al_rajhitakaful.createorder;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
@@ -49,17 +53,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.design.widget.Snackbar;
+
 import java.io.ByteArrayOutputStream;
 
+import static android.location.GpsStatus.GPS_EVENT_STARTED;
+import static android.location.GpsStatus.GPS_EVENT_STOPPED;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener,LocationListener, GpsStatus.Listener {
+public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener, LocationListener, GpsStatus.Listener {
     private CreateOrderContract.Presenter mPresenter;
     private View mFragmentRootView, mBottomSheetView;
     private MapView mMapView;
     private GoogleMap mGoogleMap;
-    private LatLng mCurrentLatLng,mCurrentMarkerPosition; // I have 2 LatLng, one for current position and the other for the marker.
+    private LatLng mCurrentLatLng, mCurrentMarkerPosition; // I have 2 LatLng, one for current position and the other for the marker.
     private MarkerOptions mMarkerOptions;
-    private final int LOCATION_REQUEST_CODE =1111,CAMERA_REQUEST_CODE =2222;
+    private final int LOCATION_REQUEST_CODE = 1111, CAMERA_REQUEST_CODE = 2222;
     private BottomSheetDialog mBottomSheetDialog;
     private BottomSheetBehavior mBottomSheetBehavior;
     private LocationManager mLocationManager;
@@ -67,6 +75,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     private ImageView mImgView, ImgViewLogOut;
     private String mImagePath;
     private Cursor mCursor;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,13 +91,25 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         init(); // needs to be here after mFragmentRootView.
         return mFragmentRootView;
     }
+
     private void init() {
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mMapView = mFragmentRootView.findViewById(R.id.map);
-        ImgViewLogOut=mFragmentRootView.findViewById(R.id.map_frag_logout);
+        ImgViewLogOut = mFragmentRootView.findViewById(R.id.map_frag_logout);
         ImgViewLogOut.setOnClickListener(this);
         mBtnRequestHome = mFragmentRootView.findViewById(R.id.but_request); // mBtnRequestHome
         mBtnRequestHome.setOnClickListener(this);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
         initiateBottomSheet();
     }
     /**
@@ -288,11 +309,18 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     }
     @Override
     public void showLoading() {
-
+        if(mProgressDialog==null){
+            mProgressDialog= ProgressDialog.show(getActivity(),"","See You Later",false,false);
+            mProgressDialog.setProgressDrawable(AlRajhiTakafulApplication.getInstance().getDrawable(R.drawable.custom_progressbar));
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mProgressDialog.setContentView(R.layout.progress_dialog);
+        }else{
+            mProgressDialog.show();
+        }
     }
     @Override
     public void hideLoading() {
-
+        mProgressDialog.cancel();
     }
     /**
      * Here after getting new order, we will redirect user to waiting activity, but we will check for photo if the URI is null, it means the user did not take photo, else make call to upload the photo.
@@ -328,6 +356,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void OnLogOutSuccess(AlRajhiTakafulResponse response) {
+        hideLoading();
         PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
         onDestroy();
         getActivity().finish();
@@ -335,6 +364,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
 
     @Override
     public void OnLogOutFailure(AlRajhiTakafulError error) {
+        hideLoading();
         Snackbar.make(mFragmentRootView, error.getMessage(), Snackbar.LENGTH_LONG).show();
         Log.e("",error.getMessage()+"--"+error.getCode());
     }
@@ -349,6 +379,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        showLoading();
                         mPresenter.logOut();
                     }
                 },new DialogInterface.OnClickListener() {
@@ -400,14 +431,17 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
     public void onGpsStatusChanged(int i) {
        switch (i) {
             case GpsStatus.GPS_EVENT_STARTED:
-                if(mGoogleMap!=null)
+                if(mGoogleMap!=null){
                     enableRequestButton();
+                }
                 break;
 
             case GpsStatus.GPS_EVENT_STOPPED:
                 if(mGoogleMap!=null){
-                    Toast.makeText(AlRajhiTakafulApplication.getInstance(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Toast.LENGTH_SHORT).show();
-                    disableRequestButton();
+                    if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        Toast.makeText(AlRajhiTakafulApplication.getInstance(), AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled), Toast.LENGTH_SHORT).show();
+                        disableRequestButton();
+                    }
                 }
                 break;
 

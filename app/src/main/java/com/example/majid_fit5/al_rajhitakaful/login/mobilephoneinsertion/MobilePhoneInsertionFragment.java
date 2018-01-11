@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
 import com.example.majid_fit5.al_rajhitakaful.base.BaseFragment;
@@ -42,7 +41,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     private MobileVerificationFragment mMobileVerificationFragment;
     private CountryCodePicker mCCP;
     private PhoneNumberUtil mPhoneUtil;
-    private Phonenumber.PhoneNumber mPhoneNumber ;
+
     private String hintPhoneExample;
 
 
@@ -65,7 +64,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
         mPhoneUtil = PhoneNumberUtil.createInstance(AlRajhiTakafulApplication.getInstance().getApplicationContext());
         mCCP = mRootView.findViewById(R.id.ccp);
         mEdtPhoneNumber= mRootView.findViewById(R.id.edt_mobile_input);
-        mCCP.registerCarrierNumberEditText(mEdtPhoneNumber); // Attach edit text to CCP.
+//        mCCP.registerCarrierNumberEditText(mEdtPhoneNumber); // Attach edit text to CCP.
         mCCP.setOnCountryChangeListener(this); // for handling the examples of the countries.
         mBtnLogin= mRootView.findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
@@ -129,45 +128,46 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:
-                if(mCCP.isValidFullNumber()){ // is 100% not empty and valid.
-                    try { // try and catch is must.
-                        mPhoneNumber = mPhoneUtil.parse(mEdtPhoneNumber.getText().toString(),mCCP.getSelectedCountryNameCode());
-                    }catch (NumberParseException e) {
-                        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_something_went_wrong),Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                    onValidPhoneNumber(mPhoneUtil.format(mPhoneNumber,PhoneNumberUtil.PhoneNumberFormat.E164).substring(1)); //substring(1) delete +
-                }else{
-                    Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
+                String phoneNumber = mEdtPhoneNumber.getText().toString();
+                if (!phoneNumber.equals("") && phoneNumber!=null && phoneNumber.length()>2){
+                    validatePhoneNumber(mEdtPhoneNumber.getText().toString(),mCCP.getSelectedCountryNameCode());
+                }else {
+                    onInvalidPhoneNumber("Please Enter valid Phone Number");
                 }
-//                String phoneNumber = mEdtPhoneNumber.getText().toString();
-//                if (!phoneNumber.equals("") && phoneNumber!=null && phoneNumber.length()>2){
-//                    validatePhoneNumber(mEdtPhoneNumber.getText().toString(),ccp.getSelectedCountryNameCode());
-//                }else {
-//                    onInvalidPhoneNumber("Please Enter valid Phone Number");
+//                if(mCCP.isValidFullNumber()){ // is 100% not empty and valid.
+//                    try { // try and catch is must.
+//                        mPhoneNumber = mPhoneUtil.parse(mEdtPhoneNumber.getText().toString(),mCCP.getSelectedCountryNameCode());
+//                    }catch (NumberParseException e) {
+//                        Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_something_went_wrong),Toast.LENGTH_LONG).show();
+//                        e.printStackTrace();
+//                    }
+//                    onValidPhoneNumber(mPhoneUtil.format(mPhoneNumber,PhoneNumberUtil.PhoneNumberFormat.E164).substring(1)); //substring(1) delete +
+//                }else{
+//                    Toast.makeText(mRootView.getContext(),AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid),Toast.LENGTH_LONG).show();
 //                }
+
 
                 break;
         }
     }
 
-//    private void validatePhoneNumber(String number, String countryNameCode) {
-//        Phonenumber.PhoneNumber phoneNumber = null;
-//        try {
-//            phoneNumber = phoneUtil.parse(number, countryNameCode);
-//        } catch (NumberParseException e) {
-//            System.err.println("NumberParseException was thrown: " + e.toString());
-//        }
-//        PhoneNumberUtil.PhoneNumberType phoneNumberType = phoneUtil.getNumberType(phoneNumber);
-//        boolean isValid = phoneUtil.isValidNumber(phoneNumber);
-//        if (isValid && phoneNumberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
-//            onValidPhoneNumber(phoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164).substring(1));
-//        }else {
-//            onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));
-//        }
-//
-//
-//    }
+    private void validatePhoneNumber(String number, String countryNameCode) {
+        Phonenumber.PhoneNumber phoneNumber = null;
+        try {
+            phoneNumber = mPhoneUtil.parse(number, countryNameCode);
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        PhoneNumberUtil.PhoneNumberType phoneNumberType = mPhoneUtil.getNumberType(phoneNumber);
+        boolean isValid = mPhoneUtil.isValidNumber(phoneNumber);
+        if (isValid && phoneNumberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
+            onValidPhoneNumber(mPhoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164).substring(1));
+        }else {
+            onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));
+        }
+
+
+    }
 
     @Override
     public void onDestroy() {
@@ -179,11 +179,16 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
     public void onCountrySelected() {
         mEdtPhoneNumber.setText("");
         hintPhoneExample=""+mPhoneUtil.getExampleNumberForType(mCCP.getSelectedCountryNameCode(), PhoneNumberUtil.PhoneNumberType.MOBILE).getNationalNumber();
-        mEdtPhoneNumber.setHint(hintPhoneExample);
+        Phonenumber.PhoneNumber mPhoneNumber=null ;
+        try {
+            mPhoneNumber = mPhoneUtil.parse(hintPhoneExample,mCCP.getSelectedCountryNameCode());
+        } catch (NumberParseException e) {
+            e.printStackTrace();
+        }
+
+        mEdtPhoneNumber.setHint(mPhoneUtil.format(mPhoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL));
         mEdtPhoneNumber.setFilters(new InputFilter[] {
                 new InputFilter.LengthFilter(hintPhoneExample.length()+1)
         });
-        //Toast.makeText(mRootView.getContext(),"Length is :" + mEdtPhoneNumberHint.length(),Toast.LENGTH_LONG).show();
-        //mEdtPhoneNumber.setFilters(new InputFilter[] { new InputFilter.LengthFilter(mEdtPhoneNumberHint.length())}); // to force the user to input as the same length of the hint.
     }
 }

@@ -176,12 +176,12 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
                             AlRajhiTakafulApplication.getInstance().getString(R.string.msg_gps_disabled_asking),
                             AlRajhiTakafulApplication.getInstance().getString(R.string.msg_turn_on),
                             AlRajhiTakafulApplication.getInstance().getString(R.string.cancel),
-                            new DialogInterface.OnClickListener() {
+                            new DialogInterface.OnClickListener() { // positive button
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) { // OK
                                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1234, null);
                                 }},
-                            new DialogInterface.OnClickListener() {
+                            new DialogInterface.OnClickListener() { // negative button
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) { // the user cancel the pop up.
                                     if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ // in case the user turn on the GPS directly by himself and click cancel.

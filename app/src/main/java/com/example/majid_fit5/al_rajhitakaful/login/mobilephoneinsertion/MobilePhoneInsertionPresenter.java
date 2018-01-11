@@ -36,23 +36,6 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         }
     }
 
- /*   @Override
-    public void validatePhoneNumber(String phoneNumber) {
-        if(mView.get()!=null){
-            if(ValidationsUtility.isEmpty(phoneNumber)){mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_required));
-            } else if (!ValidationsUtility.isValidPhoneNumberLength(phoneNumber)){
-                mView.get().onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));
-            }
-            else{ // it is OK
-                if(phoneNumber.startsWith("0"))
-                    phoneNumber= phoneNumber.substring(1,phoneNumber.length());  // the beginning index, inclusive. ||  the ending index, exclusive.
-
-                mView.get().onValidPhoneNumber("966"+phoneNumber); // here inside we call presenter.
-            }
-
-        }
-    }*/
-
     @Override
     public void submitAndGetOTP(final String phoneNumber) {
         if(mView.get()!=null){

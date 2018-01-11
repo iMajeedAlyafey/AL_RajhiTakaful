@@ -19,9 +19,7 @@ public interface MobilePhoneInsertionContract {
         void onSubmitAndGetOTPSuccess(String phoneNumber); // the phoneNumber is used in other fragment.
     }
 
-    interface Presenter extends BasePresenter<View>{
-        //no need, remooove it
-       // void validatePhoneNumber(String phoneNumber);
+    interface Presenter extends BasePresenter<View>{;
         void submitAndGetOTP(String phoneNumber);
     }
 }

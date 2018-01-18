@@ -20,7 +20,6 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -55,9 +54,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.design.widget.Snackbar;
 
 import java.io.ByteArrayOutputStream;
-
-import static android.location.GpsStatus.GPS_EVENT_STARTED;
-import static android.location.GpsStatus.GPS_EVENT_STOPPED;
 
 public class CreateOrderMapFragment extends BaseFragment implements CreateOrderContract.View, OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener, LocationListener, GpsStatus.Listener {
     private CreateOrderContract.Presenter mPresenter;
@@ -123,7 +119,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         super.onViewCreated(view, savedInstanceState);
         mMapView.onCreate(null);
         mMapView.onResume();
-        if(savedInstanceState==null)
+        if(savedInstanceState==null) // this is to solve the problem of showing 2 permissions one by one (Rare Case).
         checkLocationPermission(); // here important because it uses above controls.
     }
     @Override
@@ -312,7 +308,7 @@ public class CreateOrderMapFragment extends BaseFragment implements CreateOrderC
         Log.e("order", " and number is order :" + order.getId());
         if (mImagePath != null && !mImagePath.trim().isEmpty()) { // upload the photo while we redirect user to waiting activity.
             Log.e("PATH", mImagePath);
-            mPresenter.uploadPhoto(order.getId(), mImagePath);
+            mPresenter.uploadPhoto(order.getId(), mImagePath);//
         }
         Intent intent = new Intent(getActivity(), WaitingProviderActivity.class);
         intent.putExtra(Constants.CURRENT_ORDER,order);

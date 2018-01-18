@@ -1,16 +1,16 @@
-package com.example.majid_fit5.al_rajhitakaful.data;
+package com.example.majid_fit5.al_rajhitakaful_TEST.data;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/14/2017.
  */
 
 
-import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
-import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
-import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.order.Order;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.response.AlRajhiTakafulResponse;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.response.CurrentUserResponse;
 
 import retrofit2.Response;
 
@@ -22,7 +22,7 @@ public interface DataSource {
     interface OTPCallback extends BaseCallBack{
         void onOTPResponse(Response<AlRajhiTakafulResponse> response);
     }
-    void OtpCall(String phoneNumber,OTPCallback callback);
+    void OtpCall(String phoneNumber, OTPCallback callback);
     //------------------------------------------------------
 
     interface LoginCallback extends BaseCallBack{
@@ -32,7 +32,7 @@ public interface DataSource {
     //--------------------------------------------------------------
 
     interface LogoutCallback extends BaseCallBack{
-        void onLogoutResponse(AlRajhiTakafulResponse response);
+        void onLogoutResponse(Response<AlRajhiTakafulResponse> response);
     }
     void logout(LogoutCallback logoutCallback);
     //-------------------------------------------------------------
@@ -40,7 +40,7 @@ public interface DataSource {
     interface CreateOrderCallback extends BaseCallBack{
         void onCreateOrderResponse(Order currentOrder);
     }
-    void createOrder(OrderRequest request,CreateOrderCallback callback);
+    void createOrder(OrderRequest request, CreateOrderCallback callback);
     //----------------------------------------------------------------
 
 

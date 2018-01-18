@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
  */
 
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment extends android.support.v4.app.Fragment{
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

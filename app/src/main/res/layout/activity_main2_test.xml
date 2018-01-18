@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/AppBgGray">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_enter_phone"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/dim_24_dp"
+        android:textSize="@dimen/dim_15_dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dim_10_dp"
+        android:text="@string/txt_need_login" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/dim_10_dp"
+        android:layout_marginStart="@dimen/dim_10_dp"
+        android:layout_marginTop="@dimen/dim_30_dp">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ccp_autoDetectCountry="true"
+            app:ccp_countryAutoDetectionPref="SIM_NETWORK_LOCALE"
+            app:ccp_autoDetectLanguage="true"
+            app:ccpDialog_keyboardAutoPopup="false"
+            app:ccp_defaultNameCode="SA"
+            app:ccp_contentColor="@color/colorPrimary"
+            app:ccp_countryPreference="SA,BH,KW,AE,OM"
+            app:ccp_showNameCode="false" />
+
+        <EditText
+            android:id="@+id/edt_mobile_input_test"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_40_dp"
+
+            android:background="@drawable/bg_white"
+            android:ems="10"
+            android:hint="@string/title_edt_hint"
+            android:inputType="number"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_login_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_20_dp"
+        android:layout_marginStart="@dimen/dim_24_dp"
+        android:layout_marginEnd="@dimen/dim_24_dp"
+        android:background="@drawable/background_green"
+        android:text="@string/txt_login"
+        android:textColor="@color/White" />
+
+    <EditText
+        android:id="@+id/editText_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="test" />
+
+
+</LinearLayout>

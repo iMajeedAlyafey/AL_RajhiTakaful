@@ -15,7 +15,7 @@ public interface MobileVerificationContract {
         void onCodeVerificationSuccess(CurrentUserResponse userResponse);
         void onCodeVerificationFailure(AlRajhiTakafulError error);
         void onGetOTPSuccess(String phoneNumber); // if response.code == 201 -- > OK else 404
-        void onGetOTPFailure(AlRajhiTakafulError error);
+        void onGetOTPFailure(AlRajhiTakafulError errorCode);
 
     }
 

@@ -1,15 +1,16 @@
 package com.example.majid_fit5.al_rajhitakaful.login.mobilephoneinsertion;
 
 import android.support.annotation.NonNull;
-import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
-import com.example.majid_fit5.al_rajhitakaful.R;
+
 import com.example.majid_fit5.al_rajhitakaful.base.Injection;
 import com.example.majid_fit5.al_rajhitakaful.data.DataRepository;
 import com.example.majid_fit5.al_rajhitakaful.data.DataSource;
 import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
 import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
-import com.example.majid_fit5.al_rajhitakaful.utility.ValidationsUtility;
+
 import java.lang.ref.WeakReference;
+
+import retrofit2.Response;
 
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/25/2017.
@@ -41,7 +42,7 @@ public class MobilePhoneInsertionPresenter implements MobilePhoneInsertionContra
         if(mView.get()!=null){
           mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
-                public void onOTPResponse(AlRajhiTakafulResponse response) {
+                public void onOTPResponse(Response<AlRajhiTakafulResponse> response) {
                     if(mView.get()!=null){ // there is a response;
                         mView.get().onSubmitAndGetOTPSuccess(phoneNumber);
                     }

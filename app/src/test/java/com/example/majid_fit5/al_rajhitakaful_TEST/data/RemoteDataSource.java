@@ -1,19 +1,21 @@
-package com.example.majid_fit5.al_rajhitakaful.data;
+package com.example.majid_fit5.al_rajhitakaful_TEST.data;
 
 import android.accounts.NetworkErrorException;
 import android.content.Intent;
-import android.util.Log;
 
 import com.example.majid_fit5.al_rajhitakaful.AlRajhiTakafulApplication;
 import com.example.majid_fit5.al_rajhitakaful.R;
-import com.example.majid_fit5.al_rajhitakaful.data.models.AlRajhiTakafulError;
-import com.example.majid_fit5.al_rajhitakaful.data.models.response.AlRajhiTakafulResponse;
-import com.example.majid_fit5.al_rajhitakaful.data.models.order.Order;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.LoginRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.request.OrderRequest;
-import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserResponse;
 import com.example.majid_fit5.al_rajhitakaful.login.LoginActivity;
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.AlRajhiTakafulError;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.order.Order;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.request.LoginRequest;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.request.OrderRequest;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.response.AlRajhiTakafulResponse;
+import com.example.majid_fit5.al_rajhitakaful_TEST.data.models.response.CurrentUserResponse;
+
+import org.mockito.internal.matchers.Or;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -42,6 +44,7 @@ public class RemoteDataSource implements DataSource {
     private static String BASE_URL = "https://sandbox.morniksa.com/api/alrajhi_takaful/";//"https://www.morniksa.com/api/"
     private ApiEndPoints mEndpoints;
     private static RemoteDataSource INSTANCE = null;
+    OkHttpClient.Builder clientBuilder;
 
     public static RemoteDataSource getInstance() {
         if (INSTANCE == null)
@@ -49,15 +52,33 @@ public class RemoteDataSource implements DataSource {
         return INSTANCE;
     }
 
-
-    private RemoteDataSource() {
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+    public void changeTokenInRequestHeader(final String token){
+        clientBuilder = new OkHttpClient.Builder();
         clientBuilder.addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
                         .addHeader("Content-Type","multipart/form-data")
-                        .addHeader("Authorization","Token ")
+                        .addHeader("Authorization","Token "+token)
+                        .addHeader("Accept","application/json")
+                        .addHeader("Accept-Language","en")
+                        .addHeader("App-Type","AlrajhiTakaful")
+                        .addHeader("Platform","android")
+                        .addHeader("App-Version","1.0.0").build();
+                return chain.proceed(request);
+            }
+    });
+        instantiateRetrofit();
+    }
+
+    public void prepareDefaultClientBuilder(){
+        clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("Content-Type","multipart/form-data")
+                        .addHeader("Authorization","Token "+"")
                         .addHeader("Accept","application/json")
                         .addHeader("Accept-Language","en")
                         .addHeader("App-Type","AlrajhiTakaful")
@@ -66,6 +87,10 @@ public class RemoteDataSource implements DataSource {
                 return chain.proceed(request);
             }
         });
+        instantiateRetrofit();
+    }
+
+    public void instantiateRetrofit(){
         OkHttpClient client = clientBuilder.build();
         // Retrofit instantiation
         Retrofit retrofit = new Retrofit.Builder()
@@ -73,7 +98,12 @@ public class RemoteDataSource implements DataSource {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
+
         mEndpoints = retrofit.create(ApiEndPoints.class);
+    }
+
+    private RemoteDataSource() {
+        prepareDefaultClientBuilder();
     }
     @Override
     public void OtpCall(String phoneNumber, final OTPCallback callback) {
@@ -124,7 +154,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onResponse(Call<AlRajhiTakafulResponse> call, Response<AlRajhiTakafulResponse> response) {
                 if(response.isSuccessful()){
-                    callback.onLogoutResponse(response.body());
+                    callback.onLogoutResponse(response);
                 } else{ // if there is a response, but response error code.
                     callback.onFailure(getError(response.code()));
                 }
@@ -250,21 +280,17 @@ public class RemoteDataSource implements DataSource {
     private AlRajhiTakafulError getError(int errCode) {
         switch (errCode) {
             case 401:
-                Intent intent = new Intent(AlRajhiTakafulApplication.getInstance(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                PrefUtility.destroyToken(AlRajhiTakafulApplication.getInstance());
-                AlRajhiTakafulApplication.getInstance().startActivity(intent);
-                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_401));
+                return new AlRajhiTakafulError(errCode, "error_401");
             case 404:
-                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_404));
+                return new AlRajhiTakafulError(errCode,"error_404");
             case 400:
-                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_400));
+                return new AlRajhiTakafulError(errCode, "error_400");
             case 503:
-                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_503));
+                return new AlRajhiTakafulError(errCode, "error_503");
             case 422: // unprocessable entity.
-                return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.error_422));
+                return new AlRajhiTakafulError(errCode, "error_422");
         }
-        return new AlRajhiTakafulError(errCode, AlRajhiTakafulApplication.getInstance().getString(R.string.get_currentuser_error));
+        return new AlRajhiTakafulError(errCode, "10");
     }
 
     // ----------------- handling Throwable error --------------------------
@@ -294,5 +320,9 @@ public class RemoteDataSource implements DataSource {
 
     public static void destroyInstance() {
         INSTANCE=null;
+    }
+
+    public Order getOrder() {
+        return null;
     }
 }

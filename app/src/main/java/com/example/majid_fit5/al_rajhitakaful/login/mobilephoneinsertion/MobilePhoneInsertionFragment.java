@@ -121,7 +121,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
                 if (!phoneNumber.equals("") && phoneNumber!=null && phoneNumber.length()>2){
                     validatePhoneNumber(mEdtPhoneNumber.getText().toString(),mCCP.getSelectedCountryNameCode());
                 }else {
-                    onInvalidPhoneNumber("Please Enter valid Phone Number");
+                    onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));
                 }
                 break;
         }
@@ -135,8 +135,7 @@ public class MobilePhoneInsertionFragment extends BaseFragment implements Mobile
             System.err.println("NumberParseException was thrown: " + e.toString());
         }
         PhoneNumberUtil.PhoneNumberType phoneNumberType = mPhoneUtil.getNumberType(phoneNumber);
-        boolean isValid = mPhoneUtil.isValidNumber(phoneNumber);
-        if (isValid && phoneNumberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
+        if (mPhoneUtil.isValidNumber(phoneNumber) && phoneNumberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
             onValidPhoneNumber(mPhoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164).substring(1));
         }else {
             onInvalidPhoneNumber(AlRajhiTakafulApplication.getInstance().getString(R.string.msg_phone_number_invalid));

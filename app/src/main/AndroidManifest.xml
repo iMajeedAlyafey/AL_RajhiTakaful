@@ -24,30 +24,32 @@
         android:roundIcon="@mipmap/logo_takful"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".waiting.WaitingProviderActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".requestdetails.RequestDetailsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".createorder.HomeActivity" >
-        </activity>
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".createorder.HomeActivity" />
 
         <!-- Map Android Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <!-- Map -->
+        <activity android:name=".Activity" />
+        <activity android:name=".MobilePhoneInsertionActivityTest"></activity>
     </application>
 
 </manifest>

@@ -5,30 +5,21 @@
     <string name="txt_enter_phone">أدخل رقم هاتفك</string>
     <string name="txt_login">تسجيل الدخول</string>
     <string name="title_sign">التسجيل</string>
-    <string name="msg_phone_number_required">أدخل رقم الهاتف المحمول</string>
     <string name="msg_phone_number_invalid">الرجاء إدخال رقم هاتف صحيح</string>
-    <string name="txt_example_phone_number">Ex: 05XXXXXXXX</string>
-    <string name="title_verify_account">تفعيل الحساب</string>
     <string name="txt_verification_code">أدخل رقم التحقق</string>
     <string name="txt_enter_verification_code">الرجاء إدخال رقم التفعيل</string>
     <string name="txt_send">إرسال</string>
     <string name="txt_did_not_receive">لم تستقبل رسالة التفعيل؟</string>
     <string name="txt_resend">إعادة إرسال</string>
     <string name="msg_code_invalid">رقم التفعيل غير صحيح</string>
-    <string name="title_activity_create_order_map_fragment">الخريطة</string>
-    <string name="title_activity_maps">الخريطة</string>
     <string name="title_home">الصفحة الرئيسية</string>
     <string name="msg_location_permission_denied">الرجاء السماح بالوصول لخدمة الموقع</string>
     <string name="msg_camera_permission_denied">الرجاء السماح باستخدام الكاميرا</string>
     <string name="msg_current_location">الموقع الحالي</string>
-    <string name="title_activity_maps_activitytestttttt">الخريطة</string>
     <string name="btn_txt_request">إرسال طلب</string>
     <string name="btn_txt_hide">إخفاء</string>
-    <string name="msg_try_again">الرجاء المحاولة لاحقا</string>
-    <string name="msg_try_log_out_again">الرجاء محاولة تسجيل الخروج لاحقا</string>
     <string name="waiting_message">يتم الان محاولة العثور على أقرب مزود خدمة لك</string>
     <string name="order_confirm_msg">سيتم الغاء الطلب, هل انت متأكد؟</string>
-    <string name="msg_sent_successfully">تم إرسال الطلب بنجاح</string>
     <string name="cancel_Order">إلغاء الطلب</string>
     <string name="cancel">الغاء</string>
     <string name="ok">نعم</string>
@@ -45,6 +36,5 @@
     <string name="contact_us">إتصل بنا</string>
     <string name="caneled_succ">تم إلغاء الطلب بنجاح</string>
     <string name="photo_updated">تم إرفاق الصورة</string>
-    <string name="photo_upload_fail">لم يتم إرفاق الصورة</string>
     <string name="invalid_phone_number">phone number is not available at this time</string>
 </resources>

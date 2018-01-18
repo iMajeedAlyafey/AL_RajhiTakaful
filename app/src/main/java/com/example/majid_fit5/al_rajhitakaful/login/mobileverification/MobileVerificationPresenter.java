@@ -12,6 +12,8 @@ import com.example.majid_fit5.al_rajhitakaful.data.models.response.CurrentUserRe
 import com.example.majid_fit5.al_rajhitakaful.utility.PrefUtility;
 import java.lang.ref.WeakReference;
 
+import retrofit2.Response;
+
 /**
  * Created by Eng. Abdulmajid Alyafey on 12/30/2017.
  */
@@ -61,7 +63,7 @@ public class MobileVerificationPresenter implements MobileVerificationContract.P
         if(mView.get()!=null){
             mDataRepository.OtpCall(phoneNumber, new DataSource.OTPCallback() {
                 @Override
-                public void onOTPResponse(AlRajhiTakafulResponse response) {
+                public void onOTPResponse(Response<AlRajhiTakafulResponse> response) {
                    if(mView.get()!=null)
                        mView.get().onGetOTPSuccess(phoneNumber);
                 }

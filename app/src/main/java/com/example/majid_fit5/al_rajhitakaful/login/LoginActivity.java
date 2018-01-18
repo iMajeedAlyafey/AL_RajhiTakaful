@@ -3,6 +3,7 @@ package com.example.majid_fit5.al_rajhitakaful.login;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.majid_fit5.al_rajhitakaful.R;
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ((TextView) findViewById(R.id.toolbar_title)).setText(R.string.title_sign);
-        ActivityUtility.addFragmentToActivity( getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobilePhoneInsertionFragment");
+        ActivityUtility.addFragmentToActivity(getSupportFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobilePhoneInsertionFragment");
         checkPermissions();
     }
      // I used the toolbar in this activity since there is no action bar button required to use presenter or api service. Ex: no log out button used to exist and clear the preference and call api service.
@@ -30,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 // For dealing with the back arrow.
-                ActivityUtility.addFragmentToActivity(getFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobileInsertionFragment");
+                ActivityUtility.addFragmentToActivity(getSupportFragmentManager(),new MobilePhoneInsertionFragment(),R.id.content_frame,"MobileInsertionFragment");
                 return true;
         }
         return super.onOptionsItemSelected(item);

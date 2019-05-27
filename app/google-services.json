@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "16862808887",
+    "firebase_url": "https://alrajhitakaful-3fe88.firebaseio.com",
+    "project_id": "alrajhitakaful-3fe88",
+    "storage_bucket": "alrajhitakaful-3fe88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16862808887:android:9ce7b95a4ecb20ab",
+        "android_client_info": {
+          "package_name": "com.example.majid_fit5.al_rajhitakaful"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16862808887-74kkupp1104pev31o0g8am20rlvq6rfq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.majid_fit5.al_rajhitakaful",
+            "certificate_hash": "fdbd5979cdc5fadcff35a654bd8f33d046e7ca09"
+          }
+        },
+        {
+          "client_id": "16862808887-sv9n7m6a94ijg8t3n6422njb3qo5fmdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqb8wXsdMubPK6uYxBt6AB7wzv8LoMfqY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16862808887-sv9n7m6a94ijg8t3n6422njb3qo5fmdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

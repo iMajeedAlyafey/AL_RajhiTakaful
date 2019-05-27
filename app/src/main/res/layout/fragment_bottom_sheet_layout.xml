@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/lay_buttom_sheet"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_hide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_txt_hide"
+            android:layout_marginTop="@dimen/dim_10_dp"
+            android:layout_marginRight="@dimen/dim_10_dp"
+            android:background="@drawable/background_green"
+            android:textColor="@color/White"
+            android:layout_marginLeft="@dimen/dim_10_dp"
+            />
+
+        <ImageView
+            android:src="@drawable/ic_image_black_24dp"
+            android:id="@+id/img"
+            android:layout_width="364dp"
+            android:layout_height="300dp"
+            android:layout_marginRight="@dimen/dim_10_dp"
+            android:layout_marginLeft="@dimen/dim_10_dp" />
+
+        <Button
+            android:id="@+id/btn_request2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_txt_request"
+            android:layout_marginRight="@dimen/dim_10_dp"
+            android:layout_marginBottom="@dimen/dim_10_dp"
+            android:layout_marginLeft="@dimen/dim_10_dp"
+            android:background="@drawable/background_green"
+            android:textColor="@color/White"
+            />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

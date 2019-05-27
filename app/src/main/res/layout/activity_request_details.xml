@@ -1,0 +1,121 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/lay_request_details">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/White" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txv_provider_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Gray"
+                android:layout_marginBottom="@dimen/dim_1_dp"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_margin="@dimen/dim_1_dp"
+                android:padding="@dimen/dim_14_dp"
+                android:text="Hi there!"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dim_20_dp" />
+
+            <TextView
+                android:id="@+id/txv_car_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Gray"
+                android:layout_margin="@dimen/dim_1_dp"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="@dimen/dim_14_dp"
+                android:text="Hi there!"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dim_20_dp" />
+
+            <TextView
+                android:id="@+id/txv_eta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Gray"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="@dimen/dim_14_dp"
+                android:layout_margin="@dimen/dim_1_dp"
+                android:text="Hi there!"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dim_20_dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_call_provider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dim_1_dp"
+                    android:background="@drawable/background_green"
+                    android:shadowColor="#A8A8A8"
+                    android:text="@string/call_provider"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btn_contact_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dim_1_dp"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/background_green"
+                    android:shadowColor="#A8A8A8"
+                    android:text="@string/contact_us"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <Button
+
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dim_1_dp"
+                android:background="@drawable/background_red"
+                android:backgroundTint="@color/Red"
+                android:shadowColor="#A8A8A8"
+                android:text="@string/cancel"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

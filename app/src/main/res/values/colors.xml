@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#12604D</color>
+    <color name="colorPrimaryDark">#0F3B32</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="Red">#f4001c</color>
+    <color name="Gray">#8e8f90</color>
+    <color name="White">#fefefe</color>
+    <color name="AppBgGray">#f4f2f2</color>
+    <color name="FontGrayLight">#c9cacb</color>
+    <color name="GrayLight">#e7e7e7</color>
+    <color name="ProviderPrimary">#333</color>
+    <color name="ProviderFont">#333</color>
+    <color name="BorderGray">#e6e6e5</color>
+    <color name="BgGray">#e5e4e0</color>
+    <color name="BgPromoCenter">#f5f6f7</color>
+    <color name="BtninRoutConfirm">#47ad4a</color>
+    <color name="BtninRoutCallClient">#1c63c5</color>
+    <color name="BtninRoutNavigate">#2a817d</color>
+    <color name="BtninRoutContactUs">#baa62e</color>
+    <color name="TransparentWhite">#98ffffff</color>
+    <color name="BgMaster">#3771a0</color>
+    <color name="BgVisa">#262d7a</color>
+    <color name="splash_background">#070c40</color>
 </resources>
